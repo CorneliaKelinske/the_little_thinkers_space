@@ -1,0 +1,1 @@
+call "%~dp0\the_little_thinkers_space" eval TheLittleThinkersSpace.Release.migrate

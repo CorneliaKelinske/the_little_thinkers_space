@@ -1,0 +1,3 @@
+#!/bin/sh
+cd -P -- "$(dirname -- "$0")"
+exec ./the_little_thinkers_space eval TheLittleThinkersSpace.Release.migrate
