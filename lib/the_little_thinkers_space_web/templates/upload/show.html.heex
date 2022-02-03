@@ -1,0 +1,47 @@
+<body class="bg-colors bg-cover">
+
+<h1 class="w-screen text-sky-900 font-bold text-center text-4xl p-4"><%= @upload.title %></h1>
+
+<div class="grid w-screen grid-cols-12">
+
+  <%= if @upload.orientation == "Landscape" do %>
+
+  <div class="aspect-w-3 aspect-h-2 col-span-10 col-start-2 md:col-span-8 md:col-start-3 shadow">
+    <%= if @upload.file_type in Upload.valid_image_types do %>
+
+    <%= display_image(@upload) %>
+
+    <% else %>
+    <%= display_video(@upload) %>
+    <% end %>
+  </div>
+
+  <% else %>
+  <div class="aspect-h-3 aspect-w-2 col-span-10 col-start-2 md:col-span-8 md:col-start-3 shadow">
+    <%= if @upload.file_type in Upload.valid_image_types do %>
+
+    <%= display_image(@upload) %>
+
+    <% else %>
+    <%= display_video(@upload) %>
+    <% end %>
+  </div>
+  <% end %>
+
+  <div class="relative mx-2 md:mx-8 -mt-4 col-span-10 col-start-2 md:col-span-8 md:col-start-3 bg-orange-200 shadow-xl p-4
+   rounded-lg antialiased text-gray-900 text-center p-4 text-lg md:tracking-wide">
+    <%= @upload.description %>
+  </div>
+</div>
+
+<div class="mx-8 sm:mx-16 my-6">
+  <span
+    class="text-sky-900 text-lg font-semibold tracking-wide"><%= link "Back", to: Routes.upload_path(@conn, :index) %></span>
+  <%= if @current_user.role in ["Admin", "The Little Thinker"] do %>
+  <span class="text-sky-900 text-lg font-semibold tracking-wide">|</span>
+  <span
+    class="text-sky-900 text-lg font-semibold tracking-wide"><%=  link "Edit", to: Routes.upload_path(@conn, :edit, @upload) %></span>
+  <% end %>
+</div>
+
+</body>

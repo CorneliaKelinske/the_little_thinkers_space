@@ -1,0 +1,88 @@
+<body class="bg-colors bg-cover">
+  <h1 class="w-screen text-sky-900 font-bold text-center text-4xl p-4"><%= @profile.first_name%>'s Profile </h1>
+
+  <div class="w-screen flex justify-center p-8">
+    <section class="flex w-2/3 h-4/6 p-2 bg-orange-200 bg-opacity-70 rounded-lg shadow-xl">
+
+      <ul class="m-5 text-sky-900 sm:text-xl xs:text-base md:tracking-wide w-full">
+
+        <li class="flex my-3 mx-5 w-full">
+          <div class="w-6/12"> <strong>First name:</strong> </div>
+          <div class="w-6/12 pl-2"> <%= @profile.first_name %> </div>
+        </li>
+
+        <li class="flex my-3 mx-5 w-full">
+          <div class="w-6/12"><strong>Last name:</strong></div>
+          <div class="w-6/12 pl-2"><%= @profile.last_name %></div>
+        </li>
+
+        <li class="my-3 mx-5 flex w-full">
+          <div class="w-6/12"><strong>Nickname:</strong></div>
+          <div class="w-6/12 pl-2"><%= @profile.nickname %></div>
+        </li>
+
+        <li class="my-3 mx-5 flex w-full">
+          <div class="w-6/12"><strong>Birthday:</strong></div>
+          <div class="w-6/12 pl-2"><%= @profile.birthday %></div>
+        </li>
+
+        <li class="my-3 mx-5 flex w-full">
+          <div class="w-6/12"><strong>Favorite color:</strong></div>
+          <div class="w-6/12 pl-2"><%= @profile.color %></div>
+        </li>
+
+        <li class="my-3 mx-5 flex w-full">
+          <div class="w-6/12"><strong>Favorite animal:</strong></div>
+          <div class="w-6/12 pl-2"><%= @profile.animal %></div>
+        </li>
+
+        <li class="my-3 mx-5 flex w-full">
+          <div class="w-6/12"><strong>Favorite food:</strong></div>
+          <div class="w-6/12 pl-2"><%= @profile.food %></div>
+        </li>
+
+        <li class="my-3 mx-5 flex w-full">
+          <div class="w-6/12"><strong>Favorite superhero:</strong></div>
+          <div class="w-6/12 pl-2"><%= @profile.superhero %></div>
+        </li>
+
+        <li class="my-3 mx-5 flex w-full">
+          <div class="w-6/12"><strong>Favorite song:</strong></div>
+          <div class="w-6/12 pl-2"><%= @profile.song %></div>
+        </li>
+
+        <li class="my-3 mx-5 flex w-full">
+          <div class="w-6/12"><strong>Favorite movie:</strong></div>
+          <div class="w-6/12 pl-2"><%= @profile.movie %></div>
+        </li>
+
+        <li class="my-3 mx-5 flex w-full">
+          <div class="w-6/12"><strong>Favorite book:</strong></div>
+          <div class="w-6/12 pl-2"><%= @profile.book %></div>
+        </li>
+
+        <li class="my-3 mx-5 flex w-full">
+          <div class="w-6/12"><strong>When I grow up I want to ... :</strong></div>
+          <div class="w-6/12 pl-2"><%= @profile.future %></div>
+        </li>
+
+        <li class="my-3 mx-5 flex w-full">
+          <div class="w-6/12"><strong>My favorite joke:</strong></div>
+          <div class="w-6/12 pl-2"><%= @profile.joke %></div>
+        </li>
+      </ul>
+
+    </section>
+  </div>
+
+  <div class="flex p-28 justify-between w-screen flex-wrap">
+    <div>
+      <span
+        class="text-sky-900 text-lg font-semibold tracking-wide"><%= link "Edit", to: Routes.profile_path(@conn, :edit, @profile) %></span>
+      <span class="text-sky-900 text-lg font-semibold tracking-wide">|</span>
+      <span
+        class="text-sky-900 text-lg font-semibold tracking-wide"><%= link "Back", to: Routes.page_path(@conn, :home) %></span>
+    </div>
+
+</div>
+</body>

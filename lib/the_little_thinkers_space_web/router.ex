@@ -1,6 +1,8 @@
 defmodule TheLittleThinkersSpaceWeb.Router do
   use TheLittleThinkersSpaceWeb, :router
 
+  import TheLittleThinkersSpaceWeb.UserAuth
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -8,6 +10,7 @@ defmodule TheLittleThinkersSpaceWeb.Router do
     plug :put_root_layout, {TheLittleThinkersSpaceWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :fetch_current_user
   end
 
   pipeline :api do
@@ -52,5 +55,49 @@ defmodule TheLittleThinkersSpaceWeb.Router do
 
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
+  end
+
+  ## Authentication routes
+
+  scope "/", TheLittleThinkersSpaceWeb do
+    pipe_through [:browser, :redirect_if_user_is_authenticated]
+
+    get "/users/log_in", UserSessionController, :new
+    post "/users/log_in", UserSessionController, :create
+    get "/users/reset_password", UserResetPasswordController, :new
+    post "/users/reset_password", UserResetPasswordController, :create
+    get "/users/reset_password/:token", UserResetPasswordController, :edit
+    put "/users/reset_password/:token", UserResetPasswordController, :update
+  end
+
+  scope "/", TheLittleThinkersSpaceWeb do
+    pipe_through [:browser, :require_authenticated_user]
+
+    get "/users/register", UserRegistrationController, :new
+    post "/users/register", UserRegistrationController, :create
+    get "/users/settings", UserSettingsController, :edit
+    put "/users/settings", UserSettingsController, :update
+    get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
+    get "/home", PageController, :home
+    resources "/users/admin", UserController
+    resources "/uploads", UploadController
+    resources "/profiles", ProfileController
+  end
+
+  scope "/", TheLittleThinkersSpaceWeb do
+    pipe_through [:browser]
+
+    delete "/users/log_out", UserSessionController, :delete
+    get "/users/confirm", UserConfirmationController, :new
+    post "/users/confirm", UserConfirmationController, :create
+    get "/users/confirm/:token", UserConfirmationController, :edit
+    post "/users/confirm/:token", UserConfirmationController, :update
+  end
+
+  scope "/", TheLittleThinkersSpaceWeb do
+    pipe_through :browser
+
+    get "/contact", ContactController, :new
+    post "/contact", ContactController, :create
   end
 end

@@ -1,0 +1,73 @@
+<body class="bg-colors bg-cover">
+  <h1 class="w-screen text-sky-900 font-bold text-center text-4xl p-4">Change your Settings</h1>
+
+  <container class="grid place-items-center w-screen">
+    <section class="grid grid-cols-2 md:grid-cols-4 gap-4 p-8">
+
+      <h3 class="col-start-1 col-span-2 lg:col-start-2 lg:col-span-2 text-lg font-semibold text-gray-800 tracking-wide">
+        Change your email</h3>
+
+      <.form let={f} for={@email_changeset} action={Routes.user_settings_path(@conn, :update)} id="update_email"
+        class="col-start-1 col-span-2 lg:col-start-2 lg:col-span-1 text-gray-900">
+        <%= if @email_changeset.action do %>
+        <div class="alert alert-danger">
+          <p>Oops, something went wrong! Please check the errors below.</p>
+        </div>
+        <% end %>
+
+        <%= hidden_input f, :action, name: "action", value: "update_email" %>
+
+        <%= label f, :email %>
+        <br>
+        <%= email_input f, :email, required: true, class: "w-full rounded pl-2 mt-2 mb-3 bg-orange-50 focus:outline-none focus:ring" %>
+        <%= error_tag f, :email %>
+        <br>
+
+        <%= label f, :current_password, for: "current_password_for_email" %>
+        <br>
+        <%= password_input f, :current_password, required: true, name: "current_password", id: "current_password_for_email", class: "w-full rounded pl-2 mt-2 mb-8 bg-orange-50 focus:outline-none focus:ring" %>
+        <%= error_tag f, :current_password %>
+
+        <div class="btn-page-mini mb-8">
+          <%= submit "Change email" %>
+        </div>
+      </.form>
+
+      <h3
+        class="col-start-1 col-span-2 md:col-start-3 md:row-start-3 text-lg font-semibold text-gray-800 tracking-wide">
+        Change password</h3>
+
+      <.form let={f} for={@password_changeset} action={Routes.user_settings_path(@conn, :update)} id="update_password"
+        class="col-start-1 col-span-2 md:row-start-4 md:col-start-3 lg:col-start-3 lg:col-span-1 text-gray-900">
+        <%= if @password_changeset.action do %>
+        <div class="alert alert-danger">
+          <p>Oops, something went wrong! Please check the errors below.</p>
+        </div>
+        <% end %>
+
+        <%= hidden_input f, :action, name: "action", value: "update_password" %>
+
+        <%= label f, :password, "New password" %>
+        <br>
+        <%= password_input f, :password, required: true, class: "w-full rounded pl-2 mt-2 mb-3 bg-orange-50 focus:outline-none focus:ring" %>
+        <%= error_tag f, :password %>
+        <br>
+
+        <%= label f, :password_confirmation, "Confirm new password" %>
+        <br>
+        <%= password_input f, :password_confirmation, required: true, class: "w-full rounded pl-2 mt-2 mb-3 bg-orange-50 focus:outline-none focus:ring" %>
+        <%= error_tag f, :password_confirmation %>
+
+        <%= label f, :current_password, for: "current_password_for_password" %>
+        <br>
+        <%= password_input f, :current_password, required: true, name: "current_password", id: "current_password_for_password", class: "w-full rounded pl-2 mt-2 mb-8 bg-orange-50 focus:outline-none focus:ring" %>
+        <%= error_tag f, :current_password %>
+
+        <div class="btn-page-mini">
+          <%= submit "Change password" %>
+        </div>
+      </.form>
+
+    </section>
+  </container>
+</body>

@@ -1,0 +1,9 @@
+defmodule TheLittleThinkersSpace.Repo.Migrations.AddNameToUserTable do
+  use Ecto.Migration
+
+  def change do
+    alter table(:users) do
+      add :name, :string, null: false
+    end
+  end
+end

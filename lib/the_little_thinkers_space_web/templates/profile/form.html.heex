@@ -1,0 +1,106 @@
+<body class="bg-colors bg-cover">
+
+  <.form let={f} for={@changeset} action={@action}>
+    <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Oops, something went wrong! Please check the errors below.</p>
+    </div>
+    <% end %>
+
+    <div class="w-screen flex justify-center p-8">
+      <section class="flex w-2/3 h-4/6 p-2">
+
+        <ul class="m-5 text-sky-900 sm:text-xl xs:text-base md:tracking-wide w-full">
+
+          <li class="flex my-3 mx-5 w-full">
+            <%= label f, :first_name, class: "w-6/12 font-bold" %>
+            <%= text_input f, :first_name, class: "form-input" %>
+            <%= error_tag f, :first_name %>
+          </li>
+
+          <li class="flex my-3 mx-5 w-full">
+            <%= label f, :last_name, class: "w-6/12 font-bold" %>
+            <%= text_input f, :last_name, class: "form-input" %>
+            <%= error_tag f, :last_name %>
+          </li>
+
+          <li class="flex my-3 mx-5 w-full">
+            <%= label f, :nickname, class: "w-6/12 font-bold" %>
+            <%= text_input f, :nickname, class: "form-input" %>
+            <%= error_tag f, :nickname %>
+          </li>
+
+          <li class="flex my-3 mx-5 w-full">
+            <%= label f, :birthday, class: "w-6/12 font-bold" %>
+            <span class="w-6/12"><%= date_select f, :birthday, builder: fn b -> %>
+              <%= b.(:year,[options: 1930..2030, class: "rounded bg-orange-50 p-1 focus:ring"]) %>
+              / <%= b.(:month, [class: "rounded bg-orange-50 p-1 focus:ring"]) %> /
+              <%= b.(:day, [class: "rounded bg-orange-50 p-1 focus:ring"]) %>
+              <% end %>
+            </span>
+            <%= error_tag f, :birthday %>
+          </li>
+
+          <li class="flex my-3 mx-5 w-full">
+            <%= label f, :color, "Favorite color", class: "w-6/12 font-bold" %>
+            <%= text_input f, :color, class: "form-input" %>
+            <%= error_tag f, :color %>
+          </li>
+
+          <li class="flex my-3 mx-5 w-full">
+            <%= label f, :animal, "Favorite animal", class: "w-6/12 font-bold" %>
+            <%= text_input f, :animal, class: "form-input" %>
+            <%= error_tag f, :animal %>
+          </li>
+
+          <li class="flex my-3 mx-5 w-full">
+            <%= label f, :food, "Favorite food", class: "w-6/12 font-bold" %>
+            <%= text_input f, :food, class: "form-input"%>
+            <%= error_tag f, :food %>
+          </li>
+
+          <li class="flex my-3 mx-5 w-full">
+            <%= label f, :superhero, "Favorite superhero", class: "w-6/12 font-bold" %>
+            <%= text_input f, :superhero, class: "form-input" %>
+            <%= error_tag f, :superhero %>
+          </li>
+
+          <li class="flex my-3 mx-5 w-full">
+            <%= label f, :song, "Favorite song", class: "w-6/12 font-bold" %>
+            <%= text_input f, :song, class: "form-input" %>
+            <%= error_tag f, :song %>
+          </li>
+
+          <li class="flex my-3 mx-5 w-full">
+            <%= label f, :movie, "Favorite movie", class: "w-6/12 font-bold" %>
+            <%= text_input f, :movie, class: "form-input" %>
+            <%= error_tag f, :movie %>
+          </li>
+
+          <li class="flex my-3 mx-5 w-full">
+            <%= label f, :book, "Favorite book", class: "w-6/12 font-bold" %>
+            <%= text_input f, :book, class: "form-input" %>
+            <%= error_tag f, :book %>
+          </li>
+
+          <li class="flex my-3 mx-5 w-full">
+            <%= label f, :future, "When I grow up I want to ...", class: "w-6/12 font-bold"%>
+            <%= textarea f, :future, class: "form-input" %>
+            <%= error_tag f, :future %>
+          </li>
+
+          <li class="flex my-3 mx-5 w-full">
+            <%= label f, :joke, "My favorite joke", class: "w-6/12 font-bold" %>
+            <%= textarea f, :joke, class: "form-input" %>
+            <%= error_tag f, :joke %>
+          </li>
+
+          <li class="my-32 mx-5">
+            <%= submit "Save", class: "btn-page-mini text-orange-50" %>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </.form>
+
+</body>
