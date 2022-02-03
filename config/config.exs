@@ -13,7 +13,11 @@ config :the_little_thinkers_space,
 # Configures the endpoint
 config :the_little_thinkers_space, TheLittleThinkersSpaceWeb.Endpoint,
   url: [host: "localhost"],
-  render_errors: [view: TheLittleThinkersSpaceWeb.ErrorView, accepts: ~w(html json), layout: false],
+  render_errors: [
+    view: TheLittleThinkersSpaceWeb.ErrorView,
+    accepts: ~w(html json),
+    layout: false
+  ],
   pubsub_server: TheLittleThinkersSpace.PubSub,
   live_view: [signing_salt: "XuZ7YqUd"]
 

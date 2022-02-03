@@ -15,9 +15,8 @@ defmodule TheLittleThinkersSpace.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: TheLittleThinkersSpace.PubSub},
       # Start the Endpoint (http/https)
-      TheLittleThinkersSpaceWeb.Endpoint
-      # Start a worker by calling: TheLittleThinkersSpace.Worker.start_link(arg)
-      # {TheLittleThinkersSpace.Worker, arg}
+      TheLittleThinkersSpaceWeb.Endpoint,
+      {TheLittleThinkersSpace.Email.SecretAnswer, %{}}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
