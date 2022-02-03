@@ -63,7 +63,8 @@ defmodule TheLittleThinkersSpace.MixProject do
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:bodyguard, "~> 2.4"},
       {:rustler, "~> 0.23.0"},
-      {:uuid, "~> 1.1"}
+      {:uuid, "~> 1.1"},
+      {:tailwind, "~> 0.1", runtime: Mix.env() == :dev}
     ]
   end
 

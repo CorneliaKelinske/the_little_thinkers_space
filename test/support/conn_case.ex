@@ -39,7 +39,7 @@ defmodule TheLittleThinkersSpaceWeb.ConnCase do
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 
-   @doc """
+  @doc """
   Setup helper that registers and logs in users.
       setup :register_and_log_in_user
   It stores an updated connection and a registered user in the
@@ -61,5 +61,4 @@ defmodule TheLittleThinkersSpaceWeb.ConnCase do
     |> Phoenix.ConnTest.init_test_session(%{})
     |> Plug.Conn.put_session(:user_token, token)
   end
-
 end
