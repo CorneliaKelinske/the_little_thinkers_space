@@ -1,4 +1,4 @@
-defmodule TheLittleThinkersSpaceV1.Email.EmailBuilder do
+defmodule TheLittleThinkersSpace.Email.EmailBuilder do
   @moduledoc """
   Uses Swoosh to create an email from the data entered into the contact form
   """

@@ -6,7 +6,7 @@ defmodule TheLittleThinkersSpace.Accounts do
   import Ecto.Query, warn: false
   alias TheLittleThinkersSpace.Repo
 
-  alias TheLittleThinkersSpaceV.Accounts.{User, UserToken, UserNotifier}
+  alias TheLittleThinkersSpace.Accounts.{User, UserToken, UserNotifier}
 
   def list_users() do
     Repo.all(User)

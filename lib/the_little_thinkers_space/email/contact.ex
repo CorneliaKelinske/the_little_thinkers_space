@@ -1,9 +1,9 @@
-defmodule TheLittleThinkersSpaceV1.Email.Contact do
+defmodule TheLittleThinkersSpace.Email.Contact do
   @moduledoc """
   Contact form email to be sent to admin
   """
 
-  alias TheLittleThinkersSpaceV1.Email.Content
+  alias TheLittleThinkersSpace.Email.Content
   import Ecto.Changeset
 
   @doc "Ensure that data is valid before it is sent"

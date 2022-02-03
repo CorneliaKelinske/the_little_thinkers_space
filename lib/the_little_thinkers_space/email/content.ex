@@ -1,4 +1,4 @@
-defmodule TheLittleThinkersSpaceV1.Email.Content do
+defmodule TheLittleThinkersSpace.Email.Content do
   @moduledoc "The content for an email message"
   defstruct from_email: nil,
             to_email: nil,

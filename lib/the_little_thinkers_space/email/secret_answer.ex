@@ -1,4 +1,4 @@
-defmodule TheLittleThinkersSpaceV1.Email.SecretAnswer do
+defmodule TheLittleThinkersSpace.Email.SecretAnswer do
   @moduledoc """
   GenServer storing the text of the generated Captcha along with
   a UIID assigned to each individual user so that the user's captcha

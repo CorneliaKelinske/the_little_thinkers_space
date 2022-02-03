@@ -1,4 +1,4 @@
-defmodule TheLittleThinkersSpaceV1.Content.Upload do
+defmodule TheLittleThinkersSpace.Content.Upload do
   @moduledoc """
   Files that a little thinker uploads, can be picture or video.
   Stored in database as a binary then sent to the page to be rendered.
@@ -7,8 +7,8 @@ defmodule TheLittleThinkersSpaceV1.Content.Upload do
   use Ecto.Schema
   use Phoenix.Component
   import Ecto.Changeset
-  alias TheLittleThinkersSpaceV1.Accounts.User
-  alias TheLittleThinkersSpaceV1.Content.Upload
+  alias TheLittleThinkersSpace.Accounts.User
+  alias TheLittleThinkersSpace.Content.Upload
 
   @behaviour Bodyguard.Policy
 

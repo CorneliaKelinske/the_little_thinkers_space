@@ -1,10 +1,10 @@
-defmodule TheLittleThinkersSpaceV1.Accounts.UserNotifier do
+defmodule TheLittleThinkersSpace.Accounts.UserNotifier do
   @moduledoc """
   came with Phoenix 1.6
   """
   import Swoosh.Email
 
-  alias TheLittleThinkersSpaceV1.Mailer
+  alias TheLittleThinkersSpace.Mailer
 
   # Delivers the email using the application mailer.
   defp deliver(recipient, subject, body) do
