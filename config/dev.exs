@@ -27,7 +27,6 @@ config :the_little_thinkers_space, TheLittleThinkersSpaceWeb.Endpoint,
     # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
     tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
-
   ]
 
 # ## SSL Support
@@ -74,3 +73,10 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+# For production it's recommended to configure a different adapter
+# at the `config/runtime.exs`.
+config :the_little_thinkers_space, TheLittleThinkersSpace.Mailer, adapter: Swoosh.Adapters.Local
+
+# Swoosh API client is needed for adapters other than SMTP.
+config :swoosh, :api_client, false
