@@ -1,10 +1,6 @@
 <body class="bg-colors bg-cover">
   <%= form_for @changeset, @action, [multipart: true], fn f -> %>
-  <%= if @changeset.action do %>
-  <div class="alert alert-danger">
-    <p>Oops, something went wrong! Please check the errors below.</p>
-  </div>
-  <% end %>
+  
 
   <div class="w-screen flex justify-center p-8">
     <section class="flex md:w-2/3 xs:w-full h-4/6 p-2">
