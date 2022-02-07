@@ -1,5 +1,6 @@
 defmodule TheLittleThinkersSpaceWeb.UploadController do
   use TheLittleThinkersSpaceWeb, :controller
+  import Mogrify
 
   alias TheLittleThinkersSpace.Content
   alias TheLittleThinkersSpace.Content.Upload
@@ -19,7 +20,14 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     end
   end
 
-  def create(conn, %{"upload" => upload}) do
+  def create(conn, %{"upload" => %{"upload" => %Plug.Upload{path: path} = plug} = upload}) do
+
+    File.stat!(path).size |> IO.inspect(label: "BEFORE", limit: :infinity, charlists: false, structs: false)
+    %{path: path} = open(path) |> quality(10) |> save() |> IO.inspect(label: "26", limit: :infinity, charlists: false, structs: false)
+    File.stat!(path).size |> IO.inspect(label: "AFTER", limit: :infinity, charlists: false, structs: false)
+  
+upload = %{upload | "upload" => %Plug.Upload{plug | path: path}}
+
     user = conn.assigns.current_user
 
     with :ok <- Bodyguard.permit(Upload, :create, user, upload),
