@@ -74,7 +74,7 @@ if config_env() == :prod do
   config :swoosh, :api_client, Swoosh.ApiClient.Hackney
 
   config :swoosh, local: false
-  
+
   config :the_little_thinkers_space, TheLittleThinkersSpace.Mailer,
     adapter: Swoosh.Adapters.Mailgun,
     api_key: System.get_env("MAILGUN_API_KEY"),

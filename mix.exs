@@ -67,7 +67,6 @@ defmodule TheLittleThinkersSpace.MixProject do
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
       {:hackney, "~> 1.17"},
       {:mogrify, "~> 0.9.1"}
-
     ]
   end
 

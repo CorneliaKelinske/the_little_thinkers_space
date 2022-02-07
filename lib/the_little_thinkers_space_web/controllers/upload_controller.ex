@@ -1,6 +1,6 @@
 defmodule TheLittleThinkersSpaceWeb.UploadController do
   use TheLittleThinkersSpaceWeb, :controller
-  import Mogrify
+  alias TheLittleThinkersSpace.FileCompressor
 
   alias TheLittleThinkersSpace.Content
   alias TheLittleThinkersSpace.Content.Upload
@@ -20,17 +20,11 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     end
   end
 
-  def create(conn, %{"upload" => %{"upload" => %Plug.Upload{path: path} = plug} = upload}) do
-
-    File.stat!(path).size |> IO.inspect(label: "BEFORE", limit: :infinity, charlists: false, structs: false)
-    %{path: path} = open(path) |> quality(10) |> save() |> IO.inspect(label: "26", limit: :infinity, charlists: false, structs: false)
-    File.stat!(path).size |> IO.inspect(label: "AFTER", limit: :infinity, charlists: false, structs: false)
-  
-upload = %{upload | "upload" => %Plug.Upload{plug | path: path}}
-
+  def create(conn, %{"upload" => upload}) do
     user = conn.assigns.current_user
 
     with :ok <- Bodyguard.permit(Upload, :create, user, upload),
+         upload <- FileCompressor.compress_file(upload),
          {:ok, params, _path} <- parse_upload_params(upload),
          {:ok, upload} <- Content.create_upload(user, params) do
       conn
