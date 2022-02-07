@@ -27,7 +27,6 @@ config :the_little_thinkers_space, TheLittleThinkersSpaceWeb.Endpoint,
 # locally. You can see the emails in your browser, at "/dev/mailbox".
 #
 
-
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.14.0",

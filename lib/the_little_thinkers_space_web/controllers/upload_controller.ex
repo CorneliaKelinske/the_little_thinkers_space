@@ -1,5 +1,6 @@
 defmodule TheLittleThinkersSpaceWeb.UploadController do
   use TheLittleThinkersSpaceWeb, :controller
+  alias TheLittleThinkersSpace.FileCompressor
 
   alias TheLittleThinkersSpace.Content
   alias TheLittleThinkersSpace.Content.Upload
@@ -23,6 +24,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     user = conn.assigns.current_user
 
     with :ok <- Bodyguard.permit(Upload, :create, user, upload),
+         upload <- FileCompressor.compress_file(upload),
          {:ok, params, _path} <- parse_upload_params(upload),
          {:ok, upload} <- Content.create_upload(user, params) do
       conn
