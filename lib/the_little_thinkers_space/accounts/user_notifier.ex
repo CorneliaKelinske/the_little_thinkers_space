@@ -11,7 +11,7 @@ defmodule TheLittleThinkersSpace.Accounts.UserNotifier do
     email =
       new()
       |> to(recipient)
-      |> from({"The Little Thinker's Space", "see below for contact information"})
+      |> from({"The Little Thinker's Space", "donotreply@lts.com"})
       |> subject(subject)
       |> text_body(body)
 
