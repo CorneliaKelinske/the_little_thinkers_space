@@ -76,6 +76,7 @@ defmodule TheLittleThinkersSpace.Accounts.UserNotifier do
     #{url}
 
     If you didn't request this change, please ignore this.
+    If you have any questions, please contact the Admin via the contact form on The Little Thinker's Space Website.
 
     ==============================
     """)
