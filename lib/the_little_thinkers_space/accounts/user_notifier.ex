@@ -11,7 +11,7 @@ defmodule TheLittleThinkersSpace.Accounts.UserNotifier do
     email =
       new()
       |> to(recipient)
-      |> from({"The Little Thinker's Space"})
+      |> from({"The Little Thinker's Space", "see below for contact information"})
       |> subject(subject)
       |> text_body(body)
 
@@ -48,14 +48,14 @@ defmodule TheLittleThinkersSpace.Accounts.UserNotifier do
 
     ==============================
 
-    Hi #{user.name},
+    Hi #{user.email},
 
     You can reset your password by visiting the URL below:
 
     #{url}
 
     If you didn't request this change, please ignore this.
-    If you have any questions, please contact the Admin of the Little Thinker' Space via the contact form on the website.
+    If you have any questions, please contact the Admin via the contact form on The Little Thinker's Space Website.
 
     ==============================
     """)
