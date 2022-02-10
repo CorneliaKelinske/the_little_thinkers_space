@@ -16,7 +16,14 @@ defmodule TheLittleThinkersSpace.Application do
       {Phoenix.PubSub, name: TheLittleThinkersSpace.PubSub},
       # Start the Endpoint (http/https)
       TheLittleThinkersSpaceWeb.Endpoint,
-      {TheLittleThinkersSpace.Email.SecretAnswer, %{}}
+      {TheLittleThinkersSpace.Email.SecretAnswer, %{}},
+      #Start the cache
+      {ConCache,
+        [
+          name: :upload_cache,
+          ttl_check_interval: 60_000,
+          global_ttl: 604_800_000
+        ]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
