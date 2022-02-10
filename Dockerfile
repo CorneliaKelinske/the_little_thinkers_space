@@ -19,7 +19,7 @@ FROM ${BUILDER_IMAGE} as builder
 
 # install build dependencies
 RUN apt-get update -y && \
-    apt-get install -y build-essential git rustc imagemagick\
+    apt-get install -y build-essential git rustc\
     && apt-get clean \
     && rm -f /var/lib/apt/lists/*_*
 
@@ -35,6 +35,7 @@ ENV MIX_ENV="prod"
 ENV RUSTUP_HOME=/usr/local/rustup
 ENV CARGO_HOME=/usr/local/cargo
 ENV PATH=/usr/local/cargo/bin:$PATH
+# ENV PATH=$PATH:~/opt/bin:~/opt/node/bin:/usr/lib/x86_64-linux-gnu/ImageMagick-6.8.9/bin-Q16
 
 # install mix dependencies
 COPY mix.exs mix.lock ./
@@ -74,7 +75,7 @@ RUN mix release
 # the compiled release and other runtime necessities
 FROM ${RUNNER_IMAGE}
 
-RUN apt-get update -y && apt-get install -y libstdc++6 openssl libncurses5 locales \
+RUN apt-get update -y && apt-get install -y libstdc++6 openssl libncurses5 locales imagemagick libmagick++-dev libmagic-dev \
   && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
 # Set the locale
