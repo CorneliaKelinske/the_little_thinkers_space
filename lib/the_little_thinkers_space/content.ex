@@ -18,7 +18,12 @@ defmodule TheLittleThinkersSpace.Content do
 
   """
   def list_uploads do
-    Repo.all(Upload)
+    query = from u in "uploads",
+    select: u.id
+
+    Repo.all(query)
+    |> Enum.reduce([], fn x, acc -> [get_upload_from_cache_or_repo(x) | acc] end)
+    |> Enum.reverse
   end
 
   def get_upload!(id) do
