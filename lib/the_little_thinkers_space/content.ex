@@ -18,17 +18,20 @@ defmodule TheLittleThinkersSpace.Content do
 
   """
   def list_uploads do
-    query = from u in "uploads",
-    select: u.id
 
-    Repo.all(query)
-    |> Enum.reduce([], fn x, acc -> [get_upload_from_cache_or_repo(x) | acc] end)
-    |> Enum.reverse
+    from(u in Upload, select: u.id)
+    |> Repo.all()
+    |> Enum.reduce({[], []}, &reduce_upload_ids/2)
+    |> process_uncached_ids()
+    |> Enum.sort(&(&1.id < &2.id))
   end
+
+
 
   def get_upload!(id) do
     Repo.get!(Upload, id)
   end
+
   def get_upload(id), do: Repo.get(Upload, id)
 
   def create_upload(%Accounts.User{} = user, attrs \\ %{}) do
@@ -88,10 +91,32 @@ defmodule TheLittleThinkersSpace.Content do
 
   def get_upload_from_cache_or_repo(id) when is_integer(id) do
     case ConCache.get(:upload_cache, id) do
-      nil -> upload = Repo.get!(Upload, id)
-             ConCache.put(:upload_cache, id, upload)
-             upload
-      upload -> upload
+      nil ->
+        upload = Repo.get!(Upload, id)
+        ConCache.put(:upload_cache, id, upload)
+        upload
+
+      upload ->
+        upload
     end
+  end
+
+  defp reduce_upload_ids(upload_id, {uploads, uncached_ids}) do
+    case ConCache.get(:upload_cache, upload_id) do
+      nil -> {uploads, [upload_id | uncached_ids]}
+      %Upload{} = upload -> {[upload | uploads], uncached_ids}
+    end
+  end
+
+  defp process_uncached_ids({uploads, uncached_ids}) do
+    from(u in Upload, where: u.id in ^uncached_ids)
+    |> Repo.all()
+    |> Enum.map(&save_to_cache/1)
+    |> Kernel.++(uploads)
+  end
+
+  defp save_to_cache(%Upload{id: id} = upload) do
+    ConCache.put(:upload_cache, id, upload)
+    upload
   end
 end

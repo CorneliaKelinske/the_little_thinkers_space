@@ -2,6 +2,7 @@ defmodule TheLittleThinkersSpaceWeb.ProfileControllerTest do
   use TheLittleThinkersSpaceWeb.ConnCase
   import TheLittleThinkersSpace.AccountsFixtures
   alias TheLittleThinkersSpace.Accounts
+  alias TheLittleThinkersSpace.Accounts.Profile
 
   setup do
     %{user: user_fixture(), admin: admin_fixture()}
@@ -96,7 +97,7 @@ defmodule TheLittleThinkersSpaceWeb.ProfileControllerTest do
     test "redirects to show if user already has a profile", %{conn: conn, user: user} do
       conn = log_in_user(conn, user)
       attrs = Map.put(@create_attrs, :user_id, user.id)
-      {:ok, profile} = Accounts.create_profile(attrs)
+      {:ok, %Profile{}} = Accounts.create_profile(attrs)
 
       conn = get(conn, Routes.profile_path(conn, :new))
       assert html_response(conn, 302) =~ "<html><body>You are being <a href=\"/profiles/"
