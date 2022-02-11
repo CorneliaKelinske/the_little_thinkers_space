@@ -22,8 +22,7 @@ defmodule TheLittleThinkersSpace.Content do
   end
 
   def get_upload!(id) do
-    #Repo.get!(Upload, id)
-    get_upload_from_cache_or_repo(id)
+    Repo.get!(Upload, id)
   end
   def get_upload(id), do: Repo.get(Upload, id)
 
@@ -65,7 +64,7 @@ defmodule TheLittleThinkersSpace.Content do
 
   """
   def delete_upload(%Upload{} = upload) do
-    ConCache.delete(:upload_cache, upload.id) |> IO.inspect(label: "DELETED", limit: :infinity, charlists: false)
+    ConCache.delete(:upload_cache, upload.id)
     Repo.delete(upload)
   end
 
@@ -82,7 +81,7 @@ defmodule TheLittleThinkersSpace.Content do
     Upload.changeset(upload, attrs)
   end
 
-  defp get_upload_from_cache_or_repo(id) do
+  def get_upload_from_cache_or_repo(id) when is_integer(id) do
     case ConCache.get(:upload_cache, id) do
       nil -> upload = Repo.get!(Upload, id)
              ConCache.put(:upload_cache, id, upload)
