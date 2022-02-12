@@ -32,3 +32,7 @@ the_little_thinkers_space-*.tar
 npm-debug.log
 /assets/node_modules/
 
+#Ignore rust artifact
+librustcaptcha.so 
+
+

@@ -66,7 +66,8 @@ defmodule TheLittleThinkersSpace.MixProject do
       {:uuid, "~> 1.1"},
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
       {:hackney, "~> 1.17"},
-      {:mogrify, "~> 0.9.1"}
+      {:mogrify, "~> 0.9.1"},
+      {:con_cache, "~> 0.13"}
     ]
   end
 
