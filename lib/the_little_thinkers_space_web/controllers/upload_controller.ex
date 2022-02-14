@@ -1,6 +1,6 @@
 defmodule TheLittleThinkersSpaceWeb.UploadController do
   use TheLittleThinkersSpaceWeb, :controller
-  alias TheLittleThinkersSpace.FileCompressor
+  alias TheLittleThinkersSpace.{FileCompressor, ImageCacher}
 
   alias TheLittleThinkersSpace.Content
   alias TheLittleThinkersSpace.Content.Upload
@@ -77,7 +77,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
 
   def show(conn, %{"id" => id}) do
     id = String.to_integer(id)
-    upload = Content.get_upload_from_cache_or_repo(id)
+    upload = ImageCacher.get_upload_from_cache_or_repo(id)
     render(conn, "show.html", upload: upload)
   end
 
