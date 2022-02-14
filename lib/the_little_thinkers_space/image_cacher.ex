@@ -41,7 +41,6 @@ defmodule TheLittleThinkersSpace.ImageCacher do
 
   defp maybe_save_to_cache(id, %Upload{file_type: file_type} = upload) do
     if file_type in Upload.valid_image_types() do
-      IO.puts("SAVED TO CACHE")
       ConCache.put(:upload_cache, id, upload)
     end
   end
