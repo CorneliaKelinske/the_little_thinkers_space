@@ -22,12 +22,14 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
   def create(conn, %{"upload" => %{"upload" => upload_plug} = upload_params}) do
     user = conn.assigns.current_user
 
+
     with :ok <- Bodyguard.permit(Upload, :create, user, upload_params),
          upload_plug <- FileCompressor.compress_file(upload_plug),
          {:ok, storage_path} <- UploadHandler.store_upload(upload_plug, user.id),
          {:ok, show_path} <- UploadHandler.create_show_path(storage_path),
          {:ok, attrs} <- UploadHandler.parse_upload_params(upload_params, show_path),
          {:ok, upload} <- Content.create_upload(user, attrs) do
+
       conn
       |> put_flash(:info, "File uploaded successfully.")
       |> redirect(to: Routes.upload_path(conn, :show, upload))
@@ -46,6 +48,17 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
         conn
         |> put_flash(:error, "You are not allowed to do this!")
         |> redirect(to: Routes.page_path(conn, :home))
+
+      {:error, :file_not_compressed} ->
+        conn
+        |> put_flash(:error, "Was not able to compress the file!")
+        |> redirect(to: Routes.upload_path(conn, :new))
+
+      {:error, :invalid_file_type} ->
+        conn
+        |> put_flash(:error, "Invalid file type!")
+        |> redirect(to: Routes.upload_path(conn, :new))
+    end
 
       {:error, :file_not_saved} ->
         conn
