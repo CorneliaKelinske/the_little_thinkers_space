@@ -31,7 +31,12 @@ defmodule TheLittleThinkersSpace.Accounts.ProfileTest do
       params = Map.merge(@profile_params, %{user_id: user_id})
       assert {:ok, %Profile{}} = Accounts.create_profile(params)
       assert {:error, %Ecto.Changeset{errors: errors}} = Accounts.create_profile(params)
-      assert [user_id: {"has already been taken", [constraint: :unique, constraint_name: "profiles_user_id_index"]}] = errors
+
+      assert [
+               user_id:
+                 {"has already been taken",
+                  [constraint: :unique, constraint_name: "profiles_user_id_index"]}
+             ] = errors
     end
   end
 end

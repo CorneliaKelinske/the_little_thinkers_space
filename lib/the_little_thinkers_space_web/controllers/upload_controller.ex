@@ -1,6 +1,6 @@
 defmodule TheLittleThinkersSpaceWeb.UploadController do
   use TheLittleThinkersSpaceWeb, :controller
-  alias TheLittleThinkersSpace.FileCompressor
+  alias TheLittleThinkersSpace.{FileCompressor, ImageCacher}
 
   alias TheLittleThinkersSpace.Content
   alias TheLittleThinkersSpace.Content.Upload

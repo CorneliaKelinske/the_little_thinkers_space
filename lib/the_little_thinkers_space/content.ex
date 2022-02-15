@@ -4,9 +4,8 @@ defmodule TheLittleThinkersSpace.Content do
   """
 
   import Ecto.Query, warn: false
-  alias TheLittleThinkersSpace.Repo
+  alias TheLittleThinkersSpace.{Repo, Accounts, ImageCacher}
   alias TheLittleThinkersSpace.Content.Upload
-  alias TheLittleThinkersSpace.Accounts
 
   @doc """
   Returns the list of uploads.
@@ -18,15 +17,27 @@ defmodule TheLittleThinkersSpace.Content do
 
   """
   def list_uploads do
-
     from(u in Upload, select: u.id)
     |> Repo.all()
-    |> Enum.reduce({[], []}, &reduce_upload_ids/2)
+    |> Enum.reduce({[], []}, &ImageCacher.reduce_upload_ids/2)
     |> process_uncached_ids()
     |> Enum.sort(&(&1.id < &2.id))
   end
 
+    def process_uncached_ids({uploads, uncached_ids}) do
+    uncached_ids
+    |> uploads_by_ids()
+    |> Enum.map(&ImageCacher.maybe_save_to_cache/1)
+    |> Kernel.++(uploads)
+  end
 
+  defp uploads_by_ids(ids) do
+    from(u in Upload, where: u.id in ^ids) |> Repo.all()
+  end
+
+  def get_upload_from_cache_or_repo(id) do
+    ImageCacher.get_upload_from_cache_or_repo(id, &get_upload!/1)
+  end
 
   def get_upload!(id) do
     Repo.get!(Upload, id)
@@ -72,7 +83,7 @@ defmodule TheLittleThinkersSpace.Content do
 
   """
   def delete_upload(%Upload{} = upload) do
-    ConCache.delete(:upload_cache, upload.id)
+    ImageCacher.delete_from_cache(upload.id)
     Repo.delete(upload)
   end
 
@@ -87,36 +98,5 @@ defmodule TheLittleThinkersSpace.Content do
   """
   def change_upload(%Upload{} = upload, attrs \\ %{}) do
     Upload.changeset(upload, attrs)
-  end
-
-  def get_upload_from_cache_or_repo(id) when is_integer(id) do
-    case ConCache.get(:upload_cache, id) do
-      nil ->
-        upload = Repo.get!(Upload, id)
-        ConCache.put(:upload_cache, id, upload)
-        upload
-
-      upload ->
-        upload
-    end
-  end
-
-  defp reduce_upload_ids(upload_id, {uploads, uncached_ids}) do
-    case ConCache.get(:upload_cache, upload_id) do
-      nil -> {uploads, [upload_id | uncached_ids]}
-      %Upload{} = upload -> {[upload | uploads], uncached_ids}
-    end
-  end
-
-  defp process_uncached_ids({uploads, uncached_ids}) do
-    from(u in Upload, where: u.id in ^uncached_ids)
-    |> Repo.all()
-    |> Enum.map(&save_to_cache/1)
-    |> Kernel.++(uploads)
-  end
-
-  defp save_to_cache(%Upload{id: id} = upload) do
-    ConCache.put(:upload_cache, id, upload)
-    upload
   end
 end
