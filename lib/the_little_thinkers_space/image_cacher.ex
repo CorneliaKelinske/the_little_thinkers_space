@@ -6,13 +6,12 @@ defmodule TheLittleThinkersSpace.ImageCacher do
   """
 
   import Ecto.Query, warn: false
-  alias TheLittleThinkersSpace.Repo
   alias TheLittleThinkersSpace.Content.Upload
 
-  def get_upload_from_cache_or_repo(id) when is_integer(id) do
+  def get_upload_from_cache_or_repo(id, fun) when is_integer(id) do
     case ConCache.get(:upload_cache, id) do
       nil ->
-        upload = Repo.get!(Upload, id)
+        upload = fun.(id)
         maybe_save_to_cache(id, upload)
         upload
 
@@ -32,20 +31,15 @@ defmodule TheLittleThinkersSpace.ImageCacher do
     end
   end
 
-  def process_uncached_ids({uploads, uncached_ids}) do
-    from(u in Upload, where: u.id in ^uncached_ids)
-    |> Repo.all()
-    |> Enum.map(&maybe_save_to_cache/1)
-    |> Kernel.++(uploads)
-  end
-
-  defp maybe_save_to_cache(id, %Upload{file_type: file_type} = upload) do
+  def maybe_save_to_cache(id, %Upload{file_type: file_type} = upload) do
     if file_type in Upload.valid_image_types() do
       ConCache.put(:upload_cache, id, upload)
+    else
+      :ok
     end
   end
 
-  defp maybe_save_to_cache(%Upload{id: id} = upload) do
+  def maybe_save_to_cache(%Upload{id: id} = upload) do
     maybe_save_to_cache(id, upload)
     upload
   end

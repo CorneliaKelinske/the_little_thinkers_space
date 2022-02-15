@@ -20,8 +20,23 @@ defmodule TheLittleThinkersSpace.Content do
     from(u in Upload, select: u.id)
     |> Repo.all()
     |> Enum.reduce({[], []}, &ImageCacher.reduce_upload_ids/2)
-    |> ImageCacher.process_uncached_ids()
+    |> process_uncached_ids()
     |> Enum.sort(&(&1.id < &2.id))
+  end
+
+    def process_uncached_ids({uploads, uncached_ids}) do
+    uncached_ids
+    |> uploads_by_ids()
+    |> Enum.map(&ImageCacher.maybe_save_to_cache/1)
+    |> Kernel.++(uploads)
+  end
+
+  defp uploads_by_ids(ids) do
+    from(u in Upload, where: u.id in ^ids) |> Repo.all()
+  end
+
+  def get_upload_from_cache_or_repo(id) do
+    ImageCacher.get_upload_from_cache_or_repo(id, &get_upload!/1)
   end
 
   def get_upload!(id) do

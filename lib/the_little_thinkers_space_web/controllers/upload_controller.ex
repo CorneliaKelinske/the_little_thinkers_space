@@ -77,7 +77,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
 
   def show(conn, %{"id" => id}) do
     id = String.to_integer(id)
-    upload = ImageCacher.get_upload_from_cache_or_repo(id)
+    upload = Content.get_upload_from_cache_or_repo(id)
     render(conn, "show.html", upload: upload)
   end
 
