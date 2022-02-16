@@ -58,7 +58,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
         conn
         |> put_flash(:error, "Invalid file type!")
         |> redirect(to: Routes.upload_path(conn, :new))
-    end
+    
 
       {:error, :file_not_saved} ->
         conn

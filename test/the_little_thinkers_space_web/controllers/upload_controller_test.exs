@@ -159,7 +159,8 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
         |> log_in_user(admin)
         |> post(Routes.upload_path(conn, :create), upload: @invalid_attrs)
 
-      assert html_response(conn, 200) =~ "New Upload"
+      assert html_response(conn, 302) =~
+               "<html><body>You are being <a href=\"/uploads/new\">redirected</a>.</body></html>"
     end
 
     test "redirects to home when user is logged in but no Admin", %{conn: conn, user: user} do
