@@ -57,7 +57,9 @@ defmodule TheLittleThinkersSpace.FileCompressor do
       FFmpex.new_command()
       |> FFmpex.add_input_file(renamed_path)
       |> FFmpex.add_output_file(output_path)
-      |> FFmpex.add_file_option(option_s("1024x1024"))
+      #|> FFmpex.add_file_option(option_s("1024x1024"))
+      |> FFmpex.add_file_option(option_maxrate("2M"))
+      |> FFmpex.add_file_option(option_bufsize("2M"))
 
     FFmpex.execute(command)
   end
