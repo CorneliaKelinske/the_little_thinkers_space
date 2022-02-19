@@ -24,7 +24,7 @@ defmodule TheLittleThinkersSpace.Content do
     |> Enum.sort(&(&1.id < &2.id))
   end
 
-    def process_uncached_ids({uploads, uncached_ids}) do
+  def process_uncached_ids({uploads, uncached_ids}) do
     uncached_ids
     |> uploads_by_ids()
     |> Enum.map(&ImageCacher.maybe_save_to_cache/1)

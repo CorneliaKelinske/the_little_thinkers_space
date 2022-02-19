@@ -42,3 +42,7 @@ processes = []
     interval = "15s"
     restart_limit = 0
     timeout = "2s"
+
+  [mounts]
+  source="the_little_thinkers_space_data"
+  destination="/data"

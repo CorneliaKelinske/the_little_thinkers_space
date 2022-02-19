@@ -1,8 +1,7 @@
 defmodule TheLittleThinkersSpaceWeb.UploadController do
   use TheLittleThinkersSpaceWeb, :controller
-  alias TheLittleThinkersSpace.FileCompressor
+  alias TheLittleThinkersSpace.{FileCompressor, Content, DataPath}
 
-  alias TheLittleThinkersSpace.Content
   alias TheLittleThinkersSpace.Content.Upload
   action_fallback TheLittleThinkersSpaceWeb.FallbackController
 
@@ -25,6 +24,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
 
     with :ok <- Bodyguard.permit(Upload, :create, user, upload),
          upload <- FileCompressor.compress_file(upload),
+         :ok <- store_upload(upload, user.id),
          {:ok, params, _path} <- parse_upload_params(upload),
          {:ok, upload} <- Content.create_upload(user, params) do
       conn
@@ -121,4 +121,21 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
       |> redirect(to: Routes.upload_path(conn, :index))
     end
   end
+
+  defp store_upload(%{"upload" => %Plug.Upload{filename: filename, path: path}}, user_id) do
+    #user_id_string = to_string(user_id)
+    maybe_create_user_directory(user_id)
+
+    File.cp(path, "#{DataPath.set_data_path}/#{user_id}/#{filename}")
+  end
+
+  defp maybe_create_user_directory(user_id) do
+    case File.exists?("#{DataPath.set_data_path}/#{user_id}") do
+      false ->
+      File.mkdir("#{DataPath.set_data_path}/#{user_id}")
+      true -> :ok
+    end
+
+  end
+
 end
