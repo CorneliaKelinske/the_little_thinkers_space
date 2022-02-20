@@ -24,7 +24,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
 
     with :ok <- Bodyguard.permit(Upload, :create, user, upload),
          upload <- FileCompressor.compress_file(upload),
-         :ok <- store_upload(upload, user.id),
+         {:ok, storage_path} <- store_upload(upload, user.id),
          {:ok, params, _path} <- parse_upload_params(upload),
          {:ok, upload} <- Content.create_upload(user, params) do
       conn
@@ -123,10 +123,11 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
   end
 
   defp store_upload(%{"upload" => %Plug.Upload{filename: filename, path: path}}, user_id) do
-    #user_id_string = to_string(user_id)
     maybe_create_user_directory(user_id)
+    storage_path = "#{DataPath.set_data_path}/#{user_id}/#{filename}"
+    File.cp(path, "#{storage_path}}")
+    {:ok, storage_path}
 
-    File.cp(path, "#{DataPath.set_data_path}/#{user_id}/#{filename}")
   end
 
   defp maybe_create_user_directory(user_id) do
