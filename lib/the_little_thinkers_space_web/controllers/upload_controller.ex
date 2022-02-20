@@ -25,8 +25,8 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     with :ok <- Bodyguard.permit(Upload, :create, user, upload),
          upload <- FileCompressor.compress_file(upload),
          {:ok, storage_path} <- store_upload(upload, user.id),
-         {:ok, params, _path} <- parse_upload_params(upload),
-         {:ok, upload} <- Content.create_upload(user, params) do
+         {:ok, attrs} <- parse_upload_params(upload, storage_path),
+         {:ok, upload} <- Content.create_upload(user, attrs) do
       conn
       |> put_flash(:info, "File uploaded successfully.")
       |> redirect(to: Routes.upload_path(conn, :show, upload))
@@ -53,27 +53,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     end
   end
 
-  defp parse_upload_params(upload) do
-    with %{
-           "title" => title,
-           "description" => description,
-           "orientation" => orientation,
-           "upload" => %Plug.Upload{path: path, content_type: content_type}
-         } <- upload,
-         {:ok, binary} <- File.read(path) do
-      {:ok,
-       %{
-         "file" => binary,
-         "title" => title,
-         "description" => description,
-         "orientation" => orientation,
-         "file_type" => content_type
-       }, path}
-    else
-      map when is_map(map) -> {:error, :file_not_uploaded}
-      {:error, _} -> {:error, :cannot_read_file}
-    end
-  end
+
 
   def show(conn, %{"id" => id}) do
     id = String.to_integer(id)
@@ -138,5 +118,27 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     end
 
   end
+
+  defp parse_upload_params(%{
+    "title" => title,
+    "description" => description,
+    "orientation" => orientation,
+    "upload" => %Plug.Upload{content_type: content_type}
+  },
+  storage_path) do
+attrs =
+%{
+  "path" => storage_path,
+  "title" => title,
+  "description" => description,
+  "orientation" => orientation,
+  "file_type" => content_type
+}
+{:ok, attrs}
+end
+
+defp parse_upload_params(_, _) do
+{:error, :file_not_uploaded}
+end
 
 end
