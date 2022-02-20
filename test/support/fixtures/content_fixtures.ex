@@ -11,11 +11,7 @@ defmodule TheLittleThinkersSpace.ContentFixtures do
     file_type: "image/jpg",
     title: "some title",
     orientation: "Landscape",
-    upload: %Plug.Upload{
-      filename: "Lifting.jpg",
-      path: "test/support/Lifting.jpg",
-      content_type: "image/jpg"
-    }
+    path: "test/support/Lifting.jpg"
   }
 
   @doc """
