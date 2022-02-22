@@ -43,6 +43,6 @@ processes = []
     restart_limit = 0
     timeout = "2s"
 
-  [mounts]
+  [[mounts]]
   source="the_little_thinkers_space_data"
-  destination="/data"
+  destination="/priv/static/images/data"
