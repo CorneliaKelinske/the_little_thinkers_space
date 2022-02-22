@@ -25,7 +25,8 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     with :ok <- Bodyguard.permit(Upload, :create, user, upload),
          upload <- FileCompressor.compress_file(upload),
          {:ok, storage_path} <- store_upload(upload, user.id),
-         {:ok, attrs} <- parse_upload_params(upload, storage_path),
+         {:ok, show_path} <- create_show_path(storage_path),
+         {:ok, attrs} <- parse_upload_params(upload, show_path),
          {:ok, upload} <- Content.create_upload(user, attrs) do
       conn
       |> put_flash(:info, "File uploaded successfully.")
@@ -41,25 +42,22 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
         |> put_flash(:error, "Please select a file!")
         |> redirect(to: Routes.upload_path(conn, :new))
 
-      {:error, :cannot_read_file} ->
-        conn
-        |> put_flash(:error, "Cannot read file!")
-        |> redirect(to: Routes.upload_path(conn, :new))
-
       {:error, :unauthorized} ->
         conn
         |> put_flash(:error, "You are not allowed to do this!")
         |> redirect(to: Routes.page_path(conn, :home))
+
+      {:error, :no_show_path} ->
+        conn
+        |> put_flash(:error, "File not processed, please try again!")
+        |> redirect(to: Routes.upload_path(conn, :new))
     end
   end
-
-
 
   def show(conn, %{"id" => id}) do
     id = String.to_integer(id)
     upload = Content.get_upload_from_cache_or_repo(id)
-    show_path = ShowUploadHelper.show_path(upload.path)
-    render(conn, "show.html", upload: upload, show_path: show_path)
+    render(conn, "show.html", upload: upload)
   end
 
   def edit(conn, %{"id" => id}) do
@@ -105,41 +103,46 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
 
   defp store_upload(%{"upload" => %Plug.Upload{filename: filename, path: path}}, user_id) do
     maybe_create_user_directory(user_id)
-    storage_path = "#{DataPath.set_data_path}/#{user_id}/#{filename}"
+    storage_path = "#{DataPath.set_data_path()}/#{user_id}/#{filename}"
     File.cp(path, "#{storage_path}")
     {:ok, storage_path}
-
   end
 
   defp maybe_create_user_directory(user_id) do
-    case File.exists?("#{DataPath.set_data_path}/#{user_id}") do
+    case File.exists?("#{DataPath.set_data_path()}/#{user_id}") do
       false ->
-      File.mkdir("#{DataPath.set_data_path}/#{user_id}")
-      true -> :ok
-    end
+        File.mkdir("#{DataPath.set_data_path()}/#{user_id}")
 
+      true ->
+        :ok
+    end
   end
 
-  defp parse_upload_params(%{
-    "title" => title,
-    "description" => description,
-    "orientation" => orientation,
-    "upload" => %Plug.Upload{content_type: content_type}
-  },
-  storage_path) do
-attrs =
-%{
-  "path" => storage_path,
-  "title" => title,
-  "description" => description,
-  "orientation" => orientation,
-  "file_type" => content_type
-}
-{:ok, attrs}
-end
+  defp create_show_path(storage_path) do
+    ShowUploadHelper.show_path(storage_path)
+  end
 
-defp parse_upload_params(_, _) do
-{:error, :file_not_uploaded}
-end
+  defp parse_upload_params(
+         %{
+           "title" => title,
+           "description" => description,
+           "orientation" => orientation,
+           "upload" => %Plug.Upload{content_type: content_type}
+         },
+         show_path
+       ) do
+    attrs = %{
+      "path" => show_path,
+      "title" => title,
+      "description" => description,
+      "orientation" => orientation,
+      "file_type" => content_type
+    }
 
+    {:ok, attrs}
+  end
+
+  defp parse_upload_params(_, _) do
+    {:error, :file_not_uploaded}
+  end
 end

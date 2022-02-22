@@ -2,10 +2,14 @@ defmodule TheLittleThinkersSpace.ShowUploadHelper do
   def show_path(path) do
     case is_binary(path) do
       true ->
-        path
-        |> String.replace("priv/static/", "/")
+        show_path =
+          path
+          |> String.replace("priv/static/", "/")
+
+        {:ok, show_path}
+
       _ ->
-        nil
+        {:error, :no_show_path}
     end
   end
 end
