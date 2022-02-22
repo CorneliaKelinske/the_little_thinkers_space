@@ -9,7 +9,10 @@
   <div class="aspect-w-3 aspect-h-2 col-span-10 col-start-2 md:col-span-8 md:col-start-3 shadow">
     <%= if @upload.file_type in Upload.valid_image_types do %>
 
-    <%= display_image(@upload) %>
+
+    <img src={@show_path}>
+
+
 
     <% else %>
     <%= display_video(@upload) %>

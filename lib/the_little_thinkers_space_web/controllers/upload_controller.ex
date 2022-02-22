@@ -1,6 +1,6 @@
 defmodule TheLittleThinkersSpaceWeb.UploadController do
   use TheLittleThinkersSpaceWeb, :controller
-  alias TheLittleThinkersSpace.{FileCompressor, Content, DataPath}
+  alias TheLittleThinkersSpace.{FileCompressor, Content, DataPath, ShowUploadHelper}
 
   alias TheLittleThinkersSpace.Content.Upload
   action_fallback TheLittleThinkersSpaceWeb.FallbackController
@@ -58,7 +58,8 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
   def show(conn, %{"id" => id}) do
     id = String.to_integer(id)
     upload = Content.get_upload_from_cache_or_repo(id)
-    render(conn, "show.html", upload: upload)
+    show_path = ShowUploadHelper.show_path(upload.path)
+    render(conn, "show.html", upload: upload, show_path: show_path)
   end
 
   def edit(conn, %{"id" => id}) do
