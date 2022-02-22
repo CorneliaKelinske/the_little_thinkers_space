@@ -45,4 +45,4 @@ processes = []
 
   [mounts]
   source="the_little_thinkers_space_data"
-  destination="/priv/static/images/data"
+  destination="/data"
