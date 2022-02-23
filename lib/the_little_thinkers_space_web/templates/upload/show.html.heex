@@ -10,7 +10,8 @@
     <%= if @upload.file_type in Upload.valid_image_types do %>
 
 
-    <img src={@upload.path}>
+    
+     <img src={Routes.static_path(@conn, @upload.path)}/>
 
 
 
