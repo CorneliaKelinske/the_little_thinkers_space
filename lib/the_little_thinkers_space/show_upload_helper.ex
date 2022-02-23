@@ -5,6 +5,7 @@ defmodule TheLittleThinkersSpace.ShowUploadHelper do
         show_path =
           path
           |> String.replace("priv/static/", "/")
+          |> String.replace("//", "/")
 
         {:ok, show_path}
 
