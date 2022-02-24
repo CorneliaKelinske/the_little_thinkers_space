@@ -15,7 +15,7 @@ config :the_little_thinkers_space, TheLittleThinkersSpaceWeb.Endpoint,
 # Do not print debug messages in production
 config :logger, level: :info
 
-config :the_little_thinkers_space, data_path: "/priv/static/images/data"
+config :the_little_thinkers_space, data_path: "/priv/static/data"
 
 # ## SSL Support
 #
