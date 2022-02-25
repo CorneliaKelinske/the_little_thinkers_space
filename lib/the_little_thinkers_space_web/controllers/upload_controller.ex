@@ -103,7 +103,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
 
   defp store_upload(%{"upload" => %Plug.Upload{filename: filename, path: path}}, user_id) do
     maybe_create_user_directory(user_id)
-    storage_path = "#{DataPath.set_data_path()}/#{user_id}/#{filename}"
+    storage_path = "#{DataPath.set_data_path()}/#{user_id}/#{filename}" 
     File.cp(path, "#{storage_path}")
     {:ok, storage_path}
   end

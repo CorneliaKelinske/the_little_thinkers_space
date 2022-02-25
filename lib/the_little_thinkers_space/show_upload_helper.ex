@@ -4,6 +4,7 @@ defmodule TheLittleThinkersSpace.ShowUploadHelper do
       true ->
         show_path =
           path
+          |> String.replace("app/lib/the_little_thinkers_space-0.1.0/", "")
           |> String.replace("priv/static/", "/")
           |> String.replace("//", "/")
 
