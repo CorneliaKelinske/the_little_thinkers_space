@@ -30,4 +30,4 @@ config :logger, level: :warn
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
 
-config :the_little_thinkers_space, data_path: "priv/static/data/test"
+config :the_little_thinkers_space, data_path: "priv/static/upload/test"

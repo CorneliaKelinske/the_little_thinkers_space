@@ -81,4 +81,4 @@ config :the_little_thinkers_space, TheLittleThinkersSpace.Mailer, adapter: Swoos
 # Swoosh API client is needed for adapters other than SMTP.
 config :swoosh, :api_client, false
 
-config :the_little_thinkers_space, data_path: "priv/static/data/development"
+config :the_little_thinkers_space, data_path: "priv/static/uploads/development"

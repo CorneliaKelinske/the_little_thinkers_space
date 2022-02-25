@@ -23,9 +23,9 @@ defmodule TheLittleThinkersSpaceWeb.Endpoint do
 
   plug Plug.Static,
     at: "/",
-    from: Path.expand("./priv/static"),
+    from: :the_little_thinkers_space,
     gzip: false,
-    only: ~w(assets fonts images favicon.ico robots.txt data)
+    only: ~w(assets fonts images favicon.ico robots.txt data uploads)
 
 # defmodule AppWeb.Endpoint do
 #   plug Plug.Static,
