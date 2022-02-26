@@ -1,6 +1,6 @@
 defmodule TheLittleThinkersSpaceWeb.UploadController do
   use TheLittleThinkersSpaceWeb, :controller
-  alias TheLittleThinkersSpace.{FileCompressor, Content, DataPath, ShowUploadHelper}
+  alias TheLittleThinkersSpace.{FileCompressor, Content, DataPath, UploadPathsHelper}
 
   alias TheLittleThinkersSpace.Content.Upload
   action_fallback TheLittleThinkersSpaceWeb.FallbackController
@@ -94,6 +94,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     with :ok <- Bodyguard.permit(Upload, :delete, user, id) do
       upload = Content.get_upload!(id)
       {:ok, _upload} = Content.delete_upload(upload)
+      delete_upload(upload)
 
       conn
       |> put_flash(:info, "Upload deleted successfully.")
@@ -103,9 +104,16 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
 
   defp store_upload(%{"upload" => %Plug.Upload{filename: filename, path: path}}, user_id) do
     maybe_create_user_directory(user_id)
-    storage_path = "#{DataPath.set_data_path()}/#{user_id}/#{filename}" 
+    storage_path = "#{DataPath.set_data_path()}/#{user_id}/#{filename}"
     File.cp(path, "#{storage_path}")
     {:ok, storage_path}
+  end
+
+  defp delete_upload(%{path: path}) do
+    delete_path = UploadPathsHelper.delete_path(DataPath.set_data_path)
+    full_delete_path = "#{delete_path}#{path}"
+    File.rm(full_delete_path)
+
   end
 
   defp maybe_create_user_directory(user_id) do
@@ -119,7 +127,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
   end
 
   defp create_show_path(storage_path) do
-    ShowUploadHelper.show_path(storage_path)
+    UploadPathsHelper.show_path(storage_path)
   end
 
   defp parse_upload_params(
