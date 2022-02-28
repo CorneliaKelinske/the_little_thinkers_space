@@ -21,7 +21,7 @@ defmodule TheLittleThinkersSpace.ImageCacher do
   end
 
   def delete_from_cache(upload_id) do
-    ConCache.delete(:upload_cache, upload_id)
+    ConCache.delete(:upload_cache, upload_id) |> IO.inspect(label: "24", limit: :infinity, charlists: false)
   end
 
   def reduce_upload_ids(upload_id, {uploads, uncached_ids}) do

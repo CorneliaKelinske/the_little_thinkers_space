@@ -30,5 +30,5 @@ Accounts.register_user(%{
   "name" => "Harry",
   "email" => "dresden@example.com",
   "password" => "ForzareForzare!",
-  "role" => "friend"
+  "role" => "Friend"
 })

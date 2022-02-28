@@ -11,7 +11,7 @@ defmodule TheLittleThinkersSpace.ContentFixtures do
     file_type: "image/jpg",
     title: "some title",
     orientation: "Landscape",
-    path: "test/support/Lifting.jpg"
+    path: "/test/support/Lifting.jpg"
   }
 
   @doc """

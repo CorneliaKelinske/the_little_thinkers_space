@@ -27,7 +27,8 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
          {:ok, storage_path} <- UploadHandler.store_upload(upload, user.id),
          {:ok, show_path} <- UploadHandler.create_show_path(storage_path),
          {:ok, attrs} <- UploadHandler.parse_upload_params(upload, show_path),
-         {:ok, upload} <- Content.create_upload(user, attrs) do
+         {:ok, upload} <- Content.create_upload(user, attrs) |> IO.inspect(label: "30", limit: :infinity, charlists: false) do
+
       conn
       |> put_flash(:info, "File uploaded successfully.")
       |> redirect(to: Routes.upload_path(conn, :show, upload))
@@ -69,9 +70,10 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     user = conn.assigns.current_user
 
     with :ok <- Bodyguard.permit(Upload, :edit, user, id) do
-      upload = Content.get_upload!(id)
+      upload = Content.get_upload!(id) |> IO.inspect(label: "72", limit: :infinity, charlists: false)
+      upload_name = Path.basename(upload.path)
       changeset = Content.change_upload(upload)
-      render(conn, "edit.html", upload: upload, changeset: changeset)
+      render(conn, "edit.html", upload: upload, upload_name: upload_name, changeset: changeset)
     end
   end
 
@@ -97,8 +99,8 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     user = conn.assigns.current_user
 
     with :ok <- Bodyguard.permit(Upload, :delete, user, id),
-      upload <- Content.get_upload!(id),
-      :ok <- UploadHandler.delete_upload(upload),
+      upload <- Content.get_upload!(id) |> IO.inspect(label: "102", limit: :infinity, charlists: false),
+      :ok <- UploadHandler.delete_upload(upload) |> IO.inspect(label: "102", limit: :infinity, charlists: false, structs: false),
       {:ok, _upload} <- Content.delete_upload(upload) do
 
       conn
@@ -109,7 +111,10 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
         conn
         |> put_flash(:error, "File not found!")
         |> redirect(to: Routes.upload_path(conn, :index))
-
+      {:error, :unauthorized} ->
+        conn
+        |> put_flash(:error, "You are not allowed to do this!")
+        |> redirect(to: Routes.page_path(conn, :home))
       {:error, _reason} ->
         conn
         |> put_flash(:error, "Unable to delete file!")
