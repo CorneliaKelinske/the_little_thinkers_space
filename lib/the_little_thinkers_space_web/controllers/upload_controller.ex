@@ -27,7 +27,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
          {:ok, storage_path} <- UploadHandler.store_upload(upload, user.id),
          {:ok, show_path} <- UploadHandler.create_show_path(storage_path),
          {:ok, attrs} <- UploadHandler.parse_upload_params(upload, show_path),
-         {:ok, upload} <- Content.create_upload(user, attrs) |> IO.inspect(label: "30", limit: :infinity, charlists: false) do
+         {:ok, upload} <- Content.create_upload(user, attrs) do
 
       conn
       |> put_flash(:info, "File uploaded successfully.")
@@ -70,7 +70,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     user = conn.assigns.current_user
 
     with :ok <- Bodyguard.permit(Upload, :edit, user, id) do
-      upload = Content.get_upload!(id) |> IO.inspect(label: "72", limit: :infinity, charlists: false)
+      upload = Content.get_upload!(id)
       upload_name = Path.basename(upload.path)
       changeset = Content.change_upload(upload)
       render(conn, "edit.html", upload: upload, upload_name: upload_name, changeset: changeset)
@@ -99,8 +99,8 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     user = conn.assigns.current_user
 
     with :ok <- Bodyguard.permit(Upload, :delete, user, id),
-      upload <- Content.get_upload!(id) |> IO.inspect(label: "102", limit: :infinity, charlists: false),
-      :ok <- UploadHandler.delete_upload(upload) |> IO.inspect(label: "102", limit: :infinity, charlists: false, structs: false),
+      upload <- Content.get_upload!(id),
+      :ok <- UploadHandler.delete_upload(upload),
       {:ok, _upload} <- Content.delete_upload(upload) do
 
       conn
