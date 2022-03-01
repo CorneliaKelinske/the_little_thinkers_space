@@ -1,21 +1,21 @@
 defmodule TheLittleThinkersSpace.UploadHandler do
   alias TheLittleThinkersSpace.{DataPath, UploadPathsHelper}
-  
+
   def store_upload(%{"upload" => %Plug.Upload{filename: filename, path: path}}, user_id) do
     maybe_create_user_directory(user_id)
     storage_path = "#{DataPath.set_data_path()}/#{user_id}/#{filename}"
+
     with :ok <- File.cp(path, "#{storage_path}") do
-    {:ok, storage_path}
+      {:ok, storage_path}
     else
       {:error, _} -> {:error, :file_not_saved}
     end
   end
 
   def delete_upload(%{path: path}) do
-    delete_path = UploadPathsHelper.delete_path(DataPath.set_data_path)
+    delete_path = UploadPathsHelper.delete_path(DataPath.set_data_path())
     full_delete_path = "#{delete_path}#{path}"
     File.rm(full_delete_path)
-
   end
 
   defp maybe_create_user_directory(user_id) do
@@ -33,14 +33,14 @@ defmodule TheLittleThinkersSpace.UploadHandler do
   end
 
   def parse_upload_params(
-         %{
-           "title" => title,
-           "description" => description,
-           "orientation" => orientation,
-           "upload" => %Plug.Upload{content_type: content_type}
-         },
-         show_path
-       ) do
+        %{
+          "title" => title,
+          "description" => description,
+          "orientation" => orientation,
+          "upload" => %Plug.Upload{content_type: content_type}
+        },
+        show_path
+      ) do
     attrs = %{
       "path" => show_path,
       "title" => title,
@@ -55,5 +55,4 @@ defmodule TheLittleThinkersSpace.UploadHandler do
   def parse_upload_params(_, _) do
     {:error, :file_not_uploaded}
   end
-
 end

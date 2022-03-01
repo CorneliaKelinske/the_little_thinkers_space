@@ -28,7 +28,6 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
          {:ok, show_path} <- UploadHandler.create_show_path(storage_path),
          {:ok, attrs} <- UploadHandler.parse_upload_params(upload, show_path),
          {:ok, upload} <- Content.create_upload(user, attrs) do
-
       conn
       |> put_flash(:info, "File uploaded successfully.")
       |> redirect(to: Routes.upload_path(conn, :show, upload))
@@ -100,10 +99,9 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     user = conn.assigns.current_user
 
     with :ok <- Bodyguard.permit(Upload, :delete, user, id),
-      upload <- Content.get_upload!(id),
-      :ok <- UploadHandler.delete_upload(upload),
-      {:ok, _upload} <- Content.delete_upload(upload) do
-
+         upload <- Content.get_upload!(id),
+         :ok <- UploadHandler.delete_upload(upload),
+         {:ok, _upload} <- Content.delete_upload(upload) do
       conn
       |> put_flash(:info, "Upload deleted successfully.")
       |> redirect(to: Routes.upload_path(conn, :index))
@@ -112,17 +110,16 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
         conn
         |> put_flash(:error, "File not found!")
         |> redirect(to: Routes.upload_path(conn, :index))
+
       {:error, :unauthorized} ->
         conn
         |> put_flash(:error, "You are not allowed to do this!")
         |> redirect(to: Routes.page_path(conn, :home))
+
       {:error, _reason} ->
         conn
         |> put_flash(:error, "Unable to delete file!")
         |> redirect(to: Routes.upload_path(conn, :index))
-
     end
   end
-
-
 end

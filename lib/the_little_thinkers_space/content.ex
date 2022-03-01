@@ -66,6 +66,7 @@ defmodule TheLittleThinkersSpace.Content do
   """
   def update_upload(%Upload{} = upload, attrs) do
     ImageCacher.delete_from_cache(upload.id)
+
     upload
     |> Upload.changeset(attrs)
     |> Repo.update()

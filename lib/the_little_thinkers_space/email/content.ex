@@ -17,7 +17,7 @@ defmodule TheLittleThinkersSpace.Email.Content do
           message: String.t(),
           answer: String.t(),
           not_a_robot: String.t(),
-          image: :binary.t()
+          image: binary
         }
 
   @spec types :: %{

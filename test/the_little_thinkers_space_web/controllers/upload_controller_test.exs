@@ -227,6 +227,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
         conn
         |> log_in_user(admin)
         |> post(Routes.upload_path(conn, :create), upload: @create_image_attrs)
+
       assert %{id: id} = redirected_params(conn)
       upload = Content.get_upload(id)
       conn = put(conn, Routes.upload_path(conn, :update, upload), upload: @update_attrs)
@@ -245,6 +246,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
         conn
         |> log_in_user(admin)
         |> post(Routes.upload_path(conn, :create), upload: @create_image_attrs)
+
       assert %{id: id} = redirected_params(conn)
       upload = Content.get_upload(id)
       conn = put(conn, Routes.upload_path(conn, :update, upload), upload: @invalid_attrs)
@@ -314,6 +316,4 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
     upload = upload_fixture()
     %{upload: upload}
   end
-
-
 end

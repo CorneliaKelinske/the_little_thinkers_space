@@ -18,7 +18,7 @@ defmodule TheLittleThinkersSpace.UploadPathsHelper do
   def delete_path(path) do
     case is_binary(path) do
       true ->
-        delete_path=
+        delete_path =
           path
           |> String.replace("uploads/development", "")
           |> String.replace("uploads/test", "")

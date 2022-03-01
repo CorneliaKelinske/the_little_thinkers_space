@@ -68,7 +68,9 @@ defmodule TheLittleThinkersSpace.MixProject do
       {:hackney, "~> 1.17"},
       {:mogrify, "~> 0.9.1"},
       {:con_cache, "~> 0.13"},
-      {:rexbug, ">= 1.0.0"}
+      {:rexbug, ">= 1.0.0"},
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
+      {:doctor, "~> 0.18.0", only: :dev}
     ]
   end
 
