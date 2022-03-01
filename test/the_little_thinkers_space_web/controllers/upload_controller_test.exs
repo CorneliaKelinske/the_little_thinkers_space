@@ -4,7 +4,6 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
   import TheLittleThinkersSpace.ContentFixtures
   import TheLittleThinkersSpace.AccountsFixtures
 
-  alias TheLittleThinkersSpaceWeb.UploadController
   alias TheLittleThinkersSpace.Content
 
   setup do
