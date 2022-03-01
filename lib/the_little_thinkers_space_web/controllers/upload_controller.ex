@@ -20,6 +20,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
   end
 
   def create(conn, %{"upload" => upload}) do
+    IO.inspect(conn.assigns)
     user = conn.assigns.current_user
 
     with :ok <- Bodyguard.permit(Upload, :create, user, upload),

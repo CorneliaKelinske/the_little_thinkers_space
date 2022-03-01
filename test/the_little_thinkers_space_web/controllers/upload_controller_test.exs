@@ -5,6 +5,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
   import TheLittleThinkersSpace.AccountsFixtures
 
   alias TheLittleThinkersSpaceWeb.UploadController
+  alias TheLittleThinkersSpace.Content
 
   setup do
     %{user: user_fixture(), admin: admin_fixture()}
@@ -276,8 +277,13 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
       conn: conn,
       admin: admin
     } do
-      conn = log_in_user(conn, admin)
-      upload = UploadController.create(conn, @create_image_attrs)
+      conn =
+        conn
+        |> log_in_user(admin)
+        |> post(Routes.upload_path(conn, :create), upload: @create_image_attrs)
+
+      assert %{id: id} = redirected_params(conn)
+      upload = Content.get_upload(id)
       conn = delete(conn, Routes.upload_path(conn, :delete, upload))
 
       assert redirected_to(conn) == Routes.upload_path(conn, :index)
