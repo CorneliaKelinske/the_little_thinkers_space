@@ -1,7 +1,7 @@
 defmodule TheLittleThinkersSpace.UploadHandler do
   alias TheLittleThinkersSpace.{DataPath, UploadPathsHelper}
 
-  def store_upload(%{"upload" => %Plug.Upload{filename: filename, path: path}}, user_id) do
+  def store_upload(%Plug.Upload{filename: filename, path: path}, user_id) do
     maybe_create_user_directory(user_id)
     storage_path = "#{DataPath.set_data_path()}/#{user_id}/#{filename}"
 
