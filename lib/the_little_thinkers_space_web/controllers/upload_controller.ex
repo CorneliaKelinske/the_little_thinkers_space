@@ -20,7 +20,6 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
   end
 
   def create(conn, %{"upload" => upload}) do
-    IO.inspect(conn.assigns)
     user = conn.assigns.current_user
 
     with :ok <- Bodyguard.permit(Upload, :create, user, upload),
@@ -83,6 +82,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
 
     with :ok <- Bodyguard.permit(Upload, :update, user, %{}) do
       upload = Content.get_upload!(id)
+      upload_name = Path.basename(upload.path)
 
       case Content.update_upload(upload, upload_params) do
         {:ok, upload} ->
@@ -91,7 +91,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
           |> redirect(to: Routes.upload_path(conn, :show, upload))
 
         {:error, %Ecto.Changeset{} = changeset} ->
-          render(conn, "edit.html", upload: upload, changeset: changeset)
+          render(conn, "edit.html", upload: upload, changeset: changeset, upload_name: upload_name)
       end
     end
   end
