@@ -13,7 +13,7 @@ defmodule TheLittleThinkersSpace.Content.Upload do
   @behaviour Bodyguard.Policy
 
   @orientation_options ["Landscape", "Portrait"]
-  @required_attrs [:file, :file_type, :title, :description, :orientation]
+  @required_attrs [:file_type, :title, :description, :orientation, :path]
   @valid_image_types ["image/jpeg", "image/jpg", "image/png"]
   @valid_video_types ["video/mp4", "video/quicktime"]
   @valid_file_types @valid_image_types ++ @valid_video_types
@@ -25,12 +25,12 @@ defmodule TheLittleThinkersSpace.Content.Upload do
 
   schema "uploads" do
     field :description, :string
-    field :file, :binary
     field :file_type, :string
     field :title, :string
     field :orientation, :string
+    field :path, :string
     belongs_to :user, User
-    # field :user_id, :id
+  
 
     timestamps()
   end

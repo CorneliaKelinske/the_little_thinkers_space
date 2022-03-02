@@ -4,8 +4,7 @@ defmodule TheLittleThinkersSpace.Content do
   """
 
   import Ecto.Query, warn: false
-  alias TheLittleThinkersSpace.{Repo, Accounts, ImageCacher}
-  alias TheLittleThinkersSpace.Content.Upload
+  alias TheLittleThinkersSpace.{Accounts, Content.Upload, ImageCacher, Repo}
 
   @doc """
   Returns the list of uploads.
@@ -24,7 +23,7 @@ defmodule TheLittleThinkersSpace.Content do
     |> Enum.sort(&(&1.id < &2.id))
   end
 
-    def process_uncached_ids({uploads, uncached_ids}) do
+  def process_uncached_ids({uploads, uncached_ids}) do
     uncached_ids
     |> uploads_by_ids()
     |> Enum.map(&ImageCacher.maybe_save_to_cache/1)
@@ -65,6 +64,8 @@ defmodule TheLittleThinkersSpace.Content do
 
   """
   def update_upload(%Upload{} = upload, attrs) do
+    ImageCacher.delete_from_cache(upload.id)
+
     upload
     |> Upload.changeset(attrs)
     |> Repo.update()

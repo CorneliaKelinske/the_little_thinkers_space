@@ -4,6 +4,8 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
   import TheLittleThinkersSpace.ContentFixtures
   import TheLittleThinkersSpace.AccountsFixtures
 
+  alias TheLittleThinkersSpace.Content
+
   setup do
     %{user: user_fixture(), admin: admin_fixture()}
   end
@@ -219,13 +221,16 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
 
     test "redirects when data is valid and user is logged in and Admin", %{
       conn: conn,
-      upload: upload,
       admin: admin
     } do
       conn =
         conn
         |> log_in_user(admin)
-        |> put(Routes.upload_path(conn, :update, upload), upload: @update_attrs)
+        |> post(Routes.upload_path(conn, :create), upload: @create_image_attrs)
+
+      assert %{id: id} = redirected_params(conn)
+      upload = Content.get_upload(id)
+      conn = put(conn, Routes.upload_path(conn, :update, upload), upload: @update_attrs)
 
       assert redirected_to(conn) == Routes.upload_path(conn, :show, upload)
 
@@ -235,13 +240,16 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
 
     test "renders errors when data is invalid and user is logged in and Admin", %{
       conn: conn,
-      upload: upload,
       admin: admin
     } do
       conn =
         conn
         |> log_in_user(admin)
-        |> put(Routes.upload_path(conn, :update, upload), upload: @invalid_attrs)
+        |> post(Routes.upload_path(conn, :create), upload: @create_image_attrs)
+
+      assert %{id: id} = redirected_params(conn)
+      upload = Content.get_upload(id)
+      conn = put(conn, Routes.upload_path(conn, :update, upload), upload: @invalid_attrs)
 
       assert html_response(conn, 200) =~ "Edit Upload"
     end
@@ -272,13 +280,16 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
 
     test "deletes chosen upload when user is logged in and Admin", %{
       conn: conn,
-      upload: upload,
       admin: admin
     } do
       conn =
         conn
         |> log_in_user(admin)
-        |> delete(Routes.upload_path(conn, :delete, upload))
+        |> post(Routes.upload_path(conn, :create), upload: @create_image_attrs)
+
+      assert %{id: id} = redirected_params(conn)
+      upload = Content.get_upload(id)
+      conn = delete(conn, Routes.upload_path(conn, :delete, upload))
 
       assert redirected_to(conn) == Routes.upload_path(conn, :index)
 

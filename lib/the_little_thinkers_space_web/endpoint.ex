@@ -16,11 +16,23 @@ defmodule TheLittleThinkersSpaceWeb.Endpoint do
   #
   # You should set gzip to true if you are running phx.digest
   # when deploying your static files in production.
+  # plug Plug.Static,
+  #   from: {:the_little_thinkers_space, "priv/static/images/data"},
+  #   at: "/data",
+  #   gzip: false
+
   plug Plug.Static,
     at: "/",
     from: :the_little_thinkers_space,
     gzip: false,
-    only: ~w(assets fonts images favicon.ico robots.txt)
+    only: ~w(assets fonts images favicon.ico robots.txt data uploads)
+
+  # defmodule AppWeb.Endpoint do
+  #   plug Plug.Static,
+  #     at: "/data",
+  #     from: Path.expand("./priv/data"),
+  #     gzip: false
+  # end
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.

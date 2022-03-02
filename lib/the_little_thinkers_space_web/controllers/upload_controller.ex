@@ -1,9 +1,8 @@
 defmodule TheLittleThinkersSpaceWeb.UploadController do
   use TheLittleThinkersSpaceWeb, :controller
-  alias TheLittleThinkersSpace.FileCompressor
 
-  alias TheLittleThinkersSpace.Content
-  alias TheLittleThinkersSpace.Content.Upload
+  alias TheLittleThinkersSpace.{Content, Content.Upload, FileCompressor, UploadHandler}
+
   action_fallback TheLittleThinkersSpaceWeb.FallbackController
 
   def index(conn, _params) do
@@ -20,13 +19,15 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     end
   end
 
-  def create(conn, %{"upload" => upload}) do
+  def create(conn, %{"upload" => %{"upload" => upload_plug} = upload_params}) do
     user = conn.assigns.current_user
 
-    with :ok <- Bodyguard.permit(Upload, :create, user, upload),
-         upload <- FileCompressor.compress_file(upload),
-         {:ok, params, _path} <- parse_upload_params(upload),
-         {:ok, upload} <- Content.create_upload(user, params) do
+    with :ok <- Bodyguard.permit(Upload, :create, user, upload_params),
+         upload_plug <- FileCompressor.compress_file(upload_plug),
+         {:ok, storage_path} <- UploadHandler.store_upload(upload_plug, user.id),
+         {:ok, show_path} <- UploadHandler.create_show_path(storage_path),
+         {:ok, attrs} <- UploadHandler.parse_upload_params(upload_params, show_path),
+         {:ok, upload} <- Content.create_upload(user, attrs) do
       conn
       |> put_flash(:info, "File uploaded successfully.")
       |> redirect(to: Routes.upload_path(conn, :show, upload))
@@ -41,37 +42,20 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
         |> put_flash(:error, "Please select a file!")
         |> redirect(to: Routes.upload_path(conn, :new))
 
-      {:error, :cannot_read_file} ->
-        conn
-        |> put_flash(:error, "Cannot read file!")
-        |> redirect(to: Routes.upload_path(conn, :new))
-
       {:error, :unauthorized} ->
         conn
         |> put_flash(:error, "You are not allowed to do this!")
         |> redirect(to: Routes.page_path(conn, :home))
-    end
-  end
 
-  defp parse_upload_params(upload) do
-    with %{
-           "title" => title,
-           "description" => description,
-           "orientation" => orientation,
-           "upload" => %Plug.Upload{path: path, content_type: content_type}
-         } <- upload,
-         {:ok, binary} <- File.read(path) do
-      {:ok,
-       %{
-         "file" => binary,
-         "title" => title,
-         "description" => description,
-         "orientation" => orientation,
-         "file_type" => content_type
-       }, path}
-    else
-      map when is_map(map) -> {:error, :file_not_uploaded}
-      {:error, _} -> {:error, :cannot_read_file}
+      {:error, :file_not_saved} ->
+        conn
+        |> put_flash(:error, "File not saved, please try again!")
+        |> redirect(to: Routes.upload_path(conn, :new))
+
+      {:error, :no_show_path} ->
+        conn
+        |> put_flash(:error, "File not processed, please try again!")
+        |> redirect(to: Routes.upload_path(conn, :new))
     end
   end
 
@@ -86,8 +70,9 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
 
     with :ok <- Bodyguard.permit(Upload, :edit, user, id) do
       upload = Content.get_upload!(id)
+      upload_name = Path.basename(upload.path)
       changeset = Content.change_upload(upload)
-      render(conn, "edit.html", upload: upload, changeset: changeset)
+      render(conn, "edit.html", upload: upload, upload_name: upload_name, changeset: changeset)
     end
   end
 
@@ -96,6 +81,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
 
     with :ok <- Bodyguard.permit(Upload, :update, user, %{}) do
       upload = Content.get_upload!(id)
+      upload_name = Path.basename(upload.path)
 
       case Content.update_upload(upload, upload_params) do
         {:ok, upload} ->
@@ -104,7 +90,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
           |> redirect(to: Routes.upload_path(conn, :show, upload))
 
         {:error, %Ecto.Changeset{} = changeset} ->
-          render(conn, "edit.html", upload: upload, changeset: changeset)
+          render(conn, "edit.html", upload: upload, changeset: changeset, upload_name: upload_name)
       end
     end
   end
@@ -112,13 +98,28 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
   def delete(conn, %{"id" => id}) do
     user = conn.assigns.current_user
 
-    with :ok <- Bodyguard.permit(Upload, :delete, user, id) do
-      upload = Content.get_upload!(id)
-      {:ok, _upload} = Content.delete_upload(upload)
-
+    with :ok <- Bodyguard.permit(Upload, :delete, user, id),
+         upload <- Content.get_upload!(id),
+         :ok <- UploadHandler.delete_upload(upload),
+         {:ok, _upload} <- Content.delete_upload(upload) do
       conn
       |> put_flash(:info, "Upload deleted successfully.")
       |> redirect(to: Routes.upload_path(conn, :index))
+    else
+      nil ->
+        conn
+        |> put_flash(:error, "File not found!")
+        |> redirect(to: Routes.upload_path(conn, :index))
+
+      {:error, :unauthorized} ->
+        conn
+        |> put_flash(:error, "You are not allowed to do this!")
+        |> redirect(to: Routes.page_path(conn, :home))
+
+      {:error, _reason} ->
+        conn
+        |> put_flash(:error, "Unable to delete file!")
+        |> redirect(to: Routes.upload_path(conn, :index))
     end
   end
 end

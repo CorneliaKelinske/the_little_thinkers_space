@@ -11,23 +11,23 @@ defmodule TheLittleThinkersSpace.ContentTest do
 
     @valid_attrs %{
       description: "some description",
-      file: "some file",
       file_type: "image/jpeg",
       title: "some title",
-      orientation: "Landscape"
+      orientation: "Landscape",
+      path: "test/support/Lifting.jpg"
     }
 
     @update_attrs %{
       description: "some updated description",
-      file: "some updated file",
       file_type: "image/png",
       title: "some updated title",
-      orientation: "Landscape"
+      orientation: "Landscape",
+      path: "test/support/Lifting.jpg"
     }
 
     @invalid_attrs %{
       description: nil,
-      file: nil,
+      path: nil,
       file_type: nil,
       title: nil,
       orientation: "Landscape"
@@ -53,7 +53,7 @@ defmodule TheLittleThinkersSpace.ContentTest do
     test "create_upload/1 with valid data creates a upload", %{user: user} do
       assert {:ok, %Upload{} = upload} = Content.create_upload(user, @valid_attrs)
       assert upload.description == "some description"
-      assert upload.file == "some file"
+      assert upload.path == "test/support/Lifting.jpg"
       assert upload.file_type == "image/jpeg"
       assert upload.title == "some title"
     end
@@ -67,7 +67,7 @@ defmodule TheLittleThinkersSpace.ContentTest do
 
       assert {:ok, %Upload{} = upload} = Content.update_upload(upload, @update_attrs)
       assert upload.description == "some updated description"
-      assert upload.file == "some updated file"
+      assert upload.path == "test/support/Lifting.jpg"
       assert upload.file_type == "image/png"
       assert upload.title == "some updated title"
     end

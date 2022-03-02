@@ -4,8 +4,7 @@ defmodule TheLittleThinkersSpace.Accounts.Profile do
   """
   use Ecto.Schema
   import Ecto.Changeset
-  alias TheLittleThinkersSpace.Accounts.User
-  alias TheLittleThinkersSpace.Accounts.Profile
+  alias TheLittleThinkersSpace.Accounts.{Profile, User}
 
   @behaviour Bodyguard.Policy
 
@@ -24,7 +23,6 @@ defmodule TheLittleThinkersSpace.Accounts.Profile do
     field :nickname, :string
     field :song, :string
     field :superhero, :string
-    # field :user_id, :id
     belongs_to :user, User
 
     timestamps()

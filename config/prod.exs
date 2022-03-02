@@ -15,6 +15,9 @@ config :the_little_thinkers_space, TheLittleThinkersSpaceWeb.Endpoint,
 # Do not print debug messages in production
 config :logger, level: :info
 
+config :the_little_thinkers_space,
+  data_path: "/app/lib/the_little_thinkers_space-0.1.0/priv/static/data"
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key

@@ -1,7 +1,6 @@
 defmodule TheLittleThinkersSpace.MailerTest do
   use TheLittleThinkersSpace.DataCase
-  alias TheLittleThinkersSpace.Mailer
-  alias TheLittleThinkersSpace.Email.EmailBuilder
+  alias TheLittleThinkersSpace.{Email.EmailBuilder, Mailer}
   import Swoosh.TestAssertions
 
   @valid_params %{

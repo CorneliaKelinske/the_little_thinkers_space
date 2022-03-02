@@ -1,8 +1,53 @@
+<body class="bg-colors bg-cover">
 <h1 class="w-screen text-sky-900 font-bold text-center text-4xl p-4">Edit Upload</h1>
 
-<%= render "form.html", Map.put(assigns, :action, Routes.upload_path(@conn, :update, @upload)) %>
+
+
+   <%= form_for @changeset, Routes.upload_path(@conn, :update, @upload), [multipart: true], fn f -> %>
+  
+
+  <div class="w-screen flex justify-center p-8">
+    <section class="flex md:w-2/3 xs:w-full h-4/6 p-2">
+
+      <ul class="m-5 text-sky-900 sm:text-xl xs:text-base md:tracking-wide w-full">
+
+        <li class="flex my-3 mx-5 w-full">
+          <label class="w-6/12 font-bold">Photo/video</label>
+          <%= @upload_name %>          
+        </li>
+
+        <li class="flex my-3 mx-5 w-full">
+          <%= label f, :title, class: "w-6/12 font-bold" %>
+          <%= text_input f, :title, class: "form-input" %>
+          <%= error_tag f, :title %>
+        </li>
+
+        <li class="flex my-3 mx-5 w-full">
+          <%= label f, :description, class: "w-6/12 font-bold truncate" %>
+          <%= textarea f, :description, class: "form-input" %>
+          <%= error_tag f, :description %>
+        </li>
+
+        <li class="flex my-3 mx-5 w-full">
+          <%= label f, :orientation, class: "w-6/12 font-bold truncate" %>
+          <%= select f, :orientation, TheLittleThinkersSpace.Content.Upload.orientation_options(), 
+  placeholder: "Orientation", 
+  class: "bg-orange-50 appearance-none border-2 border-gray-200 rounded w-6/12 py-2 px-2 text-sky-900 leading-tight focus:outline-none focus:ring"%>
+
+          <%= error_tag f, :orientation %>
+        </li>
+
+        <li class="my-32 mx-5">
+          <%= submit "Save", class: "btn-page-mini text-orange-50" %>
+        </li>
+
+      </ul>
+    </section>
+  </div>
+  <% end %>
 
 <div class="flex px-28 justify-between w-screen flex-wrap">
     <div class="text-sky-900 text-lg font-semibold tracking-wide"><%= link "Back", to: Routes.page_path(@conn, :home) %>
     </div>
 </div>
+</body>
