@@ -25,13 +25,12 @@ defmodule TheLittleThinkersSpace.Content.Upload do
 
   schema "uploads" do
     field :description, :string
-    field :file, :binary
     field :file_type, :string
     field :title, :string
     field :orientation, :string
     field :path, :string
     belongs_to :user, User
-    # field :user_id, :id
+  
 
     timestamps()
   end
