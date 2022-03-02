@@ -6,9 +6,9 @@ defmodule TheLittleThinkersSpace.Accounts do
   import Ecto.Query, warn: false
   alias TheLittleThinkersSpace.Repo
 
-  alias TheLittleThinkersSpace.Accounts.{User, UserToken, UserNotifier}
+  alias TheLittleThinkersSpace.Accounts.{User, UserNotifier, UserToken}
 
-  def list_users() do
+  def list_users do
     Repo.all(User)
   end
 
@@ -366,7 +366,7 @@ defmodule TheLittleThinkersSpace.Accounts do
   def get_profile!(id), do: Repo.get!(Profile, id)
 
   def get_user_profile(user_id), do: Repo.get_by(Profile, user_id: user_id)
-  def get_lt_profile(), do: Repo.get_by(Profile, belongs_to_lt: true)
+  def get_lt_profile, do: Repo.get_by(Profile, belongs_to_lt: true)
 
   def create_profile(attrs \\ %{}) do
     %Profile{}

@@ -1,7 +1,7 @@
 defmodule TheLittleThinkersSpaceWeb.UploadController do
   use TheLittleThinkersSpaceWeb, :controller
 
-  alias TheLittleThinkersSpace.{FileCompressor, Content, UploadHandler, Content.Upload}
+  alias TheLittleThinkersSpace.{Content, Content.Upload, FileCompressor, UploadHandler}
 
   action_fallback TheLittleThinkersSpaceWeb.FallbackController
 

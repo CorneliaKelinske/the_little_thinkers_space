@@ -4,8 +4,7 @@ defmodule TheLittleThinkersSpace.Content do
   """
 
   import Ecto.Query, warn: false
-  alias TheLittleThinkersSpace.{Repo, Accounts, ImageCacher}
-  alias TheLittleThinkersSpace.Content.Upload
+  alias TheLittleThinkersSpace.{Accounts, Content.Upload, ImageCacher, Repo}
 
   @doc """
   Returns the list of uploads.

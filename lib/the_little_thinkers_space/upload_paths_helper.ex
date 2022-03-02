@@ -1,4 +1,9 @@
 defmodule TheLittleThinkersSpace.UploadPathsHelper do
+  @moduledoc """
+  Based on the data path set in the config files, this module creates the path
+  required by Plug.Static to render the upload in the template as well as the
+  path required for deleting an upload from storage
+  """
   def show_path(path) do
     case is_binary(path) do
       true ->
