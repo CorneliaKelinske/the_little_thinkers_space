@@ -24,7 +24,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
 
 
     with :ok <- Bodyguard.permit(Upload, :create, user, upload_params),
-         upload_plug <- FileCompressor.compress_file(upload_plug),
+         {:ok, upload_plug} <- FileCompressor.compress_file(upload_plug),
          {:ok, storage_path} <- UploadHandler.store_upload(upload_plug, user.id),
          {:ok, show_path} <- UploadHandler.create_show_path(storage_path),
          {:ok, attrs} <- UploadHandler.parse_upload_params(upload_params, show_path),
@@ -58,7 +58,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
         conn
         |> put_flash(:error, "Invalid file type!")
         |> redirect(to: Routes.upload_path(conn, :new))
-    
+
 
       {:error, :file_not_saved} ->
         conn

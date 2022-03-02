@@ -11,34 +11,28 @@ defmodule TheLittleThinkersSpace.FileCompressor do
   @valid_image_types Upload.valid_image_types()
   @valid_video_types Upload.valid_video_types()
 
-
-
   def compress_file(%Plug.Upload{path: path, content_type: content_type} = plug)
-        when content_type in @valid_image_types do
-          %{path: path} = compress_image(path)
-    %Plug.Upload{plug | path: path}
+      when content_type in @valid_image_types do
+    %{path: path} = compress_image(path)
+    {:ok, %Plug.Upload{plug | path: path}}
+  end
 
-        end
+  def compress_file(
+        %Plug.Upload{path: path, content_type: content_type, filename: file_name} = plug
+      )
+      when content_type in @valid_video_types do
+    renamed_path = path <> "#{file_name}"
+    output_path = path <> "_output#{file_name}"
 
-        def compress_file(%Plug.Upload{path: path, content_type: content_type, filename: file_name} = plug)
-        when content_type in @video_types do
-
-          renamed_path = path <> "#{file_name}"
-          output_path = path <> "_output#{file_name}"
-
-
-
-            with :ok <- File.rename(path, renamed_path),
-            {:ok, _output} <- compress_video(renamed_path, output_path) do
-              %Plug.Upload{plug | path: output_path}
-            else
-              {:error, error} ->
-                Logger.error("#{inspect(__MODULE__)}: Could not convert video; #{inspect(error)}")
-                {:error, :file_not_compressed}
-
-            end
-        end
-
+    with :ok <- File.rename(path, renamed_path),
+         {:ok, _output} <- compress_video(renamed_path, output_path) do
+      {:ok, %Plug.Upload{plug | path: output_path}}
+    else
+      {:error, error} ->
+        Logger.error("#{inspect(__MODULE__)}: Could not convert video; #{inspect(error)}")
+        {:error, :file_not_compressed}
+    end
+  end
 
   def compress_file(_) do
     {:error, :invalid_file_type}
@@ -57,7 +51,7 @@ defmodule TheLittleThinkersSpace.FileCompressor do
       FFmpex.new_command()
       |> FFmpex.add_input_file(renamed_path)
       |> FFmpex.add_output_file(output_path)
-      #|> FFmpex.add_file_option(option_s("1024x1024"))
+      # |> FFmpex.add_file_option(option_s("1024x1024"))
       |> FFmpex.add_file_option(option_maxrate("2M"))
       |> FFmpex.add_file_option(option_bufsize("2M"))
 

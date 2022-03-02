@@ -30,7 +30,6 @@ defmodule TheLittleThinkersSpace.Content.Upload do
     field :orientation, :string
     field :path, :string
     belongs_to :user, User
-  
 
     timestamps()
   end
