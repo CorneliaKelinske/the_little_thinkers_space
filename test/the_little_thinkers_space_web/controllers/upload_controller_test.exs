@@ -139,13 +139,13 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
       admin: admin
     } do
       target_path = setup_video_file("test/support/IMG_5257.MOV")
-      %Plug.Upload{path: _path} = plug = Map.get(@create_video_attrs, :upload)
-      Map.put(@create_video_attrs, :upload, %Plug.Upload{plug | path: target_path})
+      plug = Map.get(@create_video_attrs, :upload) |> Map.put(:path, target_path)
+      new_video_attrs = Map.put(@create_video_attrs, :upload, plug)
 
       conn =
         conn
         |> log_in_user(admin)
-        |> post(Routes.upload_path(conn, :create), upload: @create_video_attrs)
+        |> post(Routes.upload_path(conn, :create), upload: new_video_attrs)
 
       assert %{id: id} = redirected_params(conn)
       assert redirected_to(conn) == Routes.upload_path(conn, :show, id)
@@ -323,7 +323,9 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
   end
 
   defp setup_video_file(path) do
-    target_path = set_target_dir("priv/static/uploads/test")
+    target_dir = set_target_dir("priv/static/uploads/test")
+    file_name = Path.basename(path)
+    target_path =  "#{target_dir}/#{file_name}"
     File.copy(path, target_path)
     target_path
   end
