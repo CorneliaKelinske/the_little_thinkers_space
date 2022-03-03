@@ -10,11 +10,8 @@ defmodule TheLittleThinkersSpace.UploadHandler do
     storage_path = "#{DataPath.set_data_path()}/#{user_id}/#{filename}"
 
     case File.cp(path, "#{storage_path}") do
-      :ok ->
-        {:ok, storage_path}
-
-      {:error, _} ->
-        {:error, :file_not_saved}
+      :ok -> {:ok, storage_path}
+      {:error, _} -> {:error, :file_not_saved}
     end
   end
 
@@ -26,11 +23,8 @@ defmodule TheLittleThinkersSpace.UploadHandler do
 
   defp maybe_create_user_directory(user_id) do
     case File.exists?("#{DataPath.set_data_path()}/#{user_id}") do
-      false ->
-        File.mkdir("#{DataPath.set_data_path()}/#{user_id}")
-
-      true ->
-        :ok
+      false -> File.mkdir("#{DataPath.set_data_path()}/#{user_id}")
+      true -> :ok
     end
   end
 
