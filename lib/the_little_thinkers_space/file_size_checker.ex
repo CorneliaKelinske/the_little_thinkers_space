@@ -4,12 +4,14 @@ defmodule TheLittleThinkersSpace.FileSizeChecker do
   """
 
   def small_enough?(%Plug.Upload{path: path} = plug) do
-    {:ok, %{size: size}} = File.stat(path)
-
-    if size <= 8_000_000 do
-      {:ok, plug}
+    with {:ok, %{size: size}} <- File.stat(path) do
+      if size <= 8_000_000 do
+        {:ok, plug}
+      else
+        {:error, :file_too_big}
+      end
     else
-      {:error, :file_too_big}
+      _ -> {:error, :cannot_stat_file}
     end
   end
 end

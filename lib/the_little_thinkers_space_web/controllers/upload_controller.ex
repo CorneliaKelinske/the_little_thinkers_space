@@ -55,6 +55,11 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
         |> put_flash(:error, "You are not allowed to do this!")
         |> redirect(to: Routes.page_path(conn, :home))
 
+      {:error, :cannot_stat_file} ->
+        conn
+        |> put_flash(:error, "Could not check file size. Please try again!")
+        |> redirect(to: Routes.upload_path(conn, :new))
+        
       {:error, :file_too_big} ->
         conn
         |> put_flash(:error, "This file is too big! Try to upload a shorter video!")

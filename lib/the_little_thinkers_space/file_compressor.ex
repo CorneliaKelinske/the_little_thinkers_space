@@ -2,12 +2,14 @@ defmodule TheLittleThinkersSpace.FileCompressor do
   @moduledoc """
   Compresses files uploaded by the user prior to their insertion into the database
   """
-  alias FFmpex
-  alias Mogrify
 
   use FFmpex.Options
-  alias TheLittleThinkersSpace.Content.Upload
+
   require Logger
+
+  alias FFmpex
+  alias Mogrify
+  alias TheLittleThinkersSpace.Content.Upload
 
   @valid_image_types Upload.valid_image_types()
   @valid_video_types Upload.valid_video_types()
@@ -19,11 +21,11 @@ defmodule TheLittleThinkersSpace.FileCompressor do
   end
 
   def compress_file(
-        %Plug.Upload{path: path, content_type: content_type, filename: file_name} = plug
+        %Plug.Upload{path: path, content_type: content_type, filename: filename} = plug
       )
       when content_type in @valid_video_types do
-    renamed_path = path <> "#{file_name}"
-    output_path = path <> "_output#{file_name}"
+    renamed_path = "#{path}#{filename}"
+    output_path = "#{path}_output#{filename}"
 
     with :ok <- File.rename(path, renamed_path),
          {:ok, _output} <- compress_video(renamed_path, output_path) do
@@ -48,14 +50,11 @@ defmodule TheLittleThinkersSpace.FileCompressor do
   end
 
   defp compress_video(renamed_path, output_path) do
-    command =
-      FFmpex.new_command()
-      |> FFmpex.add_input_file(renamed_path)
-      |> FFmpex.add_output_file(output_path)
-      # |> FFmpex.add_file_option(option_s("1024x1024"))
-      |> FFmpex.add_file_option(option_maxrate("2M"))
-      |> FFmpex.add_file_option(option_bufsize("2M"))
-
-    FFmpex.execute(command)
+    FFmpex.new_command()
+    |> FFmpex.add_input_file(renamed_path)
+    |> FFmpex.add_output_file(output_path)
+    |> FFmpex.add_file_option(option_maxrate("2M"))
+    |> FFmpex.add_file_option(option_bufsize("2M"))
+    |> FFmpex.execute()
   end
 end
