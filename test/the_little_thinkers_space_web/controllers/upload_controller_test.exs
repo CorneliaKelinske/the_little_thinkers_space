@@ -325,7 +325,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
   defp setup_video_file(path) do
     target_dir = set_target_dir("priv/static/uploads/test")
     file_name = Path.basename(path)
-    target_path =  "#{target_dir}/#{file_name}"
+    target_path = "#{target_dir}/#{file_name}"
     File.copy(path, target_path)
     target_path
   end

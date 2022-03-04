@@ -2,8 +2,9 @@ defmodule TheLittleThinkersSpace.FileCompressor do
   @moduledoc """
   Compresses files uploaded by the user prior to their insertion into the database
   """
-  alias Mogrify
   alias FFmpex
+  alias Mogrify
+
   use FFmpex.Options
   alias TheLittleThinkersSpace.Content.Upload
   require Logger
