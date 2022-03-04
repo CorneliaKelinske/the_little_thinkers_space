@@ -6,7 +6,6 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     Content.Upload,
     FileCompressor,
     FileSizeChecker,
-    UploadHandler,
     UploadPathsHelper
   }
 
@@ -32,7 +31,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     with :ok <- Bodyguard.permit(Upload, :create, user, upload_params),
          {:ok, upload_plug} <- FileSizeChecker.small_enough?(upload_plug),
          {:ok, upload_plug} <- FileCompressor.compress_file(upload_plug),
-         {:ok, storage_path} <- UploadHandler.store_upload(upload_plug, user.id),
+         {:ok, storage_path} <- Content.store_upload(upload_plug, user.id),
          {:ok, show_path} <- UploadPathsHelper.show_path(storage_path),
          {:ok, attrs} <- parse_upload_params(upload_params, show_path),
          {:ok, upload} <- Content.create_upload(user, attrs) do
@@ -59,7 +58,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
         conn
         |> put_flash(:error, "Could not check file size. Please try again!")
         |> redirect(to: Routes.upload_path(conn, :new))
-        
+
       {:error, :file_too_big} ->
         conn
         |> put_flash(:error, "This file is too big! Try to upload a shorter video!")
@@ -128,7 +127,6 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
 
     with :ok <- Bodyguard.permit(Upload, :delete, user, id),
          upload <- Content.get_upload!(id),
-         :ok <- UploadHandler.delete_upload(upload),
          {:ok, _upload} <- Content.delete_upload(upload) do
       conn
       |> put_flash(:info, "Upload deleted successfully.")
