@@ -1,7 +1,7 @@
 defmodule TheLittleThinkersSpaceWeb.UploadController do
   use TheLittleThinkersSpaceWeb, :controller
 
-  alias TheLittleThinkersSpace.{Content, Content.Upload, FileCompressor, UploadHandler}
+  alias TheLittleThinkersSpace.{Content, Content.Upload, FileCompressor, FileSizeChecker, UploadHandler}
 
   action_fallback TheLittleThinkersSpaceWeb.FallbackController
 
@@ -23,7 +23,8 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     user = conn.assigns.current_user
 
     with :ok <- Bodyguard.permit(Upload, :create, user, upload_params),
-         upload_plug <- FileCompressor.compress_file(upload_plug),
+         {:ok, upload_plug} <- FileSizeChecker.is_small_enough?(upload_plug),
+         {:ok, upload_plug} <- FileCompressor.compress_file(upload_plug),
          {:ok, storage_path} <- UploadHandler.store_upload(upload_plug, user.id),
          {:ok, show_path} <- UploadHandler.create_show_path(storage_path),
          {:ok, attrs} <- UploadHandler.parse_upload_params(upload_params, show_path),
@@ -32,6 +33,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
       |> put_flash(:info, "File uploaded successfully.")
       |> redirect(to: Routes.upload_path(conn, :show, upload))
     else
+
       {:error, %Ecto.Changeset{} = changeset} ->
         conn
         |> put_flash(:error, "Oops, something went wrong!")
@@ -46,6 +48,21 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
         conn
         |> put_flash(:error, "You are not allowed to do this!")
         |> redirect(to: Routes.page_path(conn, :home))
+
+        {:error, :file_too_big} ->
+          conn
+          |> put_flash(:error, "This file is too big! Try to upload a shorter video!")
+          |> redirect(to: Routes.upload_path(conn, :new))
+
+      {:error, :file_not_compressed} ->
+        conn
+        |> put_flash(:error, "Was not able to compress the file!")
+        |> redirect(to: Routes.upload_path(conn, :new))
+
+      {:error, :invalid_file_type} ->
+        conn
+        |> put_flash(:error, "Invalid file type!")
+        |> redirect(to: Routes.upload_path(conn, :new))
 
       {:error, :file_not_saved} ->
         conn

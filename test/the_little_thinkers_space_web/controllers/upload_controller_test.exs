@@ -138,10 +138,14 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
       conn: conn,
       admin: admin
     } do
+      target_path = setup_video_file("test/support/IMG_5257.MOV")
+      plug = Map.get(@create_video_attrs, :upload) |> Map.put(:path, target_path)
+      new_video_attrs = Map.put(@create_video_attrs, :upload, plug)
+
       conn =
         conn
         |> log_in_user(admin)
-        |> post(Routes.upload_path(conn, :create), upload: @create_video_attrs)
+        |> post(Routes.upload_path(conn, :create), upload: new_video_attrs)
 
       assert %{id: id} = redirected_params(conn)
       assert redirected_to(conn) == Routes.upload_path(conn, :show, id)
@@ -159,7 +163,8 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
         |> log_in_user(admin)
         |> post(Routes.upload_path(conn, :create), upload: @invalid_attrs)
 
-      assert html_response(conn, 200) =~ "New Upload"
+      assert html_response(conn, 302) =~
+               "<html><body>You are being <a href=\"/uploads/new\">redirected</a>.</body></html>"
     end
 
     test "redirects to home when user is logged in but no Admin", %{conn: conn, user: user} do
@@ -315,5 +320,26 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
   defp create_upload(_) do
     upload = upload_fixture()
     %{upload: upload}
+  end
+
+  defp setup_video_file(path) do
+    target_dir = set_target_dir("priv/static/uploads/test")
+    file_name = Path.basename(path)
+    target_path = "#{target_dir}/#{file_name}"
+    File.copy(path, target_path)
+    target_path
+  end
+
+  defp set_target_dir(path) do
+    case File.mkdir_p(path) do
+      :ok ->
+        path
+
+      {:error, :eexist} ->
+        path
+
+      {:error, error} ->
+        raise "Could not create target dir for create video test: #{inspect(error)}"
+    end
   end
 end

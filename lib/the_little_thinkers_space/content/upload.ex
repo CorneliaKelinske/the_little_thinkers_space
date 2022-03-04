@@ -30,7 +30,6 @@ defmodule TheLittleThinkersSpace.Content.Upload do
     field :orientation, :string
     field :path, :string
     belongs_to :user, User
-  
 
     timestamps()
   end
@@ -43,6 +42,7 @@ defmodule TheLittleThinkersSpace.Content.Upload do
       message: "This box must not be empty!"
     )
     |> validate_inclusion(:file_type, @valid_file_types, message: "Wrong file type!")
+    |> unique_constraint(:path, message: "This file has already been uploaded!")
   end
 
   def authorize(_, %User{role: "Admin"}, _), do: :ok
