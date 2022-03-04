@@ -142,6 +142,11 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
         |> put_flash(:error, "You are not allowed to do this!")
         |> redirect(to: Routes.page_path(conn, :home))
 
+      {:error, %Ecto.Changeset{}} ->
+        conn
+        |> put_flash(:error, "Unable to remove database entry!")
+        |> redirect(to: Routes.upload_path(conn, :index))
+
       {:error, _reason} ->
         conn
         |> put_flash(:error, "Unable to delete file!")

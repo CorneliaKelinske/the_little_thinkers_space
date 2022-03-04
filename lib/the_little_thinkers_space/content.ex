@@ -4,7 +4,15 @@ defmodule TheLittleThinkersSpace.Content do
   """
 
   import Ecto.Query, warn: false
-  alias TheLittleThinkersSpace.{Accounts, Content.Upload, DataPath, ImageCacher, Repo, UploadPathsHelper}
+
+  alias TheLittleThinkersSpace.{
+    Accounts,
+    Content.Upload,
+    DataPath,
+    ImageCacher,
+    Repo,
+    UploadPathsHelper
+  }
 
   @doc """
   Returns the list of uploads.
@@ -124,5 +132,4 @@ defmodule TheLittleThinkersSpace.Content do
     full_delete_path = "#{delete_path}#{path}"
     File.rm(full_delete_path)
   end
-
 end
