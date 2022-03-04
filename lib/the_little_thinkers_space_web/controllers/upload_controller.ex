@@ -1,7 +1,14 @@
 defmodule TheLittleThinkersSpaceWeb.UploadController do
   use TheLittleThinkersSpaceWeb, :controller
 
-  alias TheLittleThinkersSpace.{Content, Content.Upload, FileCompressor, FileSizeChecker, UploadHandler}
+  alias TheLittleThinkersSpace.{
+    Content,
+    Content.Upload,
+    FileCompressor,
+    FileSizeChecker,
+    UploadHandler,
+    UploadPathsHelper
+  }
 
   action_fallback TheLittleThinkersSpaceWeb.FallbackController
 
@@ -23,17 +30,16 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     user = conn.assigns.current_user
 
     with :ok <- Bodyguard.permit(Upload, :create, user, upload_params),
-         {:ok, upload_plug} <- FileSizeChecker.is_small_enough?(upload_plug),
+         {:ok, upload_plug} <- FileSizeChecker.small_enough?(upload_plug),
          {:ok, upload_plug} <- FileCompressor.compress_file(upload_plug),
          {:ok, storage_path} <- UploadHandler.store_upload(upload_plug, user.id),
-         {:ok, show_path} <- UploadHandler.create_show_path(storage_path),
-         {:ok, attrs} <- UploadHandler.parse_upload_params(upload_params, show_path),
+         {:ok, show_path} <- UploadPathsHelper.show_path(storage_path),
+         {:ok, attrs} <- parse_upload_params(upload_params, show_path),
          {:ok, upload} <- Content.create_upload(user, attrs) do
       conn
       |> put_flash(:info, "File uploaded successfully.")
       |> redirect(to: Routes.upload_path(conn, :show, upload))
     else
-
       {:error, %Ecto.Changeset{} = changeset} ->
         conn
         |> put_flash(:error, "Oops, something went wrong!")
@@ -49,10 +55,10 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
         |> put_flash(:error, "You are not allowed to do this!")
         |> redirect(to: Routes.page_path(conn, :home))
 
-        {:error, :file_too_big} ->
-          conn
-          |> put_flash(:error, "This file is too big! Try to upload a shorter video!")
-          |> redirect(to: Routes.upload_path(conn, :new))
+      {:error, :file_too_big} ->
+        conn
+        |> put_flash(:error, "This file is too big! Try to upload a shorter video!")
+        |> redirect(to: Routes.upload_path(conn, :new))
 
       {:error, :file_not_compressed} ->
         conn
@@ -86,8 +92,8 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     user = conn.assigns.current_user
 
     with :ok <- Bodyguard.permit(Upload, :edit, user, id) do
-      upload = Content.get_upload!(id)
-      upload_name = Path.basename(upload.path)
+      %Upload{path: path} = upload = Content.get_upload!(id)
+      upload_name = Path.basename(path)
       changeset = Content.change_upload(upload)
       render(conn, "edit.html", upload: upload, upload_name: upload_name, changeset: changeset)
     end
@@ -97,8 +103,8 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     user = conn.assigns.current_user
 
     with :ok <- Bodyguard.permit(Upload, :update, user, %{}) do
-      upload = Content.get_upload!(id)
-      upload_name = Path.basename(upload.path)
+      %Upload{path: path} = upload = Content.get_upload!(id)
+      upload_name = Path.basename(path)
 
       case Content.update_upload(upload, upload_params) do
         {:ok, upload} ->
@@ -138,5 +144,29 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
         |> put_flash(:error, "Unable to delete file!")
         |> redirect(to: Routes.upload_path(conn, :index))
     end
+  end
+
+  defp parse_upload_params(
+         %{
+           "title" => title,
+           "description" => description,
+           "orientation" => orientation,
+           "upload" => %Plug.Upload{content_type: content_type}
+         },
+         show_path
+       ) do
+    attrs = %{
+      "path" => show_path,
+      "title" => title,
+      "description" => description,
+      "orientation" => orientation,
+      "file_type" => content_type
+    }
+
+    {:ok, attrs}
+  end
+
+  defp parse_upload_params(_, _) do
+    {:error, :file_not_uploaded}
   end
 end

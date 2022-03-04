@@ -9,14 +9,10 @@ defmodule TheLittleThinkersSpace.ImageCacher do
   alias TheLittleThinkersSpace.Content.Upload
 
   def get_upload_from_cache_or_repo(id, fun) when is_integer(id) do
-    case ConCache.get(:upload_cache, id) do
-      nil ->
-        upload = fun.(id)
-        maybe_save_to_cache(id, upload)
-        upload
-
-      upload ->
-        upload
+    with nil <- ConCache.get(:upload_cache, id) do
+      id
+      |> fun.()
+      |> maybe_save_to_cache()
     end
   end
 
@@ -31,16 +27,11 @@ defmodule TheLittleThinkersSpace.ImageCacher do
     end
   end
 
-  def maybe_save_to_cache(id, %Upload{file_type: file_type} = upload) do
+  def maybe_save_to_cache(%Upload{id: id, file_type: file_type} = upload) do
     if file_type in Upload.valid_image_types() do
       ConCache.put(:upload_cache, id, upload)
-    else
-      :ok
     end
-  end
 
-  def maybe_save_to_cache(%Upload{id: id} = upload) do
-    maybe_save_to_cache(id, upload)
     upload
   end
 end

@@ -3,9 +3,10 @@ defmodule TheLittleThinkersSpace.FileSizeChecker do
   This module ensures that files that are too big to be processed cannot be selcted for upload
   """
 
-  def is_small_enough?(%Plug.Upload{path: path} = plug) do
+  def small_enough?(%Plug.Upload{path: path} = plug) do
     {:ok, %{size: size}} = File.stat(path)
-    if size <= 8000000 do
+
+    if size <= 8_000_000 do
       {:ok, plug}
     else
       {:error, :file_too_big}

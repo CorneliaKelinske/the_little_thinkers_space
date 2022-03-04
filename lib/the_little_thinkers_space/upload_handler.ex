@@ -27,32 +27,4 @@ defmodule TheLittleThinkersSpace.UploadHandler do
       true -> :ok
     end
   end
-
-  def create_show_path(storage_path) do
-    UploadPathsHelper.show_path(storage_path)
-  end
-
-  def parse_upload_params(
-        %{
-          "title" => title,
-          "description" => description,
-          "orientation" => orientation,
-          "upload" => %Plug.Upload{content_type: content_type}
-        },
-        show_path
-      ) do
-    attrs = %{
-      "path" => show_path,
-      "title" => title,
-      "description" => description,
-      "orientation" => orientation,
-      "file_type" => content_type
-    }
-
-    {:ok, attrs}
-  end
-
-  def parse_upload_params(_, _) do
-    {:error, :file_not_uploaded}
-  end
 end
