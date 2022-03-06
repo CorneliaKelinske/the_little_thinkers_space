@@ -52,7 +52,7 @@ defmodule TheLittleThinkersSpace.Content do
 
   def get_upload(id), do: Repo.get(Upload, id)
 
-  def store_upload(%Plug.Upload{filename: filename, path: path}, user_id) do
+  def store_file(%Plug.Upload{filename: filename, path: path}, user_id) do
     maybe_create_user_directory(user_id)
     storage_path = "#{DataPath.set_data_path()}/#{user_id}/#{filename}"
 
@@ -102,9 +102,11 @@ defmodule TheLittleThinkersSpace.Content do
 
   """
   def delete_upload(%Upload{id: id, path: path} = upload) do
-    ImageCacher.delete_from_cache(id)
-    delete_upload_file(path)
-    Repo.delete(upload)
+    with :ok <- ImageCacher.delete_from_cache(id),
+    :ok <- delete_upload_file(path),
+    {:ok, upload} <- Repo.delete(upload) do
+      {:ok, upload}
+    end
   end
 
   @doc """

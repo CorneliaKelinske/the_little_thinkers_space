@@ -31,7 +31,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     with :ok <- Bodyguard.permit(Upload, :create, user, upload_params),
          {:ok, upload_plug} <- FileSizeChecker.small_enough?(upload_plug),
          {:ok, upload_plug} <- FileCompressor.compress_file(upload_plug),
-         {:ok, storage_path} <- Content.store_upload(upload_plug, user.id),
+         {:ok, storage_path} <- Content.store_file(upload_plug, user.id),
          {:ok, show_path} <- UploadPathsHelper.show_path(storage_path),
          {:ok, attrs} <- parse_upload_params(upload_params, show_path),
          {:ok, upload} <- Content.create_upload(user, attrs) do
