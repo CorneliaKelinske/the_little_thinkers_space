@@ -33,11 +33,11 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
          {:ok, upload_plug} <- FileSizeChecker.small_enough?(upload_plug),
          {:ok, upload_plug} <- FileCompressor.compress_file(upload_plug),
          {:ok, storage_path} <- Content.store_file(upload_plug, user.id),
-         {:ok, thumbnail_path} <- Thumbnailer.create_thumbnail(upload_plug, storage_path) |> IO.inspect(label: "thumbnail_path", limit: :infinity, charlists: false),
+         {:ok, thumbnail_path} <- Thumbnailer.create_thumbnail(upload_plug, storage_path),
          {:ok, show_path} <- UploadPathsHelper.show_path(storage_path),
-         {:ok, thumbnail_show_path} <- UploadPathsHelper.thumbnail_show_path(thumbnail_path) |> IO.inspect(label: "thumbnail_show_path", limit: :infinity, charlists: false),
+         {:ok, thumbnail_show_path} <- UploadPathsHelper.thumbnail_show_path(thumbnail_path),
          {:ok, attrs} <- parse_upload_params(upload_params, show_path, thumbnail_show_path),
-         {:ok, upload} <- Content.create_upload(user, attrs) |> IO.inspect(label: "upload", limit: :infinity, charlists: false) do
+         {:ok, upload} <- Content.create_upload(user, attrs) do
       conn
       |> put_flash(:info, "File uploaded successfully.")
       |> redirect(to: Routes.upload_path(conn, :show, upload))
