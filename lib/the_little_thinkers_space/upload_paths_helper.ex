@@ -45,7 +45,27 @@ defmodule TheLittleThinkersSpace.UploadPathsHelper do
         thumbnail_path
 
       _ ->
-        {:error, :no_delete_path}
+        {:error, :no_thumbnail_path}
+    end
+  end
+
+  def thumbnail_show_path(nil) do
+    {:ok, nil}
+  end
+
+  def thumbnail_show_path(path) do
+    case is_binary(path) do
+      true ->
+        thumbnail_show_path =
+          path
+          |> String.replace("app/lib/the_little_thinkers_space-0.1.0/", "")
+          |> String.replace("priv/static/", "/")
+          |> String.replace("//", "/")
+
+        {:ok, thumbnail_show_path}
+
+      _ ->
+        {:error, :no_thumbnail_show_path}
     end
   end
 end

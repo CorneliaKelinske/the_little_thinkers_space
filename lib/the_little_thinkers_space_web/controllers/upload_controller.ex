@@ -33,10 +33,11 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
          {:ok, upload_plug} <- FileSizeChecker.small_enough?(upload_plug),
          {:ok, upload_plug} <- FileCompressor.compress_file(upload_plug),
          {:ok, storage_path} <- Content.store_file(upload_plug, user.id),
-         {:ok, thumbnail_path} <- Thumbnailer.create_thumbnail(upload_plug, storage_path),
+         {:ok, thumbnail_path} <- Thumbnailer.create_thumbnail(upload_plug, storage_path) |> IO.inspect(label: "thumbnail_path", limit: :infinity, charlists: false),
          {:ok, show_path} <- UploadPathsHelper.show_path(storage_path),
-         {:ok, attrs} <- parse_upload_params(upload_params, show_path),
-         {:ok, upload} <- Content.create_upload(user, attrs) do
+         {:ok, thumbnail_show_path} <- UploadPathsHelper.thumbnail_show_path(thumbnail_path) |> IO.inspect(label: "thumbnail_show_path", limit: :infinity, charlists: false),
+         {:ok, attrs} <- parse_upload_params(upload_params, show_path, thumbnail_show_path),
+         {:ok, upload} <- Content.create_upload(user, attrs) |> IO.inspect(label: "upload", limit: :infinity, charlists: false) do
       conn
       |> put_flash(:info, "File uploaded successfully.")
       |> redirect(to: Routes.upload_path(conn, :show, upload))
@@ -84,6 +85,11 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
       {:error, :no_show_path} ->
         conn
         |> put_flash(:error, "File not processed, please try again!")
+        |> redirect(to: Routes.upload_path(conn, :new))
+
+      {:error, :no_thumbnail_show_path} ->
+        conn
+        |> put_flash(:error, "Thumbnail not processed, please try again!")
         |> redirect(to: Routes.upload_path(conn, :new))
     end
   end
@@ -163,10 +169,11 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
            "orientation" => orientation,
            "upload" => %Plug.Upload{content_type: content_type}
          },
-         show_path
+         show_path, thumbnail_show_path
        ) do
     attrs = %{
       "path" => show_path,
+      "thumbnail" => thumbnail_show_path,
       "title" => title,
       "description" => description,
       "orientation" => orientation,
@@ -176,7 +183,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     {:ok, attrs}
   end
 
-  defp parse_upload_params(_, _) do
+  defp parse_upload_params(_, _, _) do
     {:error, :file_not_uploaded}
   end
 end
