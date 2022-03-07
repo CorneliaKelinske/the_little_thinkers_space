@@ -13,8 +13,8 @@ defmodule TheLittleThinkersSpace.Thumbnailer do
     Thumbnex.create_thumbnail(
       path,
       thumbnail_path,
-      max_width: 320,
-      max_height: 180
+      maximum_width: 320,
+      maximum_height: 320
     )
 
     {:ok, thumbnail_path}
