@@ -134,8 +134,7 @@ defmodule TheLittleThinkersSpace.Content do
   defp delete_upload_file(path) do
     delete_path = UploadPathsHelper.delete_path(DataPath.set_data_path())
 
-    full_delete_path =
-      "#{delete_path}#{path}"
+    full_delete_path = "#{delete_path}#{path}"
 
     File.rm(full_delete_path)
   end

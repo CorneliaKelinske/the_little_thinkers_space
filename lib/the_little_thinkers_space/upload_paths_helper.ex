@@ -36,4 +36,16 @@ defmodule TheLittleThinkersSpace.UploadPathsHelper do
         {:error, :no_delete_path}
     end
   end
+
+  def thumbnail_path(path) do
+    case is_binary(path) do
+      true ->
+        extension = Path.extname(path)
+        thumbnail_path = String.replace(path, extension, ".jpg")
+        thumbnail_path
+
+      _ ->
+        {:error, :no_delete_path}
+    end
+  end
 end
