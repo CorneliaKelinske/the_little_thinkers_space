@@ -14,7 +14,6 @@ defmodule TheLittleThinkersSpace.ContentFixtures do
     path: "/test/support/Lifting.jpg"
   }
 
-
   @doc """
   Generate a upload.
   """
@@ -24,5 +23,4 @@ defmodule TheLittleThinkersSpace.ContentFixtures do
     {:ok, upload} = TheLittleThinkersSpace.Content.create_upload(user, attrs)
     upload
   end
-
 end

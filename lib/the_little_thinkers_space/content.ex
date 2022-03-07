@@ -102,9 +102,11 @@ defmodule TheLittleThinkersSpace.Content do
 
   """
   def delete_upload(%Upload{id: id, path: path} = upload) do
+    IO.inspect(path)
+
     with :ok <- ImageCacher.delete_from_cache(id),
-    :ok <- delete_upload_file(path),
-    {:ok, upload} <- Repo.delete(upload) do
+         :ok <- delete_upload_file(path),
+         {:ok, upload} <- Repo.delete(upload) do
       {:ok, upload}
     end
   end
@@ -131,7 +133,10 @@ defmodule TheLittleThinkersSpace.Content do
 
   defp delete_upload_file(path) do
     delete_path = UploadPathsHelper.delete_path(DataPath.set_data_path())
-    full_delete_path = "#{delete_path}#{path}"
+
+    full_delete_path =
+      "#{delete_path}#{path}"
+
     File.rm(full_delete_path)
   end
 end
