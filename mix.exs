@@ -71,7 +71,8 @@ defmodule TheLittleThinkersSpace.MixProject do
       {:rexbug, ">= 1.0.0"},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:doctor, "~> 0.18.0", only: :dev},
-      {:ffmpex, "~> 0.10.0"}
+      {:ffmpex, "~> 0.9.0"},
+      {:thumbnex, "~> 0.4.0"}
     ]
   end
 
