@@ -79,7 +79,9 @@ defmodule TheLittleThinkersSpace.ContentTest do
     end
 
     test "delete_upload/1 deletes the upload" do
-      upload = upload_fixture()
+      target_path = setup_delete_file("test/support/Lifting.jpg")
+      delete_path = setup_delete_path(target_path)
+      upload = Map.put(upload_fixture(), :path, delete_path)
       assert {:ok, %Upload{}} = Content.delete_upload(upload)
       assert_raise Ecto.NoResultsError, fn -> Content.get_upload!(upload.id) end
     end
@@ -87,6 +89,38 @@ defmodule TheLittleThinkersSpace.ContentTest do
     test "change_upload/1 returns a upload changeset" do
       upload = upload_fixture()
       assert %Ecto.Changeset{} = Content.change_upload(upload)
+    end
+  end
+
+  defp setup_delete_file(path) do
+    target_dir = set_target_dir("priv/static/uploads/test")
+    file_name = Path.basename(path)
+    target_path = "#{target_dir}/#{file_name}"
+    File.copy(path, target_path)
+    target_path
+  end
+
+  defp set_target_dir(path) do
+    case File.mkdir_p(path) do
+      :ok ->
+        path
+
+      {:error, :eexist} ->
+        path
+
+      {:error, error} ->
+        raise "Could not create target dir for create video test: #{inspect(error)}"
+    end
+  end
+
+  defp setup_delete_path(path) do
+    case is_binary(path) do
+      true ->
+        delete_path = String.replace(path, "priv/static", "")
+        delete_path
+
+      _ ->
+        {:error, :no_delete_path}
     end
   end
 end

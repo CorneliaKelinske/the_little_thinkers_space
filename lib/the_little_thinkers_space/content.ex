@@ -4,7 +4,15 @@ defmodule TheLittleThinkersSpace.Content do
   """
 
   import Ecto.Query, warn: false
-  alias TheLittleThinkersSpace.{Accounts, Content.Upload, ImageCacher, Repo}
+
+  alias TheLittleThinkersSpace.{
+    Accounts,
+    Content.Upload,
+    DataPath,
+    ImageCacher,
+    Repo,
+    UploadPathsHelper
+  }
 
   @doc """
   Returns the list of uploads.
@@ -43,6 +51,16 @@ defmodule TheLittleThinkersSpace.Content do
   end
 
   def get_upload(id), do: Repo.get(Upload, id)
+
+  def store_file(%Plug.Upload{filename: filename, path: path}, user_id) do
+    maybe_create_user_directory(user_id)
+    storage_path = "#{DataPath.set_data_path()}/#{user_id}/#{filename}"
+
+    case File.cp(path, "#{storage_path}") do
+      :ok -> {:ok, storage_path}
+      {:error, _} -> {:error, :file_not_saved}
+    end
+  end
 
   def create_upload(%Accounts.User{} = user, attrs \\ %{}) do
     %Upload{}
@@ -83,9 +101,14 @@ defmodule TheLittleThinkersSpace.Content do
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_upload(%Upload{} = upload) do
-    ImageCacher.delete_from_cache(upload.id)
-    Repo.delete(upload)
+  def delete_upload(%Upload{id: id, path: path} = upload) do
+    IO.inspect(path)
+
+    with :ok <- ImageCacher.delete_from_cache(id),
+         :ok <- delete_upload_file(path),
+         {:ok, upload} <- Repo.delete(upload) do
+      {:ok, upload}
+    end
   end
 
   @doc """
@@ -99,5 +122,21 @@ defmodule TheLittleThinkersSpace.Content do
   """
   def change_upload(%Upload{} = upload, attrs \\ %{}) do
     Upload.changeset(upload, attrs)
+  end
+
+  defp maybe_create_user_directory(user_id) do
+    case File.exists?("#{DataPath.set_data_path()}/#{user_id}") do
+      false -> File.mkdir("#{DataPath.set_data_path()}/#{user_id}")
+      true -> :ok
+    end
+  end
+
+  defp delete_upload_file(path) do
+    delete_path = UploadPathsHelper.delete_path(DataPath.set_data_path())
+
+    full_delete_path =
+      "#{delete_path}#{path}"
+
+    File.rm(full_delete_path)
   end
 end

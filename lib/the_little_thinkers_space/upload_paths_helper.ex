@@ -25,9 +25,9 @@ defmodule TheLittleThinkersSpace.UploadPathsHelper do
       true ->
         delete_path =
           path
-          |> String.replace("uploads/development", "")
-          |> String.replace("uploads/test", "")
-          |> String.replace("data", "")
+          |> String.replace("/uploads/development", "")
+          |> String.replace("/uploads/test", "")
+          |> String.replace("/data", "")
           |> String.replace("//", "/")
 
         delete_path
