@@ -36,8 +36,8 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
          {:ok, thumbnail_path} <- Thumbnailer.create_thumbnail(upload_plug, storage_path),
          {:ok, show_path} <- UploadPathsHelper.show_path(storage_path),
          {:ok, thumbnail_show_path} <- UploadPathsHelper.thumbnail_show_path(thumbnail_path),
-         {:ok, attrs} <- parse_upload_params(upload_params, show_path, thumbnail_show_path) |> IO.inspect(label: "attributes", limit: :infinity, charlists: false),
-         {:ok, upload} <- Content.create_upload(user, attrs) |> IO.inspect(label: "upload", limit: :infinity, charlists: false) do
+         {:ok, attrs} <- parse_upload_params(upload_params, show_path, thumbnail_show_path),
+         {:ok, upload} <- Content.create_upload(user, attrs) do
       conn
       |> put_flash(:info, "File uploaded successfully.")
       |> redirect(to: Routes.upload_path(conn, :show, upload))
@@ -90,6 +90,11 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
       {:error, :no_thumbnail_show_path} ->
         conn
         |> put_flash(:error, "Thumbnail not processed, please try again!")
+        |> redirect(to: Routes.upload_path(conn, :new))
+
+      {:error, :no_thumbnail_path} ->
+        conn
+        |> put_flash(:error, "Thumbnail could not be created, please try again!")
         |> redirect(to: Routes.upload_path(conn, :new))
     end
   end
@@ -169,7 +174,8 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
            "orientation" => orientation,
            "upload" => %Plug.Upload{content_type: content_type}
          },
-         show_path, thumbnail_show_path
+         show_path,
+         thumbnail_show_path
        ) do
     attrs = %{
       "path" => show_path,

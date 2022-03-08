@@ -132,7 +132,6 @@ defmodule TheLittleThinkersSpace.Content do
     end
   end
 
-
   defp delete_file(nil) do
     :ok
   end

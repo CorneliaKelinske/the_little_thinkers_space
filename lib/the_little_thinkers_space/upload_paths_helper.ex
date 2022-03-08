@@ -42,7 +42,7 @@ defmodule TheLittleThinkersSpace.UploadPathsHelper do
       true ->
         extension = Path.extname(path)
         thumbnail_path = String.replace(path, extension, ".jpg")
-        thumbnail_path
+        {:ok, thumbnail_path}
 
       _ ->
         {:error, :no_thumbnail_path}
