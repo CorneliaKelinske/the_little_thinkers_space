@@ -9,7 +9,7 @@ defmodule TheLittleThinkersSpace.FileCompressor do
 
   alias FFmpex
   alias Mogrify
-  alias TheLittleThinkersSpace.Content.Upload
+  alias TheLittleThinkersSpace.{Content.Upload, FileSizeChecker}
 
   @valid_image_types Upload.valid_image_types()
   @valid_video_types Upload.valid_video_types()
@@ -28,12 +28,15 @@ defmodule TheLittleThinkersSpace.FileCompressor do
     output_path = "#{path}_output#{filename}"
 
     with :ok <- File.rename(path, renamed_path),
-         {:ok, _output} <- compress_video(renamed_path, output_path) do
+         {:ok, _output} <- compress_video(renamed_path, output_path),
+         true <- FileSizeChecker.get_file_size(output_path) < FileSizeChecker.get_file_size(renamed_path) do
       {:ok, %Plug.Upload{plug | path: output_path}}
     else
       {:error, error} ->
         Logger.error("#{inspect(__MODULE__)}: Could not convert video; #{inspect(error)}")
         {:error, :file_not_compressed}
+
+      false -> {:ok, %Plug.Upload{plug | path: renamed_path}}
     end
   end
 
@@ -49,7 +52,7 @@ defmodule TheLittleThinkersSpace.FileCompressor do
     |> Mogrify.save()
   end
 
-  defp compress_video(renamed_path, output_path) do
+  def compress_video(renamed_path, output_path) do
     FFmpex.new_command()
     |> FFmpex.add_input_file(renamed_path)
     |> FFmpex.add_output_file(output_path)
