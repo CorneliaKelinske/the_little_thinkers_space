@@ -102,8 +102,6 @@ defmodule TheLittleThinkersSpace.Content do
 
   """
   def delete_upload(%Upload{id: id, path: path, thumbnail: thumbnail} = upload) do
-    IO.inspect(path)
-
     with :ok <- ImageCacher.delete_from_cache(id),
          :ok <- delete_file(path),
          :ok <- delete_file(thumbnail),

@@ -1,7 +1,9 @@
 defmodule TheLittleThinkersSpace.Thumbnailer do
-  alias TheLittleThinkersSpace.UploadPathsHelper
+  @doc """
+  This module creates a thumbnail image from the uploaded videos
+  """
 
-  alias TheLittleThinkersSpace.Content.Upload
+  alias TheLittleThinkersSpace.{Content.Upload, UploadPathsHelper}
 
   @valid_image_types Upload.valid_image_types()
   @valid_video_types Upload.valid_video_types()
