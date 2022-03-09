@@ -17,9 +17,9 @@ defmodule TheLittleThinkersSpace.FileSizeChecker do
     end
   end
 
-  def get_file_size(path) do
+  def file_size(path) do
     case File.stat(path) do
-      {:ok, %{size: size}} -> size
+      {:ok, %{size: size}} -> {:ok, size}
       _ -> {:error, :cannot_stat_file}
     end
   end
