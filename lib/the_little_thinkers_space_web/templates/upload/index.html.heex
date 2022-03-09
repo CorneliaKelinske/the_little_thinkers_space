@@ -10,9 +10,7 @@
         <%= if upload.file_type in Upload.valid_image_types do %>
         <img src={Routes.static_path(@conn, upload.path)} class="w-[320px] h-[180px] object-cover rounded-lg">
         <% else %>
-        <video class="w-[320px] h-[180px] object-cover rounded-lg" controls>
-          <source src={Routes.static_path(@conn, upload.path)} />
-        </video>
+        <img src={Routes.static_path(@conn, upload.thumbnail)} class="w-[320px] h-[180px] object-cover rounded-lg">
         <% end %>
       </div>
       <div class="p-4 antialiased text-gray-900">

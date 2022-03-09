@@ -29,6 +29,7 @@ defmodule TheLittleThinkersSpace.Content.Upload do
     field :title, :string
     field :orientation, :string
     field :path, :string
+    field :thumbnail, :string
     belongs_to :user, User
 
     timestamps()
@@ -37,12 +38,13 @@ defmodule TheLittleThinkersSpace.Content.Upload do
   @doc false
   def changeset(upload, attrs) do
     upload
-    |> cast(attrs, @required_attrs)
+    |> cast(attrs, [:thumbnail | @required_attrs])
     |> validate_required(@required_attrs,
       message: "This box must not be empty!"
     )
     |> validate_inclusion(:file_type, @valid_file_types, message: "Wrong file type!")
     |> unique_constraint(:path, message: "This file has already been uploaded!")
+    |> unique_constraint(:thumbnail, message: "Thumbnail has already been created!")
   end
 
   def authorize(_, %User{role: "Admin"}, _), do: :ok
