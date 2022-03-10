@@ -34,6 +34,8 @@ jobs:
           toolchain: stable
           override: true
       - run: mix deps.get
+      - run: mkdir priv/static/uploads
+      - run: mkdir priv/static/uploads/test
       - run: MIX_ENV=test mix coveralls.json
       - name: Upload to codecov.io
         uses: codecov/codecov-action@v1
