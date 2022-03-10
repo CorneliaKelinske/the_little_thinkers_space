@@ -1,5 +1,5 @@
 defmodule TheLittleThinkersSpace.Thumbnailer do
-  @doc """
+  @moduledoc """
   This module creates a thumbnail image from the uploaded videos
   """
 
