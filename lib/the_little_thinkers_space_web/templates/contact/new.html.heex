@@ -9,7 +9,7 @@
                     <div>
                         <%= label f, :name, class: "block text-gray-700 font-bold text-xl" %>
                         <div class="mt-1 pb-4">
-                            <%= text_input f, :name, placeholder: "Your name", 
+                            <%= text_input f, :name, placeholder: "Your name",
                         class: "rounded w-full border-1 border-gray-300 text-gray-700 focus:outline-none focus:border-sky-900" %>
                         </div>
                         <%= error_tag f, :name %>
@@ -18,8 +18,8 @@
                     <div>
                         <%= label f, :email, class: "block text-gray-700 font-bold text-xl" %>
                         <div class="mt-1 pb-4">
-                            <%= email_input f, :from_email, placeholder:                      
-                        "Your email", 
+                            <%= email_input f, :from_email, placeholder:
+                        "Your email",
                         class: "rounded w-full border-1 border-gray-300 text-gray-700 focus:outline-none focus:border-sky-900" %>
                         </div>
 
@@ -29,7 +29,7 @@
                     <div>
                         <%= label f, :subject, class: "block text-gray-700 font-bold text-xl" %>
                         <div class="mt-1 pb-4">
-                            <%= text_input f, :subject, placeholder: "What is the subject of your message?", 
+                            <%= text_input f, :subject, placeholder: "What is the subject of your message?",
                         class: "rounded w-full border-1 border-gray-300 text-gray-700 focus:outline-none focus:border-sky-900" %>
                         </div>
                         <%= error_tag f, :subject %>
@@ -38,7 +38,7 @@
                     <div>
                         <%= label f, :message, class: "block text-gray-700 font-bold text-xl" %>
                         <div class="mt-1 pb-8">
-                            <%= textarea f, :message, placeholder: "Your message", 
+                            <%= textarea f, :message, placeholder: "Your message",
                         class: "rounded w-full border-1 border-gray-300 text-gray-700 focus:outline-none focus:border-sky-900" %>
                         </div>
                         <%= error_tag f, :message %>
@@ -47,7 +47,7 @@
                     <div>
                         <%= label f, :not_a_robot, class: "block text-gray-700 font-bold text-xl" %>
                         <div class="mt-1 pb-4">
-                            <%= text_input f, :not_a_robot, placeholder: "Please enter the letters shown below?", 
+                            <%= text_input f, :not_a_robot, placeholder: "Please enter the letters shown below?",
                         class: "rounded w-full border-1 border-gray-300 text-gray-700 focus:outline-none focus:border-sky-900" %>
                         </div>
                     </div>
@@ -55,8 +55,8 @@
                     <%= text_input f, :form_id, type: "text", hidden: true, value: @id %>
                     <%= text_input f, :image, type: "binary", hidden: true, value: @captcha_image %>
 
-                    <div class="pb-8">                   
-                    <%= display_captcha(@captcha_image) %>                   
+                    <div class="pb-8">
+                    <%= display_captcha(@captcha_image) %>
                     </div>
 
                     <div>
