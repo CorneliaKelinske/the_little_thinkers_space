@@ -1,5 +1,8 @@
 # TheLittleThinkersSpace
 
+[![Build Status](https://github.com/corneliakelinske/the_little_thinkers_space/workflows/Coveralls/badge.svg)](https://github.com/corneliakelinske/the_little_thinkers_space) 
+[![Build Status](https://github.com/corneliakelinske/the_little_thinkers_space/workflows/Credo/badge.svg)](https://github.com/corneliakelinske/the_little_thinkers_space) 
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
