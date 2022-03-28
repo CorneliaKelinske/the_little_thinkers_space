@@ -9,7 +9,7 @@ defmodule TheLittleThinkersSpace.Email.Contact do
   @doc "Ensure that data is valid before it is sent"
   def changeset(attrs) do
     {%Content{}, Content.types()}
-    |> cast(attrs, [:from_email, :name, :subject, :message, :image, :answer, :not_a_robot])
+    |> cast(attrs, [:from_email, :name, :subject, :message, :answer, :not_a_robot])
     |> validate_required([:from_email, :name, :subject, :message],
       message: "This box must not be empty!"
     )

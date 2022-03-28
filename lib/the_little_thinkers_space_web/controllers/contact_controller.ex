@@ -1,11 +1,11 @@
 defmodule TheLittleThinkersSpaceWeb.ContactController do
   use TheLittleThinkersSpaceWeb, :controller
-  alias TheLittleThinkersSpace.Email.{Contact, EmailBuilder, SecretAnswer}
-  alias TheLittleThinkersSpace.{Mailer, RustCaptcha}
+  alias TheLittleThinkersSpace.Email.{Contact, EmailBuilder}
+  alias TheLittleThinkersSpace.Mailer
 
   def new(conn, _params) do
-    with {captcha_text, captcha_image} <- RustCaptcha.generate() do
-      id = SecretAnswer.check_in(captcha_text)
+    with {captcha_text, captcha_image} <- ExRoboCop.create_captcha() do
+      id = ExRoboCop.create_form_id(captcha_text)
 
       render(conn, "new.html",
         changeset: Contact.changeset(%{}),
@@ -18,7 +18,7 @@ defmodule TheLittleThinkersSpaceWeb.ContactController do
   def create(conn, %{"content" => %{"not_a_robot" => text, "form_id" => form_id} = message_params}) do
     changeset = Contact.changeset(message_params)
 
-    with :ok <- SecretAnswer.check_out({text, form_id}),
+    with :ok <- ExRoboCop.not_a_robot?({text, form_id}),
          {:ok, content} <- Ecto.Changeset.apply_action(changeset, :insert),
          %Swoosh.Email{} = message <- EmailBuilder.create_email(content),
          {:ok, _map} <- Mailer.deliver(message) do
@@ -48,8 +48,8 @@ defmodule TheLittleThinkersSpaceWeb.ContactController do
   end
 
   defp render_page(conn, changeset, message_type, message) do
-    with {captcha_text, captcha_image} <- RustCaptcha.generate() do
-      id = SecretAnswer.check_in(captcha_text)
+    with {captcha_text, captcha_image} <- ExRoboCop.create_captcha() do
+      id = ExRoboCop.create_form_id(captcha_text)
 
       conn
       |> put_flash(message_type, message)

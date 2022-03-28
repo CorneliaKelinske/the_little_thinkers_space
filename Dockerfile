@@ -61,7 +61,6 @@ RUN mix assets.deploy
 
 # Compile the release
 COPY lib lib
-COPY native native
 
 RUN mix compile
 

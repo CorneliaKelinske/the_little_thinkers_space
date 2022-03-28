@@ -53,8 +53,7 @@
                     </div>
 
                     <%= text_input f, :form_id, type: "text", hidden: true, value: @id %>
-                    <%= text_input f, :image, type: "binary", hidden: true, value: @captcha_image %>
-
+                   
                     <div class="pb-8">
                     <%= display_captcha(@captcha_image) %>
                     </div>
