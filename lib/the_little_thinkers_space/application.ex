@@ -16,7 +16,7 @@ defmodule TheLittleThinkersSpace.Application do
       {Phoenix.PubSub, name: TheLittleThinkersSpace.PubSub},
       # Start the Endpoint (http/https)
       TheLittleThinkersSpaceWeb.Endpoint,
-      {TheLittleThinkersSpace.Email.SecretAnswer, %{}},
+      ExRoboCop.start(),
       # Start the cache
       {ConCache,
        [
