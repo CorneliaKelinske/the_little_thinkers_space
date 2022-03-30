@@ -3,7 +3,7 @@
 [![Build Status](https://github.com/corneliakelinske/the_little_thinkers_space/workflows/Coveralls/badge.svg)](https://github.com/corneliakelinske/the_little_thinkers_space) 
 [![Build Status](https://github.com/corneliakelinske/the_little_thinkers_space/workflows/Credo/badge.svg)](https://github.com/corneliakelinske/the_little_thinkers_space)
 [![codecov](https://codecov.io/gh/corneliakelinske/the_little_thinkers_space/branch/main/graph/badge.svg?token=P3O42SF7VJ)](https://codecov.io/gh/corneliakelinske/the_little_thinkers_space)
-[![Build Status](https://github.com/corneliakelinske/the_little_thinkers_space/workflows/Dialyzer/badge.svg)](https://github.com/alanvardy/postex) 
+[![Build Status](https://github.com/corneliakelinske/the_little_thinkers_space/workflows/Dialyzer/badge.svg)](https://github.com/corneliakelinske/the_little_thinkers_space) 
 
 To start your Phoenix server:
 
