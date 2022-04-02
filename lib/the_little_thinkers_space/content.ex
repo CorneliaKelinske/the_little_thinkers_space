@@ -5,6 +5,8 @@ defmodule TheLittleThinkersSpace.Content do
 
   import Ecto.Query, warn: false
 
+  require Logger
+
   alias TheLittleThinkersSpace.{
     Accounts,
     Content.Upload,
@@ -124,9 +126,17 @@ defmodule TheLittleThinkersSpace.Content do
   end
 
   defp maybe_create_user_directory(user_id) do
-    case File.exists?("#{DataPath.set_data_path()}/#{user_id}") do
-      false -> File.mkdir("#{DataPath.set_data_path()}/#{user_id}")
-      true -> :ok
+    with false <- File.exists?("#{DataPath.set_data_path()}/#{user_id}"),
+         :ok <- File.mkdir("#{DataPath.set_data_path()}/#{user_id}") do
+      :ok
+    else
+      true ->
+        :ok
+
+      {:error, error} ->
+        Logger.error("""
+        Could not create directory with mkdir in #{inspect(__MODULE__)}, received atom: #{inspect(error)}
+        """)
     end
   end
 

@@ -36,3 +36,6 @@ npm-debug.log
 librustcaptcha.so 
 
 priv/static/uploads
+
+/dialyzer/*.plt
+/dialyzer/*.plt.hash

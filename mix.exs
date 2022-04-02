@@ -15,8 +15,14 @@ defmodule TheLittleThinkersSpace.MixProject do
         "coveralls.html": :test,
         "coveralls.lcov": :test
       ],
-
-     
+      dialyzer: [
+        plt_add_apps: [:ex_unit, :mix],
+        list_unused_filters: true,
+        plt_local_path: "dialyzer",
+        plt_core_path: "dialyzer",
+        ignore_warnings: "dialyzer/.dialyzer-ignore.exs",
+        flags: [:unmatched_returns]
+      ],
       compilers: [:gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
