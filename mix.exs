@@ -10,6 +10,10 @@ defmodule TheLittleThinkersSpace.MixProject do
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [
         coveralls: :test,
+        dialyzer: :test,
+        credo: :test,
+        doctor: :test,
+        check: :test,
         "coveralls.detail": :test,
         "coveralls.post": :test,
         "coveralls.html": :test,
@@ -66,21 +70,22 @@ defmodule TheLittleThinkersSpace.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:excoveralls, "~> 0.10", only: :test},
-      {:ex_check, "~> 0.14.0", only: [:dev], runtime: false},
-      {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:bodyguard, "~> 2.4"},
       {:uuid, "~> 1.1"},
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
       {:hackney, "~> 1.17"},
       {:mogrify, "~> 0.9.1"},
       {:con_cache, "~> 0.13"},
-      {:rexbug, ">= 1.0.0"},
-      {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
-      {:doctor, "~> 0.18.0", only: :dev},
       {:ffmpex, "~> 0.9.0"},
       {:thumbnex, "~> 0.4.0"},
-      {:ex_robo_cop, "~> 0.1.0"}
+      {:ex_robo_cop, "~> 0.1.0"},
+      # Tooling
+      {:rexbug, ">= 1.0.0"},
+      {:excoveralls, "~> 0.10", only: :test},
+      {:ex_check, "~> 0.14.0", only: :test, runtime: false},
+      {:credo, "~> 1.5", only: :test, runtime: false},
+      {:dialyxir, "~> 1.0", only: :test, runtime: false},
+      {:doctor, "~> 0.18.0", only: :test}
     ]
   end
 

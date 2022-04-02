@@ -1,7 +1,5 @@
 defmodule TheLittleThinkersSpaceWeb.ContactControllerTest do
   use TheLittleThinkersSpaceWeb.ConnCase
-  alias TheLittleThinkersSpace.Email.SecretAnswer
-  alias TheLittleThinkersSpace.RustCaptcha
 
   @valid_params %{
     from_email: "tester@test.com",
