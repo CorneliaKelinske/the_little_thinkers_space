@@ -32,7 +32,6 @@ defmodule TheLittleThinkersSpace.Accounts.User do
     timestamps()
   end
 
-
   @doc """
   A user changeset for registration.
 

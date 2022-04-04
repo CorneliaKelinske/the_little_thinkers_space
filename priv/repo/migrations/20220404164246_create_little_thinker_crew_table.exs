@@ -9,7 +9,7 @@ defmodule TheLittleThinkersSpace.Repo.Migrations.CreateLittleThinkerCrewTable do
       timestamps()
     end
 
-    create unique_index :little_thinker_crew, [:little_thinker_id, :crew_id]
-    create index :little_thinker_crew, :crew_id
+    create unique_index(:little_thinker_crew, [:little_thinker_id, :crew_id])
+    create index(:little_thinker_crew, :crew_id)
   end
 end
