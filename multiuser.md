@@ -43,12 +43,13 @@ Modify seeds to represent new table
 
 ## 4. Code Changes
 https://hexdocs.pm/ecto/self-referencing-many-to-many.html
-remove unique index on lt role
+
 
 
 - A crew can only view little thinkers that they are following on little_thinker_crew table
 - A crew can only view uploads with a user_id for a little thinker that they follow
 - A crew cannot upload files
+- A little thinker can only see their own uploads and the uploads of people they are following
 - A little thinker can upload files
 - A little thinker can see which crew is following them
 - A little thinker can follow others just like crew
@@ -58,3 +59,43 @@ Roles
 - Crew: Can follow people
 - Little thinker: Can do everything that crew can do, plus upload content
 - Admin: can do everything Little thinker can do, plus everything else
+
+
+
+1. A little thinker can see who is following them (under crew)
+- write a function get crew 
+- have a module for calls to lt-crew table
+- query for crew would be crew_id for users in ls_crew table where lt_id = the user_id of the current lt (here: 5)
+- get all those crew from the user table
+
+
+2. I need to add last name to my users
+- unique index on first and last name combination 
+- should I change name column to 'last name'?
+- backfill
+- change script
+- add non_null restraint on last name
+
+3. User creation
+- as before, only with the last name added
+- if chosen role is little thinker: as usual
+- otherwise: another mask, where the user is connected to the little thinker, by entering the first and 
+last name of the little thinker
+- behind the scene, I make a query Select id from User where first name is given first name and last name is given last name, verify that that person is a little thinker
+- make entry into the lt_crew table with that little thinker and the new user
+
+TRICKY: following more than one lt
+
+4. some kind of link where a user can sign up to follow another little thinker
+BUT: there must be some kind of approval first
+
+-- maybe another role? parent? admin is allowed to see everything and allowed everywhere in all spaces. but there 
+probably should be a parent (pseudo admin) who has admin rights in the space of the lt --
+
+request email is sent to admin
+admin adds first and last name to crew
+
+5. Design questions where does a person land? which space?
+
+
+
