@@ -62,19 +62,7 @@ Roles
 
 
 
-1. A little thinker can see who is following them (under crew)
-- write a function get crew 
-- have a module for calls to lt-crew table
-- query for crew would be crew_id for users in ls_crew table where lt_id = the user_id of the current lt (here: 5)
-- get all those crew from the user table
 
-
-2. I need to add last name to my users
-- unique index on first and last name combination 
-- should I change name column to 'last name'?
-- backfill
-- change script
-- add non_null restraint on last name
 
 3. User creation
 - as before, only with the last name added
@@ -97,6 +85,7 @@ admin adds first and last name to crew
 
 5. Design questions where does a person land? which space?
 
+6. Login needs to be changed. It needs to be with first name, last name and password. right now there is a unique constraint in the user.ex file on email. however, parents might have multiple kids signed up
 
 
 ## Tickets
