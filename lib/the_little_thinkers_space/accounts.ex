@@ -359,6 +359,8 @@ defmodule TheLittleThinkersSpace.Accounts do
 
   alias TheLittleThinkersSpace.Accounts.Profile
 
+  ######## PROFILES ########
+
   def list_profiles do
     Repo.all(Profile)
   end
@@ -386,5 +388,15 @@ defmodule TheLittleThinkersSpace.Accounts do
 
   def change_profile(%Profile{} = profile, attrs \\ %{}) do
     Profile.changeset(profile, attrs)
+  end
+
+  ######## CREW ########
+
+  def list_crew_for_little_thinker(%User{role: "admin"}) do
+    Repo.all(User)
+  end
+
+  def list_crew_for_little_thinker(%User{role: "the_little_thinker", id: id}) do
+    Repo.all(from(...))
   end
 end

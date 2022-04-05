@@ -99,3 +99,51 @@ admin adds first and last name to crew
 
 
 
+## Tickets
+
+# ##########################
+
+# Add last name to users
+
+Currently we only have name for users which is their first name. We also need a last name and then we can enforce uniqueness across them.
+
+There is a edge case of two identically named people signing up that we are going to ignore until it becomes a later problem.
+
+### Acceptance
+- [ ] Add last_name to users table
+- [ ] Rename name to first_name on users table
+- [ ] Add a unique index on [first_name, last_name]
+- [ ] Add last name to forms
+- [ ] Add last name to changeset attrs
+- [ ] Require last name on changeset
+- [ ] Add last name to module attribute test data
+- [ ] Search and replace name to first name (and last name)
+
+# ##########################
+
+# Backfill and set last_name to null: false
+
+We need to backfill the users table with last names
+
+### Acceptance
+- [ ] Backfill all last_names in the users table
+- [ ] Set last_name to null: false
+
+# #########################
+
+#  Show followers to the little thinker under crew tab 
+
+In the current one-thinker environment, the little thinker sees everybody else (who has a profile) under the crew tab.
+In order to prepare for multiple thinkers and multiple crews, the crew is to show everybody who is linked to the lt in the
+lt_crew join table. 
+
+(if a person does not have a profile, their name will still be shown in the crew table but there won't be a show button)
+
+### Acceptance
+- [ ] Write function in acccounts.ex to retrieve the lt's crew from the repo
+  (query for crew would be crew_id for users in ls_crew table where lt_id = the user_id of the current lt (here: 5))
+- [ ] use the new way of retrieving the crew in the crew template
+- [ ] check tests
+- [ ] double-check authorization
+
+# #########################
