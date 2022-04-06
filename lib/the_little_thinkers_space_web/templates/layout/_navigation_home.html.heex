@@ -6,7 +6,7 @@
         <button
             class="btn-nav xs:place-self-center"><%= link "Uploads", to: Routes.upload_path(@conn, :index) %></button>
         <button
-            class="btn-nav xs:place-self-center"><%= link "#{@current_user.name}", to: Routes.profile_path(@conn, :new) %></button>
+            class="btn-nav xs:place-self-center"><%= link "#{@current_user.first_name}", to: Routes.profile_path(@conn, :new) %></button>
         <button
             class="btn-nav xs:place-self-center"><%= link "Settings", to: Routes.user_settings_path(@conn, :edit) %></button>
 
