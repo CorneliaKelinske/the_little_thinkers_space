@@ -6,7 +6,6 @@ defmodule TheLittleThinkersSpace.Accounts.LittleThinkerCrew do
   use Ecto.Schema
   import Ecto.Changeset
 
-
   schema "little_thinker_crew" do
     field :little_thinker_id, :id
     field :crew_id, :id

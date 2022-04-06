@@ -56,6 +56,7 @@ defmodule TheLittleThinkersSpace.Accounts.User do
     |> validate_email()
     |> validate_password(opts)
     |> validate_required([:role, :first_name, :last_name])
+    |> unique_constraint([:first_name, :last_name])
     |> validate_inclusion(:role, @valid_roles)
   end
 

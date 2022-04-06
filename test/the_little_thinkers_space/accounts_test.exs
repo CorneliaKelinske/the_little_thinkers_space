@@ -97,7 +97,7 @@ defmodule TheLittleThinkersSpace.AccountsTest do
   describe "change_user_registration/2" do
     test "returns a changeset" do
       assert %Ecto.Changeset{} = changeset = Accounts.change_user_registration(%User{})
-      assert changeset.required == [:role, :name, :password, :email]
+      assert changeset.required == [:role, :first_name, :last_name, :password, :email]
     end
 
     test "allows fields to be set" do
