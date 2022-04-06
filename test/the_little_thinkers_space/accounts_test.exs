@@ -6,10 +6,22 @@ defmodule TheLittleThinkersSpace.AccountsTest do
   import TheLittleThinkersSpace.AccountsFixtures
   alias TheLittleThinkersSpace.Accounts.{User, UserToken}
 
+  describe "get_user_by_first_and_last_name/2" do
+    test "does not return user if the first and last name combination does not exist" do
+      refute Accounts.get_user_by_first_and_last_name("Random", "Random")
+    end
+
+    test "returns the user if the first and last name combination exists" do
+      %{first_name: first_name, last_name: last_name} = user = user_fixture()
+      assert %User{first_name: ^first_name, last_name: ^last_name} = Accounts.get_user_by_first_and_last_name(user.first_name, user.last_name)
+    end
+  end
+
   describe "get_user_by_email/1" do
     test "does not return the user if the email does not exist" do
       refute Accounts.get_user_by_email("unknown@example.com")
     end
+
 
     test "returns the user if the email exists" do
       %{id: id} = user = user_fixture()

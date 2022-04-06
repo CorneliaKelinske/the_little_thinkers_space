@@ -14,9 +14,9 @@ defmodule TheLittleThinkersSpace.Accounts do
 
   ## Database getters
 
-  @spec get_user_by_role(:binary) :: struct()
-  def get_user_by_role(role) do
-    Repo.get_by(User, role: role)
+  @spec get_user_by_first_and_last_name(binary, binary) :: Ecto.Schema | nil
+  def get_user_by_first_and_last_name(first_name, last_name) do
+    Repo.get_by(User, %{first_name: first_name, last_name: last_name})
   end
 
   def get_user_by_email(email) when is_binary(email) do

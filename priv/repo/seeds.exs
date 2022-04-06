@@ -37,7 +37,7 @@ Accounts.register_user(%{
 })
 
 users = Accounts.list_users()
-little_thinker = Accounts.get_user_by_role("The Little Thinker")
+little_thinker = Accounts.get_user_by_first_and_last_name("Ulrik", "Puppel")
 little_thinker_id = little_thinker.id
 
 for user <- users, user.role != "The Little Thinker" do
