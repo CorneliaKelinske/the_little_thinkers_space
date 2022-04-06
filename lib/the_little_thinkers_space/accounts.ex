@@ -14,9 +14,11 @@ defmodule TheLittleThinkersSpace.Accounts do
 
   ## Database getters
 
+  @spec get_user_by_role(:binary) :: struct()
   def get_user_by_role(role) do
     Repo.get_by(User, role: role)
   end
+  
   def get_user_by_email(email) when is_binary(email) do
     Repo.get_by(User, email: email)
   end

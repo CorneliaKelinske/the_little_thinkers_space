@@ -10,7 +10,7 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-alias TheLittleThinkersSpace.{Accounts, Repo, Accounts.User}
+alias TheLittleThinkersSpace.{Accounts}
 
 Accounts.register_user(%{
   "first_name" => "Ramona",
@@ -38,7 +38,7 @@ Accounts.register_user(%{
 
 
 users = Accounts.list_users()
-little_thinker = Repo.get_by(User, role: "The Little Thinker" )
+little_thinker = Accounts.get_user_by_role("The Little Thinker")
 little_thinker_id = little_thinker.id
 
 for user <- users, user.role != "The Little Thinker" do
