@@ -10,7 +10,7 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-alias TheLittleThinkersSpace.Accounts
+alias TheLittleThinkersSpace.{Accounts, Repo, Accounts.User}
 
 Accounts.register_user(%{
   "first_name" => "Ramona",
@@ -35,3 +35,12 @@ Accounts.register_user(%{
   "password" => "ForzareForzare!",
   "role" => "Friend"
 })
+
+
+users = Accounts.list_users()
+little_thinker = Repo.get_by(User, role: "The Little Thinker" )
+little_thinker_id = little_thinker.id
+
+for user <- users, user.role != "The Little Thinker" do
+  Accounts.link_crew(%{little_thinker_id: little_thinker.id, crew_id: user.id})
+end
