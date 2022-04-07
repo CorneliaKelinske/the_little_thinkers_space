@@ -1,10 +1,22 @@
 defmodule TheLittleThinkersSpace.AccountsTest do
-  use TheLittleThinkersSpace.DataCase
+  use TheLittleThinkersSpace.DataCase, async: true
+  import TheLittleThinkersSpace.AccountsFixtures
 
   alias TheLittleThinkersSpace.Accounts
-
-  import TheLittleThinkersSpace.AccountsFixtures
   alias TheLittleThinkersSpace.Accounts.{User, UserToken}
+
+  describe "get_user_by_first_and_last_name/2" do
+    test "does not return user if the first and last name combination does not exist" do
+      refute Accounts.get_user_by_first_and_last_name("Random", "Random")
+    end
+
+    test "returns the user if the first and last name combination exists" do
+      %{first_name: first_name, last_name: last_name} = user = user_fixture()
+
+      assert %User{first_name: ^first_name, last_name: ^last_name} =
+               Accounts.get_user_by_first_and_last_name(user.first_name, user.last_name)
+    end
+  end
 
   describe "get_user_by_email/1" do
     test "does not return the user if the email does not exist" do
@@ -97,7 +109,7 @@ defmodule TheLittleThinkersSpace.AccountsTest do
   describe "change_user_registration/2" do
     test "returns a changeset" do
       assert %Ecto.Changeset{} = changeset = Accounts.change_user_registration(%User{})
-      assert changeset.required == [:role, :name, :password, :email]
+      assert changeset.required == [:role, :first_name, :last_name, :password, :email]
     end
 
     test "allows fields to be set" do
@@ -509,8 +521,6 @@ defmodule TheLittleThinkersSpace.AccountsTest do
   describe "profiles" do
     alias TheLittleThinkersSpace.Accounts.Profile
 
-    import TheLittleThinkersSpace.AccountsFixtures
-
     @invalid_attrs %{
       animal: nil,
       belongs_to_lt: nil,
@@ -628,7 +638,93 @@ defmodule TheLittleThinkersSpace.AccountsTest do
 
     test "change_profile/1 returns a profile changeset" do
       profile = profile_fixture()
+      user = user_fixture()
       assert %Ecto.Changeset{} = Accounts.change_profile(profile)
+    end
+  end
+
+  ## Crew
+
+  describe "link_crew/1" do
+    setup do
+      %{user: user_fixture(), little_thinker: little_thinker_fixture(), admin: admin_fixture()}
+    end
+
+    test "requires two ids" do
+      assert {:error, changeset} = Accounts.link_crew(%{})
+
+      assert %{
+               little_thinker_id: ["This field must not be empty!"],
+               crew_id: ["This field must not be empty!"]
+             } = errors_on(changeset)
+    end
+
+    test "enters the little thinker/crew combination to the database when valid ids are provided for
+      little thinker and the other crew member",
+         %{user: user, little_thinker: little_thinker} do
+      user_id = user.id
+      little_thinker_id = little_thinker.id
+
+      assert {:ok, %{little_thinker_id: ^little_thinker_id, crew_id: ^user_id}} =
+               Accounts.link_crew(%{little_thinker_id: little_thinker.id, crew_id: user.id})
+    end
+
+    test "same combination of little_thinker_id and crew_id cannot be entered twice", %{
+      user: user,
+      little_thinker: little_thinker
+    } do
+      user_id = user.id
+      little_thinker_id = little_thinker.id
+
+      assert(
+        {:ok, %{little_thinker_id: ^little_thinker_id, crew_id: ^user_id}} =
+          Accounts.link_crew(%{little_thinker_id: little_thinker.id, crew_id: user.id})
+      )
+
+      assert {:error, changeset} =
+               Accounts.link_crew(%{little_thinker_id: little_thinker.id, crew_id: user.id})
+
+      assert %{little_thinker_id: ["has already been taken"]} = errors_on(changeset)
+    end
+
+    test "same little_thinker_id can be entered with different crew_ids", %{
+      user: user,
+      little_thinker: little_thinker,
+      admin: admin
+    } do
+      user_id = user.id
+      little_thinker_id = little_thinker.id
+      admin_id = admin.id
+
+      assert(
+        {:ok, %{little_thinker_id: ^little_thinker_id, crew_id: ^user_id}} =
+          Accounts.link_crew(%{little_thinker_id: little_thinker.id, crew_id: user.id})
+      )
+
+      assert(
+        {:ok, %{little_thinker_id: ^little_thinker_id, crew_id: ^admin_id}} =
+          Accounts.link_crew(%{little_thinker_id: little_thinker.id, crew_id: admin.id})
+      )
+    end
+
+    test "crew_id can be entered with different little_thinker_ids", %{
+      user: user,
+      little_thinker: little_thinker,
+      admin: admin
+    } do
+      user_id = user.id
+      little_thinker_id = little_thinker.id
+      admin_id = admin.id
+
+      assert(
+        {:ok, %{little_thinker_id: ^little_thinker_id, crew_id: ^user_id}} =
+          Accounts.link_crew(%{little_thinker_id: little_thinker.id, crew_id: user.id})
+      )
+
+      assert(
+        {:ok, %{little_thinker_id: ^admin_id, crew_id: ^user_id}} =
+          Accounts.link_crew(%{little_thinker_id: admin.id, crew_id: user.id})
+      )
     end
   end
 end

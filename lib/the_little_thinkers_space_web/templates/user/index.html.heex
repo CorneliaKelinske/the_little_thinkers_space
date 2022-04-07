@@ -5,7 +5,8 @@
     <table class="xs:w-11/12 md:w-8/12 lg:w-6/12 rounded shadow-xl bg-orange-200 bg-opacity-70 overflow-hidden">
       <thead class="bg-orange-400 bg-opacity-70 rounded text-gray-900 font-bold md:text-lg">
         <tr>
-          <th class="text-left p-2">Name</th>
+          <th class="text-left p-2">First name</th>
+          <th class="text-left p-2">Last name</th>
           <th class="text-left p-2">Role</th>
           <th class="xs:hidden md:table-cell text-left p-2">Email</th>
           <th class="text-left p-2"></th>
@@ -14,7 +15,8 @@
       <tbody class="divide-y divide-gray-300">
         <%= for user <- @users do %>
         <tr>
-          <td class="text-left text-gray-900 p-2"><%= user.name %></td>
+          <td class="text-left text-gray-900 p-2"><%= user.first_name %></td>
+          <td class="text-left text-gray-900 p-2"><%= user.last_name %></td>
           <td class="text-left text-gray-900 p-2"><%= user.role %></td>
           <td class="xs:hidden md:table-cell text-left text-gray-900 p-2"><%= user.email %></td>
 

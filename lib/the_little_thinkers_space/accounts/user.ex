@@ -17,7 +17,8 @@ defmodule TheLittleThinkersSpace.Accounts.User do
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
     field :role, :string
-    field :name, :string
+    field :first_name, :string
+    field :last_name, :string
 
     many_to_many :crew,
                  __MODULE__,
@@ -51,10 +52,11 @@ defmodule TheLittleThinkersSpace.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password, :role, :name])
+    |> cast(attrs, [:email, :password, :role, :first_name, :last_name])
     |> validate_email()
     |> validate_password(opts)
-    |> validate_required([:role, :name])
+    |> validate_required([:role, :first_name, :last_name])
+    |> unique_constraint([:first_name, :last_name])
     |> validate_inclusion(:role, @valid_roles)
   end
 

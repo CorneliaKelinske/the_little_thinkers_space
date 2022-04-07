@@ -28,7 +28,7 @@ defmodule TheLittleThinkersSpaceWeb.UserRegistrationController do
             )
 
           conn
-          |> put_flash(:info, "#{user.name} created successfully!")
+          |> put_flash(:info, "#{user.first_name} created successfully!")
           |> redirect(to: Routes.user_path(conn, :index))
 
         {:error, %Ecto.Changeset{} = changeset} ->

@@ -14,18 +14,11 @@ defmodule TheLittleThinkersSpace.Accounts do
 
   ## Database getters
 
-  @doc """
-  Gets a user by email.
+  @spec get_user_by_first_and_last_name(binary, binary) :: Ecto.Schema | nil
+  def get_user_by_first_and_last_name(first_name, last_name) do
+    Repo.get_by(User, %{first_name: first_name, last_name: last_name})
+  end
 
-  ## Examples
-
-      iex> get_user_by_email("foo@example.com")
-      %User{}
-
-      iex> get_user_by_email("unknown@example.com")
-      nil
-
-  """
   def get_user_by_email(email) when is_binary(email) do
     Repo.get_by(User, email: email)
   end
@@ -357,6 +350,8 @@ defmodule TheLittleThinkersSpace.Accounts do
     Repo.delete(user)
   end
 
+  ######## PROFILES ########
+
   alias TheLittleThinkersSpace.Accounts.Profile
 
   def list_profiles do
@@ -387,4 +382,25 @@ defmodule TheLittleThinkersSpace.Accounts do
   def change_profile(%Profile{} = profile, attrs \\ %{}) do
     Profile.changeset(profile, attrs)
   end
+
+  ######## CREW ########
+  alias TheLittleThinkersSpace.Accounts.LittleThinkerCrew
+
+  def link_crew(attrs) do
+    %LittleThinkerCrew{}
+    |> LittleThinkerCrew.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  # def list_crew_for_little_thinker(%User{role: "admin"}) do
+  #   Repo.all(User)
+  # end
+
+  # def list_crew_for_little_thinker(%User{role: "the_little_thinker", id: id}) do
+  #   Repo.all(from(...))
+  # end
+
+  # def link_crew(%User{id: little_thinker_id}, %User{id: crew_id}) do
+  #   Repo.insert(LittleThinkerCrew, %{little_thinker_id: little_thinker_id, crew_id: crew_id})
+  # end
 end
