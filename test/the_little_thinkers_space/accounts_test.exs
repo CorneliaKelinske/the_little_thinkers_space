@@ -12,7 +12,9 @@ defmodule TheLittleThinkersSpace.AccountsTest do
 
     test "returns the user if the first and last name combination exists" do
       %{first_name: first_name, last_name: last_name} = user = user_fixture()
-      assert %User{first_name: ^first_name, last_name: ^last_name} = Accounts.get_user_by_first_and_last_name(user.first_name, user.last_name)
+
+      assert %User{first_name: ^first_name, last_name: ^last_name} =
+               Accounts.get_user_by_first_and_last_name(user.first_name, user.last_name)
     end
   end
 
@@ -20,7 +22,6 @@ defmodule TheLittleThinkersSpace.AccountsTest do
     test "does not return the user if the email does not exist" do
       refute Accounts.get_user_by_email("unknown@example.com")
     end
-
 
     test "returns the user if the email exists" do
       %{id: id} = user = user_fixture()
@@ -644,65 +645,86 @@ defmodule TheLittleThinkersSpace.AccountsTest do
 
   ## Crew
 
-    describe "link_crew/1" do
+  describe "link_crew/1" do
+    setup do
+      %{user: user_fixture(), little_thinker: little_thinker_fixture(), admin: admin_fixture()}
+    end
 
-      test "requires two ids" do
-        assert {:error, changeset} = Accounts.link_crew(%{})
-        assert %{
-                       little_thinker_id: ["This field must not be empty!"],
-                       crew_id: ["This field must not be empty!"]
-                     } = errors_on(changeset)
-      end
+    test "requires two ids" do
+      assert {:error, changeset} = Accounts.link_crew(%{})
 
-      test "enters the little thinker/crew combination to the database when valid ids are provided for
-      little thinker and the other crew member" do
-        user = user_fixture()
-        user_id = user.id
-        little_thinker = little_thinker_fixture()
-        little_thinker_id = little_thinker.id
+      assert %{
+               little_thinker_id: ["This field must not be empty!"],
+               crew_id: ["This field must not be empty!"]
+             } = errors_on(changeset)
+    end
 
-      assert {:ok, %{little_thinker_id: ^little_thinker_id, crew_id: ^user_id}} = Accounts.link_crew(%{little_thinker_id: little_thinker.id, crew_id: user.id})
+    test "enters the little thinker/crew combination to the database when valid ids are provided for
+      little thinker and the other crew member",
+         %{user: user, little_thinker: little_thinker} do
+      user_id = user.id
+      little_thinker_id = little_thinker.id
+
+      assert {:ok, %{little_thinker_id: ^little_thinker_id, crew_id: ^user_id}} =
+               Accounts.link_crew(%{little_thinker_id: little_thinker.id, crew_id: user.id})
+    end
+
+    test "same combination of little_thinker_id and crew_id cannot be entered twice", %{
+      user: user,
+      little_thinker: little_thinker
+    } do
+      user_id = user.id
+      little_thinker_id = little_thinker.id
+
+      assert(
+        {:ok, %{little_thinker_id: ^little_thinker_id, crew_id: ^user_id}} =
+          Accounts.link_crew(%{little_thinker_id: little_thinker.id, crew_id: user.id})
+      )
+
+      assert {:error, changeset} =
+               Accounts.link_crew(%{little_thinker_id: little_thinker.id, crew_id: user.id})
+
+      assert %{little_thinker_id: ["has already been taken"]} = errors_on(changeset)
+    end
+
+    test "same little_thinker_id can be entered with different crew_ids", %{
+      user: user,
+      little_thinker: little_thinker,
+      admin: admin
+    } do
+      user_id = user.id
+      little_thinker_id = little_thinker.id
+      admin_id = admin.id
+
+      assert(
+        {:ok, %{little_thinker_id: ^little_thinker_id, crew_id: ^user_id}} =
+          Accounts.link_crew(%{little_thinker_id: little_thinker.id, crew_id: user.id})
+      )
+
+      assert(
+        {:ok, %{little_thinker_id: ^little_thinker_id, crew_id: ^admin_id}} =
+          Accounts.link_crew(%{little_thinker_id: little_thinker.id, crew_id: admin.id})
+      )
+    end
+
+    test "crew_id can be entered with different little_thinker_ids", %{
+      user: user,
+      little_thinker: little_thinker,
+      admin: admin
+    } do
+      user_id = user.id
+      little_thinker_id = little_thinker.id
+      admin_id = admin.id
+
+      assert(
+        {:ok, %{little_thinker_id: ^little_thinker_id, crew_id: ^user_id}} =
+          Accounts.link_crew(%{little_thinker_id: little_thinker.id, crew_id: user.id})
+      )
+
+      assert(
+        {:ok, %{little_thinker_id: ^admin_id, crew_id: ^user_id}} =
+          Accounts.link_crew(%{little_thinker_id: admin.id, crew_id: user.id})
+      )
     end
   end
-
-
-
-    #   test "validates email and password when given" do
-    #     {:error, changeset} = Accounts.register_user(%{email: "not valid", password: "not valid"})
-
-    #     assert %{
-    #              email: ["must have the @ sign and no spaces"],
-    #              password: ["should be at least 12 character(s)"]
-    #            } = errors_on(changeset)
-    #   end
-
-    #   test "validates maximum values for email and password for security" do
-    #     too_long = String.duplicate("db", 100)
-    #     {:error, changeset} = Accounts.register_user(%{email: too_long, password: too_long})
-    #     assert "should be at most 160 character(s)" in errors_on(changeset).email
-    #     assert "should be at most 72 character(s)" in errors_on(changeset).password
-    #   end
-
-    #   test "validates email uniqueness" do
-    #     %{email: email} = user_fixture()
-    #     {:error, changeset} = Accounts.register_user(%{email: email})
-    #     assert "has already been taken" in errors_on(changeset).email
-
-    #     # Now try with the upper cased email too, to check that email case is ignored.
-    #     {:error, changeset} = Accounts.register_user(%{email: String.upcase(email)})
-    #     assert "has already been taken" in errors_on(changeset).email
-    #   end
-
-    #   test "registers users with a hashed password" do
-    #     email = unique_user_email()
-    #     {:ok, user} = Accounts.register_user(valid_user_attributes(email: email))
-    #     assert user.email == email
-    #     assert is_binary(user.hashed_password)
-    #     assert is_nil(user.confirmed_at)
-    #     assert is_nil(user.password)
-    #   end
-    # end
-
-
-
 end

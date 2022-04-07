@@ -19,5 +19,6 @@ defmodule TheLittleThinkersSpace.Accounts.LittleThinkerCrew do
     little_thinker_crew
     |> cast(attrs, @required_attrs)
     |> validate_required(@required_attrs, message: "This field must not be empty!")
+    |> unique_constraint([:little_thinker_id, :crew_id])
   end
 end
