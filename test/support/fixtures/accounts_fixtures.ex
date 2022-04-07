@@ -8,6 +8,7 @@ defmodule TheLittleThinkersSpace.AccountsFixtures do
   def valid_user_password, do: "hello world!"
   def valid_user_role, do: "Friend"
   def admin_role, do: "Admin"
+  def little_thinker_role, do: "The Little Thinker"
   def valid_user_first_name, do: "Waldo"
   def valid_user_last_name, do: "Butters#{System.unique_integer()}"
 
@@ -31,6 +32,16 @@ defmodule TheLittleThinkersSpace.AccountsFixtures do
     })
   end
 
+  def little_thinker_attributes(attrs \\ %{}) do
+    Enum.into(attrs, %{
+      email: unique_user_email(),
+      password: valid_user_password(),
+      role: little_thinker_role(),
+      first_name: valid_user_first_name(),
+      last_name: valid_user_last_name()
+    })
+  end
+
   def user_fixture(attrs \\ %{}) do
     {:ok, user} =
       attrs
@@ -47,6 +58,15 @@ defmodule TheLittleThinkersSpace.AccountsFixtures do
       |> TheLittleThinkersSpace.Accounts.register_user()
 
     admin
+  end
+
+  def little_thinker_fixture(attrs \\ %{}) do
+    {:ok, little_thinker} =
+      attrs
+      |> little_thinker_attributes()
+      |> TheLittleThinkersSpace.Accounts.register_user()
+
+    little_thinker
   end
 
   def extract_user_token(fun) do

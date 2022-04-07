@@ -1,9 +1,8 @@
 defmodule TheLittleThinkersSpace.AccountsTest do
-  use TheLittleThinkersSpace.DataCase
+  use TheLittleThinkersSpace.DataCase, async: true
+  import TheLittleThinkersSpace.AccountsFixtures
 
   alias TheLittleThinkersSpace.Accounts
-
-  import TheLittleThinkersSpace.AccountsFixtures
   alias TheLittleThinkersSpace.Accounts.{User, UserToken}
 
   describe "get_user_by_first_and_last_name/2" do
@@ -521,8 +520,6 @@ defmodule TheLittleThinkersSpace.AccountsTest do
   describe "profiles" do
     alias TheLittleThinkersSpace.Accounts.Profile
 
-    import TheLittleThinkersSpace.AccountsFixtures
-
     @invalid_attrs %{
       animal: nil,
       belongs_to_lt: nil,
@@ -640,7 +637,72 @@ defmodule TheLittleThinkersSpace.AccountsTest do
 
     test "change_profile/1 returns a profile changeset" do
       profile = profile_fixture()
+      user = user_fixture()
       assert %Ecto.Changeset{} = Accounts.change_profile(profile)
     end
   end
+
+  ## Crew
+
+    describe "link_crew/1" do
+
+      test "requires two ids" do
+        assert {:error, changeset} = Accounts.link_crew(%{})
+        assert %{
+                       little_thinker_id: ["This field must not be empty!"],
+                       crew_id: ["This field must not be empty!"]
+                     } = errors_on(changeset)
+      end
+
+      test "enters the little thinker/crew combination to the database when valid ids are provided for
+      little thinker and the other crew member" do
+        user = user_fixture()
+        user_id = user.id
+        little_thinker = little_thinker_fixture()
+        little_thinker_id = little_thinker.id
+
+      assert {:ok, %{little_thinker_id: ^little_thinker_id, crew_id: ^user_id}} = Accounts.link_crew(%{little_thinker_id: little_thinker.id, crew_id: user.id})
+    end
+  end
+
+
+
+    #   test "validates email and password when given" do
+    #     {:error, changeset} = Accounts.register_user(%{email: "not valid", password: "not valid"})
+
+    #     assert %{
+    #              email: ["must have the @ sign and no spaces"],
+    #              password: ["should be at least 12 character(s)"]
+    #            } = errors_on(changeset)
+    #   end
+
+    #   test "validates maximum values for email and password for security" do
+    #     too_long = String.duplicate("db", 100)
+    #     {:error, changeset} = Accounts.register_user(%{email: too_long, password: too_long})
+    #     assert "should be at most 160 character(s)" in errors_on(changeset).email
+    #     assert "should be at most 72 character(s)" in errors_on(changeset).password
+    #   end
+
+    #   test "validates email uniqueness" do
+    #     %{email: email} = user_fixture()
+    #     {:error, changeset} = Accounts.register_user(%{email: email})
+    #     assert "has already been taken" in errors_on(changeset).email
+
+    #     # Now try with the upper cased email too, to check that email case is ignored.
+    #     {:error, changeset} = Accounts.register_user(%{email: String.upcase(email)})
+    #     assert "has already been taken" in errors_on(changeset).email
+    #   end
+
+    #   test "registers users with a hashed password" do
+    #     email = unique_user_email()
+    #     {:ok, user} = Accounts.register_user(valid_user_attributes(email: email))
+    #     assert user.email == email
+    #     assert is_binary(user.hashed_password)
+    #     assert is_nil(user.confirmed_at)
+    #     assert is_nil(user.password)
+    #   end
+    # end
+
+
+
 end
