@@ -62,7 +62,7 @@ Roles
 
 
 
-
+## NOTE: hardcoding of Ulrik still needs to be changed but will happen at a later point. for now, this seems okay, as search will be easy
 
 3. User creation
 - as before, only with the last name added
