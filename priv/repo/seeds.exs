@@ -40,6 +40,6 @@ users = Accounts.list_users()
 little_thinker = Accounts.get_user_by_first_and_last_name("Ulrik", "Puppel")
 little_thinker_id = little_thinker.id
 
-for user <- users, user.role != "The Little Thinker" do
+for user <- users do
   Accounts.link_crew(%{little_thinker_id: little_thinker.id, crew_id: user.id})
 end
