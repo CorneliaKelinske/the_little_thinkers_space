@@ -27,7 +27,7 @@ easier later on.
 
     Later option or option B: parent can create new users who will be automatically linked to the parent's little thinker. in that case, I will need a random password generator so that the parent cannot get the password.
 
-5. Admin can delete users who will then be removed from all crews too
+5. Admin can delete users who will then be removed from all crews too (can use the :on_delete option in migration)
 
 6. If little thinker is removed the whole crew is removed (here, a check is needed: if crew members are
 also little thinkers or followers of other thinkers they will not be removed from the user table; users who are just associated with
@@ -56,9 +56,29 @@ Admin will enter the little thinker's name
 upon submit: => crew controller where user will be linked to little thinker
 
 
+# Data models
+
+Users
+relate to other users
+Can follow other users as crew
+Can control other users as Admin
+Can add and remove crew as Parents
+
+3 roles: Thinker, Crew, Admin
+
+
 
 
 
 ##### TO BE SOLVED: #####
 
 Index page 
+
+
+##### Tickets #####
+
+# Create parent role
+
+We need a new role of parent that has permissions over a little thinkers account.
+
+Add `parent` role to User
