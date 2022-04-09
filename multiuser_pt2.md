@@ -77,8 +77,50 @@ Index page
 
 ##### Tickets #####
 
-# Create parent role
+# Create relationships table
 
-We need a new role of parent that has permissions over a little thinkers account.
+We need to be able to define relationships between users
 
-Add `parent` role to User
+### Acceptance
+- [ ] Create a `relationships` table
+- [ ] Add `user_id`, references `user`, null: false
+- [ ] Add `little_thinker_id`, references `user`, null: false
+- [ ] Add type, :text
+- [ ] Add unique_index [user_id, little_thinker_id]
+
+# Backfill relationships table
+
+We need to fill this database with data
+
+### Acceptance
+- [ ] Fill the database with the appropriate data in production
+- [ ] Modify seeds
+
+# Delete the little_thinkers_crew table
+
+Now we no longer need the old table as we are using the relationships table instead
+
+### Acceptance
+- [ ] Create a migration to remove the little_thinkers_crew table
+- [ ] Switch schema over to use new table
+
+# Add crew role
+
+We need to add a new crew role
+
+### Acceptance
+- [ ] add the role `crew` to users
+
+# Backfill crew in production
+
+We need to switch soon-to-be-invalid roles to crew
+
+### Acceptance
+- [ ] Replace `friend` and `family` roles with crew in production
+
+# Use relationships table
+
+We need to do the code portion of the relationships table
+
+### Acceptance
+
