@@ -645,49 +645,64 @@ defmodule TheLittleThinkersSpace.AccountsTest do
 
   ## Crew
 
-  describe "link_crew/1" do
+  describe "connect_users/1" do
     setup do
       %{user: user_fixture(), little_thinker: little_thinker_fixture(), admin: admin_fixture()}
     end
 
-    test "requires two ids" do
-      assert {:error, changeset} = Accounts.link_crew(%{})
+    test "requires two ids and a relationship type" do
+      assert {:error, changeset} = Accounts.connect_users(%{})
 
       assert %{
                little_thinker_id: ["This field must not be empty!"],
-               crew_id: ["This field must not be empty!"]
+               user_id: ["This field must not be empty!"],
+               type: ["This field must not be empty!"]
              } = errors_on(changeset)
     end
 
-    test "enters the little thinker/crew combination to the database when valid ids are provided for
-      little thinker and the other crew member",
+    test "enters the little thinker/user combination and their relationship to the database when valid ids and relationship type are provided for
+      little thinker and the other user",
          %{user: user, little_thinker: little_thinker} do
       user_id = user.id
       little_thinker_id = little_thinker.id
+      type = "Friend"
 
-      assert {:ok, %{little_thinker_id: ^little_thinker_id, crew_id: ^user_id}} =
-               Accounts.link_crew(%{little_thinker_id: little_thinker.id, crew_id: user.id})
+      assert {:ok, %{little_thinker_id: ^little_thinker_id, user_id: ^user_id, type: ^type}} =
+               Accounts.connect_users(%{
+                 little_thinker_id: little_thinker.id,
+                 user_id: user.id,
+                 type: type
+               })
     end
 
-    test "same combination of little_thinker_id and crew_id cannot be entered twice", %{
+    test "same combination of little_thinker_id and user_Id cannot be entered twice", %{
       user: user,
       little_thinker: little_thinker
     } do
       user_id = user.id
       little_thinker_id = little_thinker.id
+      type = "Friend"
 
       assert(
-        {:ok, %{little_thinker_id: ^little_thinker_id, crew_id: ^user_id}} =
-          Accounts.link_crew(%{little_thinker_id: little_thinker.id, crew_id: user.id})
+        {:ok, %{little_thinker_id: ^little_thinker_id, user_id: ^user_id, type: ^type}} =
+          Accounts.connect_users(%{
+            little_thinker_id: little_thinker.id,
+            user_id: user.id,
+            type: type
+          })
       )
 
       assert {:error, changeset} =
-               Accounts.link_crew(%{little_thinker_id: little_thinker.id, crew_id: user.id})
+               Accounts.connect_users(%{
+                 little_thinker_id: little_thinker.id,
+                 user_id: user.id,
+                 type: type
+               })
 
       assert %{little_thinker_id: ["has already been taken"]} = errors_on(changeset)
     end
 
-    test "same little_thinker_id can be entered with different crew_ids", %{
+    test "same little_thinker_id can be entered with different user_ids", %{
       user: user,
       little_thinker: little_thinker,
       admin: admin
@@ -695,19 +710,28 @@ defmodule TheLittleThinkersSpace.AccountsTest do
       user_id = user.id
       little_thinker_id = little_thinker.id
       admin_id = admin.id
+      type = "Friend"
 
       assert(
-        {:ok, %{little_thinker_id: ^little_thinker_id, crew_id: ^user_id}} =
-          Accounts.link_crew(%{little_thinker_id: little_thinker.id, crew_id: user.id})
+        {:ok, %{little_thinker_id: ^little_thinker_id, user_id: ^user_id, type: ^type}} =
+          Accounts.connect_users(%{
+            little_thinker_id: little_thinker.id,
+            user_id: user.id,
+            type: type
+          })
       )
 
       assert(
-        {:ok, %{little_thinker_id: ^little_thinker_id, crew_id: ^admin_id}} =
-          Accounts.link_crew(%{little_thinker_id: little_thinker.id, crew_id: admin.id})
+        {:ok, %{little_thinker_id: ^little_thinker_id, user_id: ^admin_id, type: ^type}} =
+          Accounts.connect_users(%{
+            little_thinker_id: little_thinker.id,
+            user_id: admin.id,
+            type: type
+          })
       )
     end
 
-    test "crew_id can be entered with different little_thinker_ids", %{
+    test "one user_id can be entered with different little_thinker_ids", %{
       user: user,
       little_thinker: little_thinker,
       admin: admin
@@ -715,15 +739,20 @@ defmodule TheLittleThinkersSpace.AccountsTest do
       user_id = user.id
       little_thinker_id = little_thinker.id
       admin_id = admin.id
+      type = "Friend"
 
       assert(
-        {:ok, %{little_thinker_id: ^little_thinker_id, crew_id: ^user_id}} =
-          Accounts.link_crew(%{little_thinker_id: little_thinker.id, crew_id: user.id})
+        {:ok, %{little_thinker_id: ^little_thinker_id, user_id: ^user_id, type: ^type}} =
+          Accounts.connect_users(%{
+            little_thinker_id: little_thinker.id,
+            user_id: user.id,
+            type: type
+          })
       )
 
       assert(
-        {:ok, %{little_thinker_id: ^admin_id, crew_id: ^user_id}} =
-          Accounts.link_crew(%{little_thinker_id: admin.id, crew_id: user.id})
+        {:ok, %{little_thinker_id: ^admin_id, user_id: ^user_id, type: ^type}} =
+          Accounts.connect_users(%{little_thinker_id: admin.id, user_id: user.id, type: type})
       )
     end
   end

@@ -22,13 +22,13 @@ defmodule TheLittleThinkersSpace.Accounts.User do
 
     many_to_many :crew,
                  __MODULE__,
-                 join_through: "little_thinker_crew",
-                 join_keys: [little_thinker_id: :id, crew_id: :id]
+                 join_through: "relationships",
+                 join_keys: [little_thinker_id: :id, user_id: :id]
 
     many_to_many :little_thinkers,
                  __MODULE__,
-                 join_through: "little_thinker_crew",
-                 join_keys: [crew_id: :id, little_thinker_id: :id]
+                 join_through: "relationships",
+                 join_keys: [crew_id: :id, user_id: :id]
 
     timestamps()
   end

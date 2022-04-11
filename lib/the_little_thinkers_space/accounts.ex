@@ -383,12 +383,12 @@ defmodule TheLittleThinkersSpace.Accounts do
     Profile.changeset(profile, attrs)
   end
 
-  ######## CREW ########
-  alias TheLittleThinkersSpace.Accounts.LittleThinkerCrew
+  ######## RELATIONSHIPS ########
+  alias TheLittleThinkersSpace.Accounts.Relationship
 
-  def link_crew(attrs) do
-    %LittleThinkerCrew{}
-    |> LittleThinkerCrew.changeset(attrs)
+  def connect_users(attrs) do
+    %Relationship{}
+    |> Relationship.changeset(attrs)
     |> Repo.insert()
   end
 
