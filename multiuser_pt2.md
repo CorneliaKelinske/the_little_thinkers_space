@@ -121,6 +121,7 @@ We need to switch soon-to-be-invalid roles to crew
 # Use relationships table
 
 We need to do the code portion of the relationships table
+- start with showing crew based on relationships table
 
 ### Acceptance
 

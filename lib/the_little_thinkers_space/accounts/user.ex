@@ -7,7 +7,7 @@ defmodule TheLittleThinkersSpace.Accounts.User do
   alias TheLittleThinkersSpace.Accounts.User
   @behaviour Bodyguard.Policy
 
-  @valid_roles ["Admin", "The Little Thinker", "Family", "Friend"]
+  @valid_roles ["Admin", "The Little Thinker", "Family", "Friend", "Crew"]
 
   def valid_roles, do: @valid_roles
 
@@ -20,7 +20,7 @@ defmodule TheLittleThinkersSpace.Accounts.User do
     field :first_name, :string
     field :last_name, :string
 
-    many_to_many :crew,
+    many_to_many :followers,
                  __MODULE__,
                  join_through: "relationships",
                  join_keys: [little_thinker_id: :id, user_id: :id]
@@ -28,7 +28,7 @@ defmodule TheLittleThinkersSpace.Accounts.User do
     many_to_many :little_thinkers,
                  __MODULE__,
                  join_through: "relationships",
-                 join_keys: [crew_id: :id, user_id: :id]
+                 join_keys: [user_id: :id, little_thinker_id: :id]
 
     timestamps()
   end

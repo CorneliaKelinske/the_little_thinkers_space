@@ -33,7 +33,7 @@ Accounts.register_user(%{
   "last_name" => "Dresden",
   "email" => "dresden@example.com",
   "password" => "ForzareForzare!",
-  "role" => "Friend"
+  "role" => "Crew"
 })
 
 users = Accounts.list_users()
