@@ -6,7 +6,7 @@ defmodule TheLittleThinkersSpace.AccountsFixtures do
 
   def unique_user_email, do: "user#{System.unique_integer()}@example.com"
   def valid_user_password, do: "hello world!"
-  def valid_user_role, do: "Friend"
+  def valid_user_role, do: "Crew"
   def admin_role, do: "Admin"
   def little_thinker_role, do: "The Little Thinker"
   def valid_user_first_name, do: "Waldo"

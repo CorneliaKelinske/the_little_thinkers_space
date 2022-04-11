@@ -7,7 +7,7 @@ defmodule TheLittleThinkersSpace.Accounts.User do
   alias TheLittleThinkersSpace.Accounts.User
   @behaviour Bodyguard.Policy
 
-  @valid_roles ["Admin", "The Little Thinker", "Family", "Friend", "Crew"]
+  @valid_roles ["Admin", "The Little Thinker", "Crew"]
 
   def valid_roles, do: @valid_roles
 
