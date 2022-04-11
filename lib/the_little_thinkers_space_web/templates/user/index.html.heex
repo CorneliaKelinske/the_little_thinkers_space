@@ -14,28 +14,24 @@
       </thead>
       <tbody class="divide-y divide-gray-300">
         <%= for user <- @users do %>
-        <tr>
-          <td class="text-left text-gray-900 p-2"><%= user.first_name %></td>
-          <td class="text-left text-gray-900 p-2"><%= user.last_name %></td>
-          <td class="text-left text-gray-900 p-2"><%= user.role %></td>
-          <td class="xs:hidden md:table-cell text-left text-gray-900 p-2"><%= user.email %></td>
+          <tr>
+            <td class="text-left text-gray-900 p-2"><%= user.first_name %></td>
+            <td class="text-left text-gray-900 p-2"><%= user.last_name %></td>
+            <td class="text-left text-gray-900 p-2"><%= user.role %></td>
+            <td class="xs:hidden md:table-cell text-left text-gray-900 p-2"><%= user.email %></td>
 
-          <td class="text-gray-600 text-xs uppercase font-semibold tracking-wide p-2">
-            <span class="pr-3"><%= link "Show", to: Routes.user_path(@conn, :show, user) %></span>
-            <span><%= link "Delete", to: Routes.user_path(@conn, :delete, user), method: :delete, data: [confirm: "Are you sure?"]%></span>
-          </td>
-        </tr>
+            <td class="text-gray-600 text-xs uppercase font-semibold tracking-wide p-2">
+              <span class="pr-3"><%= link("Show", to: Routes.user_path(@conn, :show, user)) %></span>
+              <span><%= link("Delete", to: Routes.user_path(@conn, :delete, user), method: :delete, data: [confirm: "Are you sure?"]) %></span>
+            </td>
+          </tr>
         <% end %>
       </tbody>
     </table>
-
   </section>
   <div class="mx-8 sm:mx-16 my-6">
-
-    <span
-      class="text-sky-900 text-lg font-semibold tracking-wide"><%= link "New User", to: Routes.user_registration_path(@conn, :new) %></span>
+    <span class="text-sky-900 text-lg font-semibold tracking-wide"><%= link("New User", to: Routes.user_registration_path(@conn, :new)) %></span>
     <span class="text-sky-900 text-lg font-semibold tracking-wide">|</span>
-    <span
-      class="text-sky-900 text-lg font-semibold tracking-wide"><%= link "Back", to: Routes.page_path(@conn, :home) %></span>
+    <span class="text-sky-900 text-lg font-semibold tracking-wide"><%= link("Back", to: Routes.page_path(@conn, :home)) %></span>
   </div>
 </body>

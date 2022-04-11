@@ -1,14 +1,12 @@
 <body class="bg-colors bg-cover">
-  <h1 class="w-screen text-sky-900 font-bold text-center text-4xl p-4"><%= @profile.first_name%>'s Profile </h1>
+  <h1 class="w-screen text-sky-900 font-bold text-center text-4xl p-4"><%= @profile.first_name %>'s Profile</h1>
 
   <div class="w-screen flex justify-center p-8">
     <section class="flex w-2/3 h-4/6 p-2 bg-orange-200 bg-opacity-70 rounded-lg shadow-xl">
-
       <ul class="m-5 text-sky-900 sm:text-xl xs:text-base md:tracking-wide w-full">
-
         <li class="flex my-3 mx-5 w-full">
-          <div class="w-6/12"> <strong>First name:</strong> </div>
-          <div class="w-6/12 pl-2"> <%= @profile.first_name %> </div>
+          <div class="w-6/12"><strong>First name:</strong></div>
+          <div class="w-6/12 pl-2"><%= @profile.first_name %></div>
         </li>
 
         <li class="flex my-3 mx-5 w-full">
@@ -71,18 +69,14 @@
           <div class="w-6/12 pl-2"><%= @profile.joke %></div>
         </li>
       </ul>
-
     </section>
   </div>
 
   <div class="flex p-28 justify-between w-screen flex-wrap">
     <div>
-      <span
-        class="text-sky-900 text-lg font-semibold tracking-wide"><%= link "Edit", to: Routes.profile_path(@conn, :edit, @profile) %></span>
+      <span class="text-sky-900 text-lg font-semibold tracking-wide"><%= link("Edit", to: Routes.profile_path(@conn, :edit, @profile)) %></span>
       <span class="text-sky-900 text-lg font-semibold tracking-wide">|</span>
-      <span
-        class="text-sky-900 text-lg font-semibold tracking-wide"><%= link "Back", to: Routes.page_path(@conn, :home) %></span>
+      <span class="text-sky-900 text-lg font-semibold tracking-wide"><%= link("Back", to: Routes.page_path(@conn, :home)) %></span>
     </div>
-
-</div>
+  </div>
 </body>

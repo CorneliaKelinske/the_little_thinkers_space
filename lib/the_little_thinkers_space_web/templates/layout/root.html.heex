@@ -1,38 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%= csrf_meta_tag() %>
+    <%= live_title_tag(assigns[:page_title] || "TheLittleThinkersSpace") %>
+    <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css")} />
+    <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}>
+    </script>
+  </head>
 
-<head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <%= csrf_meta_tag() %>
-  <%= live_title_tag assigns[:page_title] || "TheLittleThinkersSpace"%>
-  <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css" )} />
-  <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js" )}></script>
-</head>
+  <body>
+    <header>
+      <%= if @current_user do %>
+        <%= render("_navigation_home.html", assigns) %>
+      <% else %>
+        <%= render("_navigation_index.html", assigns) %>
+      <% end %>
+    </header>
 
-<body>
-  <header>
-
-    <%= if @current_user do %>
-    <%= render "_navigation_home.html", assigns %>
-    <% else %>
-    <%= render "_navigation_index.html", assigns %>
-    <% end %>
-
-  </header>
-
-  <section>
-    <%= @inner_content %>
-  </section>
-  <footer>
-    <%= if @current_user do %>
-    <div class="lg:fixed inset-x-0 bottom-0">
-      <%= render "_footer.html", conn: @conn %>
-    </div>
-    <% end %>
-  </footer>
-
-</body>
-
+    <section>
+      <%= @inner_content %>
+    </section>
+    <footer>
+      <%= if @current_user do %>
+        <div class="lg:fixed inset-x-0 bottom-0">
+          <%= render("_footer.html", conn: @conn) %>
+        </div>
+      <% end %>
+    </footer>
+  </body>
 </html>

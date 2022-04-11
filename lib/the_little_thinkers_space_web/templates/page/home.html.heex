@@ -1,18 +1,16 @@
 <body class="bg-colors bg-cover">
-
   <h1 class="w-screen text-sky-900 font-bold text-center text-4xl p-4">
-    <%= gettext "Welcome to Ulrik's Thinker's Space!" %></h1>
+    <%= gettext("Welcome to Ulrik's Thinker's Space!") %>
+  </h1>
 
-  <p class="w-screen p-4 text-sky-900 text-center text-lg"> Learn more about Ulrik in his profile or check out his latest
-    uploads.<br> You can also click on your own name in the menu at the top of the page and create your profile.</p>
+  <p class="w-screen p-4 text-sky-900 text-center text-lg">Learn more about Ulrik in his profile or check out his latest
+    uploads.<br /> You can also click on your own name in the menu at the top of the page and create your profile.</p>
   <div class="mt-4 mb-48 flex justify-center w-screen">
     <%= if @lt_profile_id == nil do %>
-    <button class="btn-page"><%= link "Ulrik's profile", to: Routes.page_path(@conn, :home) %> </button>
+      <button class="btn-page"><%= link("Ulrik's profile", to: Routes.page_path(@conn, :home)) %></button>
     <% else %>
-    <button class="btn-page"><%= link "Ulrik's profile", to: Routes.profile_path(@conn, :show, @lt_profile_id) %>
-    </button>
+      <button class="btn-page"><%= link("Ulrik's profile", to: Routes.profile_path(@conn, :show, @lt_profile_id)) %></button>
     <% end %>
-    <button class="btn-page"><%= link "Uploads", to: Routes.upload_path(@conn, :index) %> </button>
+    <button class="btn-page"><%= link("Uploads", to: Routes.upload_path(@conn, :index)) %></button>
   </div>
-
 </body>

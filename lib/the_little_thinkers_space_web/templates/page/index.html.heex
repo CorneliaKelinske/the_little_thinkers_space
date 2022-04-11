@@ -1,14 +1,12 @@
 <body class="bg-sky-200">
-
   <h1 class="w-screen text-sky-900 font-bold text-center text-4xl p-4">
-    <%= gettext "Welcome to %{name}!", name: "The Little Thinker's Space" %></h1>
+    <%= gettext("Welcome to %{name}!", name: "The Little Thinker's Space") %>
+  </h1>
 
-  <p class="w-screen p-4 text-sky-900 text-center text-lg">A safe space for your child to upload their content.<br>
-    Please click on the Contact button below if you have any questions or would like to create an account. </p>
+  <p class="w-screen p-4 text-sky-900 text-center text-lg">A safe space for your child to upload their content.<br /> Please click on the Contact button below if you have any questions or would like to create an account.</p>
 
   <div class="mt-4 flex justify-center w-screen">
-    <button class="btn-page"><%= link "Log in", to: Routes.user_session_path(@conn, :new) %> </button>
-    <button class="btn-page"><%= link "Contact", to: Routes.contact_path(@conn, :new)%></button>
+    <button class="btn-page"><%= link("Log in", to: Routes.user_session_path(@conn, :new)) %></button>
+    <button class="btn-page"><%= link("Contact", to: Routes.contact_path(@conn, :new)) %></button>
   </div>
-
 </body>

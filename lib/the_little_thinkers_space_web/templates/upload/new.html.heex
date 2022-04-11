@@ -1,8 +1,7 @@
 <h1 class="w-screen text-sky-900 font-bold text-center text-4xl p-4">New Upload</h1>
 
-<%= render "form.html", Map.put(assigns, :action, Routes.upload_path(@conn, :create)) %>
+<%= render("form.html", Map.put(assigns, :action, Routes.upload_path(@conn, :create))) %>
 
 <div class="flex px-28 justify-between w-screen flex-wrap">
-    <div class="text-sky-900 text-lg font-semibold tracking-wide"><%= link "Back", to: Routes.page_path(@conn, :home) %>
-    </div>
+  <div class="text-sky-900 text-lg font-semibold tracking-wide"><%= link("Back", to: Routes.page_path(@conn, :home)) %></div>
 </div>

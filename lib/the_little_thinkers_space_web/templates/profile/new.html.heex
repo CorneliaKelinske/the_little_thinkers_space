@@ -1,14 +1,9 @@
 <h1 class="w-screen text-sky-900 font-bold text-center text-4xl p-4">Create Your Profile</h1>
 <div class="w-screen text-center text-gray-800">The only people who can see your profile are you and Ulrik (and the
-    Admin) </div>
+  Admin)</div>
 
-<%= render "form.html", Map.put(assigns, :action, Routes.profile_path(@conn, :create)) %>
+<%= render("form.html", Map.put(assigns, :action, Routes.profile_path(@conn, :create))) %>
 
 <div class="flex px-28 justify-between w-screen flex-wrap">
-    <div class="text-sky-900 text-lg font-semibold tracking-wide"><%= link "Back", to: Routes.page_path(@conn, :home) %>
-    </div>
-
+  <div class="text-sky-900 text-lg font-semibold tracking-wide"><%= link("Back", to: Routes.page_path(@conn, :home)) %></div>
 </div>
-
-
-

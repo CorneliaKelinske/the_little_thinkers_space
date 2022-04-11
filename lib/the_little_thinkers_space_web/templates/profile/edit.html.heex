@@ -1,14 +1,11 @@
 <h1 class="w-screen text-sky-900 font-bold text-center text-4xl p-4">Edit Profile</h1>
 
-<%= render "form.html", Map.put(assigns, :action, Routes.profile_path(@conn, :update, @profile)) %>
+<%= render("form.html", Map.put(assigns, :action, Routes.profile_path(@conn, :update, @profile))) %>
 
 <div class="flex p-28 justify-between w-screen flex-wrap">
   <div>
-    <span
-      class="text-sky-900 text-lg font-semibold tracking-wide"><%= link "Delete", to: Routes.profile_path(@conn, :delete, @profile), method: :delete, data: [confirm: "Are you sure?"] %></span>
+    <span class="text-sky-900 text-lg font-semibold tracking-wide"><%= link("Delete", to: Routes.profile_path(@conn, :delete, @profile), method: :delete, data: [confirm: "Are you sure?"]) %></span>
     <span class="text-sky-900 text-lg font-semibold tracking-wide">|</span>
-    <span
-      class="text-sky-900 text-lg font-semibold tracking-wide"><%= link "Back", to: Routes.page_path(@conn, :home) %></span>
+    <span class="text-sky-900 text-lg font-semibold tracking-wide"><%= link("Back", to: Routes.page_path(@conn, :home)) %></span>
   </div>
-
 </div>

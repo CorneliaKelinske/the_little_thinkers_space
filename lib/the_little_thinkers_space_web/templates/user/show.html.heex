@@ -3,15 +3,13 @@
 
   <div class="w-screen flex justify-center mb-8 md:p-8">
     <section class="flex xs:w-screen md:w-3/5 lg:w-2/5 h-4/6 p-2 bg-orange-200 bg-opacity-70 rounded shadow-xl">
-
       <ul class="text-gray-900 text-lg">
-
         <li class="flex m-2 w-full">
           <div class="w-6/12"><strong>First name:</strong></div>
           <div class="w-6/12 pl-2"><%= @user.first_name %></div>
         </li>
 
-          <li class="flex m-2 w-full">
+        <li class="flex m-2 w-full">
           <div class="w-6/12"><strong>Last name:</strong></div>
           <div class="w-6/12 pl-2"><%= @user.last_name %></div>
         </li>
@@ -25,18 +23,13 @@
           <div class="w-6/12 truncate"><strong>Email:</strong></div>
           <div class="w-6/12 pl-2"><%= @user.email %></div>
         </li>
-
       </ul>
-
     </section>
   </div>
 
   <div class="mx-8 sm:mx-16 my-6">
-    <span
-      class="text-sky-900 text-lg font-semibold tracking-wide"><%= link "Delete", to: Routes.user_path(@conn, :delete, @user), method: :delete, data: [confirm: "Are you sure?"]%></span>
+    <span class="text-sky-900 text-lg font-semibold tracking-wide"><%= link("Delete", to: Routes.user_path(@conn, :delete, @user), method: :delete, data: [confirm: "Are you sure?"]) %></span>
     <span class="text-sky-900 text-lg font-semibold tracking-wide">|</span>
-    <span
-      class="text-sky-900 text-lg font-semibold tracking-wide"><%= link "Back", to: Routes.user_path(@conn, :index) %></span>
+    <span class="text-sky-900 text-lg font-semibold tracking-wide"><%= link("Back", to: Routes.user_path(@conn, :index)) %></span>
   </div>
-
 </body>
