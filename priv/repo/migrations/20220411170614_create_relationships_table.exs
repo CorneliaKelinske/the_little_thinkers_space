@@ -12,7 +12,5 @@ defmodule TheLittleThinkersSpace.Repo.Migrations.CreateRelationshipsTable do
 
     create unique_index(:relationships, [:little_thinker_id, :user_id])
     create index(:relationships, :user_id)
-
-
   end
 end
