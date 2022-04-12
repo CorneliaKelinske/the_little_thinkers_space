@@ -6,7 +6,7 @@
 - There is an associated relationships schema, which also includes a type validation
 - valid types are "Parent", "Family", "Friend"
 - Parent will have more rights than the other two
-- I am differentiating between "Family" and "Friend" as their might be cases in which content is to be shared only within a family
+- I am differentiating between "Family" and "Friend" as there might be cases in which content is to be shared only within a family
 
 # What now?!
 
@@ -31,7 +31,7 @@ is used to register a user. Also need to check if there is any conflict with use
 
 ### Acceptance
 - [ ] add an update_user function to accounts.ex
-- [ ] add an edit_user function to the user controller
+- [ ] add an edit action to the user controller
 - [ ] add an edit_user template (potentially also a form template)
 - [ ] add update_user test to the accounts test
 - [ ] add edit user user test to the user_controller test
@@ -41,6 +41,9 @@ is used to register a user. Also need to check if there is any conflict with use
 # Relationship controller, routes, views, templates
 
 We need a relationship controller to work with the relationships table and the connection between a little thinker and a crew.
-We'll start with a 
+
+- [ ] create a relationship view
+- [ ] create relationship template folder with an index.heex
+- [ ]
 
 (initial authorization as before)
