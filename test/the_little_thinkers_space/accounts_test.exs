@@ -637,8 +637,7 @@ defmodule TheLittleThinkersSpace.AccountsTest do
     end
 
     test "change_profile/1 returns a profile changeset" do
-      profile = profile_fixture()
-      user = user_fixture()
+      profile = profile_fixture()      # user = user_fixture()
       assert %Ecto.Changeset{} = Accounts.change_profile(profile)
     end
   end
