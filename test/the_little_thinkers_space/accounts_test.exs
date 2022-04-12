@@ -518,6 +518,32 @@ defmodule TheLittleThinkersSpace.AccountsTest do
     end
   end
 
+  describe "update_user/2" do
+    test "update_user/2 with valid data updates the user" do
+      user = user_fixture()
+      update_attrs = %{first_name: "Karen", last_name: "Murphy"}
+      assert {:ok, %User{} = user} = Accounts.update_user(user, update_attrs)
+      assert user.first_name == "Karen"
+      assert user.last_name == "Murphy"
+    end
+
+    test "update_user/2 with invalid data returns error changeset" do
+      user = user_fixture()
+      invalid_update_attrs = %{first_name: nil, last_name: nil}
+      assert {:error, %Ecto.Changeset{}} = Accounts.update_user(user, invalid_update_attrs)
+      assert user == Accounts.get_user!(user.id)
+    end
+
+    test "update_user/2 does returns error changeset when first and last name combination provided already exists" do
+      user = user_fixture()
+      admin = admin_fixture()
+      duplicate_update_attrs = %{first_name: admin.first_name, last_name: admin.last_name}
+      {:error, changeset} = Accounts.update_user(user, duplicate_update_attrs)
+      assert %{first_name: ["has already been taken"]} == errors_on(changeset)
+      assert user == Accounts.get_user!(user.id)
+    end
+  end
+
   describe "profiles" do
     alias TheLittleThinkersSpace.Accounts.Profile
 
