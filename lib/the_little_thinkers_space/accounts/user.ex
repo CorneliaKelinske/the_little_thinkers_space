@@ -33,6 +33,8 @@ defmodule TheLittleThinkersSpace.Accounts.User do
     timestamps()
   end
 
+  @cast_attrs [:email, :password, :role, :first_name, :last_name]
+
   @doc """
   A user changeset for registration.
 
@@ -52,7 +54,7 @@ defmodule TheLittleThinkersSpace.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password, :role, :first_name, :last_name])
+    |> cast(attrs, @cast_attrs)
     |> validate_email()
     |> validate_password(opts)
     |> validate_required([:role, :first_name, :last_name])
@@ -162,6 +164,13 @@ defmodule TheLittleThinkersSpace.Accounts.User do
     else
       add_error(changeset, :current_password, "is not valid")
     end
+  end
+
+  def update_changeset(user, attrs) do
+    user
+    |> cast(attrs, @cast_attrs)
+    |> validate_required([:first_name, :last_name, :role])
+    |> unique_constraint([:first_name, :last_name])
   end
 
   def authorize(_, %User{role: "Admin"}, _user), do: :ok
