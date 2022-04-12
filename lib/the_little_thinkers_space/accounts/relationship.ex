@@ -24,6 +24,6 @@ defmodule TheLittleThinkersSpace.Accounts.Relationship do
     |> cast(attrs, @required_attrs)
     |> validate_required(@required_attrs, message: "This field must not be empty!")
     |> unique_constraint([:little_thinker_id, :user_id])
-    |> validate_inclusion(:role, @valid_types)
+    |> validate_inclusion(:type, @valid_types)
   end
 end
