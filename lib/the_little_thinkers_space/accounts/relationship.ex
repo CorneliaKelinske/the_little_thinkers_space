@@ -7,6 +7,8 @@ defmodule TheLittleThinkersSpace.Accounts.Relationship do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @valid_types ["Parent", "Friend", "Family"]
+
   schema "relationships" do
     field :little_thinker_id, :id
     field :user_id, :id
@@ -22,5 +24,6 @@ defmodule TheLittleThinkersSpace.Accounts.Relationship do
     |> cast(attrs, @required_attrs)
     |> validate_required(@required_attrs, message: "This field must not be empty!")
     |> unique_constraint([:little_thinker_id, :user_id])
+    |> validate_inclusion(:type, @valid_types)
   end
 end
