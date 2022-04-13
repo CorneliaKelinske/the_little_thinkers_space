@@ -22,6 +22,7 @@
 
             <td class="text-gray-600 text-xs uppercase font-semibold tracking-wide p-2">
               <span class="pr-3"><%= link("Show", to: Routes.user_path(@conn, :show, user)) %></span>
+              <span class="pr-3"><%= link("Edit", to: Routes.user_path(@conn, :edit, user)) %></span>
               <span><%= link("Delete", to: Routes.user_path(@conn, :delete, user), method: :delete, data: [confirm: "Are you sure?"]) %></span>
             </td>
           </tr>

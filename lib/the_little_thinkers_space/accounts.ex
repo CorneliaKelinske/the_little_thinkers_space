@@ -356,6 +356,10 @@ defmodule TheLittleThinkersSpace.Accounts do
     |> Repo.update()
   end
 
+  def change_user(%User{} = user, attrs \\ %{}) do
+    User.update_changeset(user, attrs)
+  end
+
   ######## PROFILES ########
 
   alias TheLittleThinkersSpace.Accounts.Profile
