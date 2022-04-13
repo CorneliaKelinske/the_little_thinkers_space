@@ -30,6 +30,8 @@
   <div class="mx-8 sm:mx-16 my-6">
     <span class="text-sky-900 text-lg font-semibold tracking-wide"><%= link("Delete", to: Routes.user_path(@conn, :delete, @user), method: :delete, data: [confirm: "Are you sure?"]) %></span>
     <span class="text-sky-900 text-lg font-semibold tracking-wide">|</span>
+    <span class="text-sky-900 text-lg font-semibold tracking-wide"><%= link("Edit", to: Routes.user_path(@conn, :edit, @user)) %></span>
+    <span class="text-sky-900 text-lg font-semibold tracking-wide">|</span>
     <span class="text-sky-900 text-lg font-semibold tracking-wide"><%= link("Back", to: Routes.user_path(@conn, :index)) %></span>
   </div>
 </body>
