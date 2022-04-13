@@ -47,3 +47,6 @@ We need a relationship controller to work with the relationships table and the c
 - [ ]
 
 (initial authorization as before)
+
+
+## IMPORTANT: will need to sophisticate the authorization in relationships once the little thinker controller is implemented

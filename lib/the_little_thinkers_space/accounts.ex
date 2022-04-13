@@ -402,6 +402,8 @@ defmodule TheLittleThinkersSpace.Accounts do
     |> Repo.insert()
   end
 
+  def get_followers()
+
   # def list_crew_for_little_thinker(%User{role: "admin"}) do
   #   Repo.all(User)
   # end
