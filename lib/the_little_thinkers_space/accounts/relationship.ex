@@ -6,7 +6,6 @@ defmodule TheLittleThinkersSpace.Accounts.Relationship do
   """
   use Ecto.Schema
   import Ecto.Changeset
-  alias TheLittleThinkersSpace.Accounts.User
 
   @valid_types ["Parent", "Friend", "Family"]
 

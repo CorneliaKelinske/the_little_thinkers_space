@@ -8,7 +8,6 @@ defmodule TheLittleThinkersSpaceWeb.CrewControllerTest do
   end
 
   describe "index/2" do
-
     test "redirects to login when user is not logged in", %{conn: conn} do
       conn = get(conn, Routes.crew_path(conn, :index))
 

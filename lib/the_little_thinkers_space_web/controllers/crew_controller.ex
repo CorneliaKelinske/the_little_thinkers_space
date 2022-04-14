@@ -4,7 +4,7 @@ defmodule TheLittleThinkersSpaceWeb.CrewController do
   """
   use TheLittleThinkersSpaceWeb, :controller
 
-  alias TheLittleThinkersSpace.{Accounts, Accounts.Profile}
+  alias TheLittleThinkersSpace.Accounts
 
   action_fallback TheLittleThinkersSpaceWeb.FallbackController
 
