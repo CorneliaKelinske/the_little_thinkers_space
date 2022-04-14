@@ -38,3 +38,15 @@ is used to register a user. Also need to check if there is any conflict with use
 
 ################################################################
 
+# Relationship controller, routes, views, templates
+
+We need a relationship controller to work with the relationships table and the connection between a little thinker and a crew.
+
+- [ ] create a relationship view
+- [ ] create relationship template folder with an index.heex
+- [ ]
+
+(initial authorization as before)
+
+
+## IMPORTANT: will need to sophisticate the authorization in relationships once the little thinker controller is implemented
