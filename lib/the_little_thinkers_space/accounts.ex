@@ -402,7 +402,22 @@ defmodule TheLittleThinkersSpace.Accounts do
     |> Repo.insert()
   end
 
-  def get_followers()
+  def list_connected_users(id) do
+    get_connected_user_ids(id) |> get_connected_users()
+  end
+
+  defp get_connected_user_ids(id) do
+    query =
+      from r in Relationship,
+        where: r.little_thinker_id == ^id,
+        select: r.user_id
+
+    Repo.all(query)
+  end
+
+  defp get_connected_users(list_of_follower_ids) do
+    Enum.map(list_of_follower_ids, fn x -> Repo.get!(User, x) end)
+  end
 
   # def list_crew_for_little_thinker(%User{role: "admin"}) do
   #   Repo.all(User)

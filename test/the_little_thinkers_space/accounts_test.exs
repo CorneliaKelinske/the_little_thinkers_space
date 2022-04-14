@@ -782,4 +782,32 @@ defmodule TheLittleThinkersSpace.AccountsTest do
       )
     end
   end
+
+  describe "list_connected_users/1" do
+    setup do
+      %{user: user_fixture(), little_thinker: little_thinker_fixture(), admin: admin_fixture()}
+    end
+
+    test "returns a list of empty users when connections exist and a valid user_id is entered", %{
+      user: user,
+      little_thinker: little_thinker,
+      admin: admin
+    } do
+      users = [user, admin]
+
+      Enum.map([user, admin], fn x ->
+        Accounts.connect_users(%{
+          little_thinker_id: little_thinker.id,
+          user_id: x.id,
+          type: "Friend"
+        })
+      end)
+
+      assert users == Accounts.list_connected_users(little_thinker.id)
+    end
+
+    test "returns an empty list if a user has no connections", %{little_thinker: little_thinker} do
+      assert [] == Accounts.list_connected_users(little_thinker.id)
+    end
+  end
 end
