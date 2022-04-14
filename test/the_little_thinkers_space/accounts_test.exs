@@ -782,4 +782,33 @@ defmodule TheLittleThinkersSpace.AccountsTest do
       )
     end
   end
+
+  describe "preload_relationships/1" do
+    setup do
+      %{user: user_fixture(), little_thinker: little_thinker_fixture(), admin: admin_fixture()}
+    end
+
+    test "returns a user with all their followers and the little thinkers they follow", %{
+      user: %{id: user_id},
+      little_thinker: %{id: little_thinker_id} = little_thinker,
+      admin: %{id: admin_id}
+    } do
+      Enum.map([user_id, admin_id], fn x ->
+        Accounts.connect_users(%{
+          little_thinker_id: little_thinker_id,
+          user_id: x,
+          type: "Friend"
+        })
+      end)
+
+      assert %User{id: ^little_thinker_id, followers: followers, little_thinkers: []} =
+               Accounts.preload_relationships(little_thinker)
+
+      assert [%User{id: ^admin_id}, %User{id: ^user_id}] = Enum.sort(followers, &(&1.id > &2.id))
+    end
+
+    # test "returns an empty list if a user has no connections", %{little_thinker: little_thinker} do
+    #   assert [] == Accounts.list_connected_users(little_thinker.id)
+    # end
+  end
 end

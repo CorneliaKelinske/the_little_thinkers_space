@@ -6,7 +6,7 @@
     <button class="btn-nav xs:place-self-center"><%= link("Settings", to: Routes.user_settings_path(@conn, :edit)) %></button>
 
     <%= if @current_user.role in ["Admin", "The Little Thinker"] do %>
-      <button class="btn-nav xs:place-self-center"><%= link("Ulrik's crew", to: Routes.profile_path(@conn, :index)) %></button>
+      <button class="btn-nav xs:place-self-center"><%= link("Ulrik's crew", to: Routes.crew_path(@conn, :index)) %></button>
     <% else %>
     <% end %>
     <%= if @current_user.role == "Admin" do %>

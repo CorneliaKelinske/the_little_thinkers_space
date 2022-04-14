@@ -402,6 +402,10 @@ defmodule TheLittleThinkersSpace.Accounts do
     |> Repo.insert()
   end
 
+  def preload_relationships(user) do
+    Repo.preload(user, [:followers, :little_thinkers])
+  end
+
   # def list_crew_for_little_thinker(%User{role: "admin"}) do
   #   Repo.all(User)
   # end
