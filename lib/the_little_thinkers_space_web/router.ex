@@ -83,6 +83,7 @@ defmodule TheLittleThinkersSpaceWeb.Router do
     resources "/uploads", UploadController
     resources "/profiles", ProfileController
     resources "/crew", CrewController
+    resources "/little_thinker", LittleThinkerController
   end
 
   scope "/", TheLittleThinkersSpaceWeb do

@@ -2,7 +2,6 @@ defmodule TheLittleThinkersSpaceWeb.CrewControllerTest do
   use TheLittleThinkersSpaceWeb.ConnCase, async: true
   import TheLittleThinkersSpace.AccountsFixtures
 
-
   describe "index/2" do
     setup [:user, :with_crew]
 
