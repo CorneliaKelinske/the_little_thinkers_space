@@ -1,5 +1,5 @@
 defmodule TheLittleThinkersSpaceWeb.ProfileControllerTest do
-  use TheLittleThinkersSpaceWeb.ConnCase
+  use TheLittleThinkersSpaceWeb.ConnCase, async: true
   import TheLittleThinkersSpace.AccountsFixtures
   alias TheLittleThinkersSpace.Accounts
   alias TheLittleThinkersSpace.Accounts.Profile

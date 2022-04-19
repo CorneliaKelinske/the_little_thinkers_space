@@ -1,5 +1,5 @@
 defmodule TheLittleThinkersSpaceWeb.UserControllerTest do
-  use TheLittleThinkersSpaceWeb.ConnCase
+  use TheLittleThinkersSpaceWeb.ConnCase, async: true
 
   import TheLittleThinkersSpace.AccountsFixtures
 

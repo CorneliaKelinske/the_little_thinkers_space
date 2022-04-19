@@ -1,5 +1,5 @@
 defmodule TheLittleThinkersSpace.Accounts.ProfileTest do
-  use TheLittleThinkersSpace.DataCase
+  use TheLittleThinkersSpace.DataCase, async: true
 
   alias TheLittleThinkersSpace.Accounts
   alias TheLittleThinkersSpace.Accounts.Profile
