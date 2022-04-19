@@ -788,7 +788,7 @@ defmodule TheLittleThinkersSpace.AccountsTest do
       %{user: user_fixture(), little_thinker: little_thinker_fixture(), admin: admin_fixture()}
     end
 
-    test "returns a user with all their followers and the little thinkers they follow", %{
+    test "returns a user with all their crews and the little thinkers they follow", %{
       user: %{id: user_id},
       little_thinker: %{id: little_thinker_id} = little_thinker,
       admin: %{id: admin_id}
@@ -801,10 +801,10 @@ defmodule TheLittleThinkersSpace.AccountsTest do
         })
       end)
 
-      assert %User{id: ^little_thinker_id, followers: followers, little_thinkers: []} =
+      assert %User{id: ^little_thinker_id, crews: crews, little_thinkers: []} =
                Accounts.preload_relationships(little_thinker)
 
-      assert [%User{id: ^admin_id}, %User{id: ^user_id}] = Enum.sort(followers, &(&1.id > &2.id))
+      assert [%User{id: ^admin_id}, %User{id: ^user_id}] = Enum.sort(crews, &(&1.id > &2.id))
     end
 
     # test "returns an empty list if a user has no connections", %{little_thinker: little_thinker} do

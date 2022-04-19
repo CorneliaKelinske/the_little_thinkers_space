@@ -20,7 +20,7 @@ defmodule TheLittleThinkersSpace.Accounts.User do
     field :first_name, :string
     field :last_name, :string
 
-    many_to_many :followers,
+    many_to_many :crews,
                  __MODULE__,
                  join_through: "relationships",
                  join_keys: [little_thinker_id: :id, user_id: :id]
