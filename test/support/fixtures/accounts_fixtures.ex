@@ -1,8 +1,10 @@
 defmodule TheLittleThinkersSpace.AccountsFixtures do
   @moduledoc """
   This module defines test helpers for creating
-  entities via the `TheLittleThinkersSpace.Accounts` context.
+  entities via the `Accounts` context.
   """
+
+  alias TheLittleThinkersSpace.{Accounts, Repo}
 
   def unique_user_email, do: "user#{System.unique_integer()}@example.com"
   def valid_user_password, do: "hello world!"
@@ -46,16 +48,35 @@ defmodule TheLittleThinkersSpace.AccountsFixtures do
     {:ok, user} =
       attrs
       |> valid_user_attributes()
-      |> TheLittleThinkersSpace.Accounts.register_user()
+      |> Accounts.register_user()
 
     user
+  end
+
+  def user(_context) do
+    {:ok, user} = Accounts.register_user(valid_user_attributes())
+    %{user: user}
+  end
+
+  def with_crew(%{user: user}) do
+    {:ok, friend} = Accounts.register_user(valid_user_attributes())
+
+    Accounts.connect_users(%{
+      little_thinker_id: user.id,
+      user_id: friend.id,
+      type: "Friend"
+    })
+
+    user = Repo.preload(user, [:crews])
+
+    %{user: user}
   end
 
   def admin_fixture(attrs \\ %{}) do
     {:ok, admin} =
       attrs
       |> admin_attributes()
-      |> TheLittleThinkersSpace.Accounts.register_user()
+      |> Accounts.register_user()
 
     admin
   end
@@ -64,7 +85,7 @@ defmodule TheLittleThinkersSpace.AccountsFixtures do
     {:ok, little_thinker} =
       attrs
       |> little_thinker_attributes()
-      |> TheLittleThinkersSpace.Accounts.register_user()
+      |> Accounts.register_user()
 
     little_thinker
   end
@@ -97,7 +118,7 @@ defmodule TheLittleThinkersSpace.AccountsFixtures do
         song: "some song",
         superhero: "some superhero"
       })
-      |> TheLittleThinkersSpace.Accounts.create_profile()
+      |> Accounts.create_profile()
 
     profile
   end
@@ -121,7 +142,7 @@ defmodule TheLittleThinkersSpace.AccountsFixtures do
         song: "some song",
         superhero: "some superhero"
       })
-      |> TheLittleThinkersSpace.Accounts.create_profile()
+      |> Accounts.create_profile()
 
     lt_profile
   end

@@ -1,13 +1,11 @@
 defmodule TheLittleThinkersSpaceWeb.CrewControllerTest do
   use TheLittleThinkersSpaceWeb.ConnCase
   import TheLittleThinkersSpace.AccountsFixtures
-  alias TheLittleThinkersSpace.Accounts
 
-  setup do
-    %{user: user_fixture()}
-  end
 
   describe "index/2" do
+    setup [:user, :with_crew]
+
     test "redirects to login when user is not logged in", %{conn: conn} do
       conn = get(conn, Routes.crew_path(conn, :index))
 
