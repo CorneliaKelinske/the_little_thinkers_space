@@ -8,8 +8,9 @@ defmodule TheLittleThinkersSpaceWeb.CrewView do
       %Accounts.Profile{} = profile ->
         profile_id = to_string(profile.id)
         link("SHOW", to: "/profiles/" <> profile_id)
-     _ -> content_tag(:a, "NOTHING TO SEE YET")
 
-   end
+      _ ->
+        content_tag(:a, "NOTHING TO SEE YET")
+    end
   end
 end

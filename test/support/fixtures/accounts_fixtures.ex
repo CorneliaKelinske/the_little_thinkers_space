@@ -4,6 +4,8 @@ defmodule TheLittleThinkersSpace.AccountsFixtures do
   entities via the `TheLittleThinkersSpace.Accounts` context.
   """
 
+  alias TheLittleThinkersSpace.Repo
+
   def unique_user_email, do: "user#{System.unique_integer()}@example.com"
   def valid_user_password, do: "hello world!"
   def valid_user_role, do: "Crew"
@@ -49,6 +51,25 @@ defmodule TheLittleThinkersSpace.AccountsFixtures do
       |> TheLittleThinkersSpace.Accounts.register_user()
 
     user
+  end
+
+  def user(_context) do
+    {:ok, user} = TheLittleThinkersSpace.Accounts.register_user(valid_user_attributes())
+    %{user: user}
+  end
+
+  def with_crew(%{user: user}) do
+    {:ok, friend} = TheLittleThinkersSpace.Accounts.register_user(valid_user_attributes())
+
+    TheLittleThinkersSpace.Accounts.connect_users(%{
+      little_thinker_id: user.id,
+      user_id: friend.id,
+      type: "Friend"
+    })
+
+    user = Repo.preload(user, [:crews])
+
+    %{user: user}
   end
 
   def admin_fixture(attrs \\ %{}) do
