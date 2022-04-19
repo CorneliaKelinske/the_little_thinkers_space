@@ -1,11 +1,11 @@
 defmodule TheLittleThinkersSpaceWeb.CrewView do
   use TheLittleThinkersSpaceWeb, :view
 
-  alias TheLittleThinkersSpace.Accounts
+  alias TheLittleThinkersSpace.{Accounts, Accounts.Profile}
 
   def display_profile_link(crew_id) do
     case Accounts.get_user_profile(crew_id) do
-      %Accounts.Profile{} = profile ->
+      %Profile{} = profile ->
         profile_id = to_string(profile.id)
         link("SHOW", to: "/profiles/" <> profile_id)
 
