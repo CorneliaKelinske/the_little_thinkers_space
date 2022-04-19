@@ -1,5 +1,5 @@
 defmodule TheLittleThinkersSpaceWeb.ContactControllerTest do
-  use TheLittleThinkersSpaceWeb.ConnCase
+  use TheLittleThinkersSpaceWeb.ConnCase, async: true
 
   @valid_params %{
     from_email: "tester@test.com",
