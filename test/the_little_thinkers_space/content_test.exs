@@ -1,5 +1,5 @@
 defmodule TheLittleThinkersSpace.ContentTest do
-  use TheLittleThinkersSpace.DataCase
+  use TheLittleThinkersSpace.DataCase, async: true
 
   alias TheLittleThinkersSpace.Content
 
