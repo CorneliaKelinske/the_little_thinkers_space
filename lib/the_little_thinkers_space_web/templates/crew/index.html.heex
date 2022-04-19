@@ -12,13 +12,11 @@
       </thead>
 
       <tbody class="divide-y divide-gray-300">
-        <%= for follower <- @user.followers do %>
+        <%= for follower <- @user.crews do %>
           <tr>
             <td class="text-left text-gray-900 p-2 font-semibold"><%= follower.first_name %></td>
             <td class="text-left text-gray-900 p-2"><%= follower.last_name %></td>
-            <td class="text-gray-600 text-xs uppercase font-semibold tracking-wide p-2">
-              <!--> <span><%= link("THIS IS NOT WORKING YET", to: Routes.profile_path(@conn, :show, @follower)) %></span> -->
-            </td>
+            <td class="text-gray-600 text-xs uppercase font-semibold tracking-wide p-2"></td>
           </tr>
         <% end %>
       </tbody>

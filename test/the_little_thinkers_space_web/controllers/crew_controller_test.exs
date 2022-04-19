@@ -15,7 +15,7 @@ defmodule TheLittleThinkersSpaceWeb.CrewControllerTest do
                "<html><body>You are being <a href=\"/users/log_in\">redirected</a>.</body></html>"
     end
 
-    test "lists all followers of a user when user is logged in", %{conn: conn, user: user} do
+    test "lists all crews of a user when user is logged in", %{conn: conn, user: user} do
       conn =
         conn
         |> log_in_user(user)
