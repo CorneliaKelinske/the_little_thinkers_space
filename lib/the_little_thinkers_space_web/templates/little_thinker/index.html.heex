@@ -1,0 +1,28 @@
+<body class="bg-colors bg-cover">
+  <h1 class="w-screen text-sky-900 font-bold text-center text-4xl p-4">Little Thinkers I Follow</h1>
+  <section class="flex flex-col items-center pt-8 w-screen h-full">
+    <table class="xs:w-11/12 md:w-8/12 lg:w-6/12 rounded shadow-xl bg-orange-200 bg-opacity-70 overflow-hidden">
+      <thead class="bg-orange-400 bg-opacity-70 rounded text-gray-900 font-bold md:text-lg">
+        <tr>
+          <th class="text-left p-2">First name</th>
+          <th class="text-left p-2">Last name</th>
+          <th class="text-left p-2"></th>
+        </tr>
+      </thead>
+
+      <tbody class="divide-y divide-gray-300">
+        <%= for little_thinker <- @user.little_thinkers do %>
+          <tr>
+            <td class="text-left text-gray-900 p-2 font-semibold"><%= little_thinker.first_name %></td>
+            <td class="text-left text-gray-900 p-2"><%= little_thinker.last_name %></td>
+            <td class="text-gray-600 text-xs uppercase font-semibold tracking-wide p-2"><%= display_profile_link(little_thinker.id) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="mx-8 sm:mx-16 my-6">
+    <span class="text-sky-900 text-lg font-semibold tracking-wide"><%= link("Back", to: Routes.page_path(@conn, :home)) %></span>
+  </div>
+</body>
