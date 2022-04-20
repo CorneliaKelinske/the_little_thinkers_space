@@ -49,7 +49,6 @@ defmodule TheLittleThinkersSpace.AccountsTest do
   end
 
   describe "get_user!/1" do
-
     test "raises if id is invalid" do
       assert_raise Ecto.NoResultsError, fn ->
         Accounts.get_user!(-1)
@@ -319,7 +318,6 @@ defmodule TheLittleThinkersSpace.AccountsTest do
   end
 
   describe "generate_user_session_token/1" do
-
     test "generates a token", %{user: user} do
       token = Accounts.generate_user_session_token(user)
       assert user_token = Repo.get_by(UserToken, token: token)
@@ -506,7 +504,6 @@ defmodule TheLittleThinkersSpace.AccountsTest do
 
   describe "update_user/2" do
     test "update_user/2 with valid data updates the user", %{user: user} do
-
       update_attrs = %{first_name: "Karen", last_name: "Murphy"}
       assert {:ok, %User{} = user} = Accounts.update_user(user, update_attrs)
       assert user.first_name == "Karen"
@@ -514,15 +511,13 @@ defmodule TheLittleThinkersSpace.AccountsTest do
     end
 
     test "update_user/2 with invalid data returns error changeset", %{user: user} do
-
       invalid_update_attrs = %{first_name: nil, last_name: nil}
       assert {:error, %Ecto.Changeset{}} = Accounts.update_user(user, invalid_update_attrs)
       assert user == Accounts.get_user!(user.id)
     end
 
-    test "update_user/2 does returns error changeset when first and last name combination provided already exists", %{user: user, admin: admin} do
-
-
+    test "update_user/2 does returns error changeset when first and last name combination provided already exists",
+         %{user: user, admin: admin} do
       duplicate_update_attrs = %{first_name: admin.first_name, last_name: admin.last_name}
       {:error, changeset} = Accounts.update_user(user, duplicate_update_attrs)
       assert %{first_name: ["has already been taken"]} == errors_on(changeset)
