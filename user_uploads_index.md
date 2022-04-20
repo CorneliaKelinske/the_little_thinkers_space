@@ -21,3 +21,6 @@ end
 https://hexdocs.pm/ecto/Ecto.Query.html#order_by/3
 
 - [ ] Order uploads in reverse chronological order
+
+https://elixir-slackin.herokuapp.com
+
