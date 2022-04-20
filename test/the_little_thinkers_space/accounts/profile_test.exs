@@ -22,11 +22,9 @@ defmodule TheLittleThinkersSpace.Accounts.ProfileTest do
     belongs_to_lt: false
   }
 
-  setup do
-    %{user: user_fixture()}
-  end
-
   describe "changeset/2" do
+    setup [:user]
+
     test "cannot insert a profile with a duplicate user_id", %{user: %{id: user_id}} do
       params = Map.merge(@profile_params, %{user_id: user_id})
       assert {:ok, %Profile{}} = Accounts.create_profile(params)

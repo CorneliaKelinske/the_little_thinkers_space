@@ -63,6 +63,11 @@ defmodule TheLittleThinkersSpace.AccountsFixtures do
     %{little_thinker: little_thinker}
   end
 
+  def admin(_context) do
+    {:ok, admin} = Accounts.register_user(admin_attributes())
+    %{admin: admin}
+  end
+
   def with_crew(%{user: user}) do
     {:ok, friend} = Accounts.register_user(valid_user_attributes())
 

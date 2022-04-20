@@ -137,9 +137,7 @@ defmodule TheLittleThinkersSpace.AccountsTest do
   end
 
   describe "apply_user_email/3" do
-    setup do
-      %{user: user_fixture()}
-    end
+    setup [:user]
 
     test "requires email to change", %{user: user} do
       {:error, changeset} = Accounts.apply_user_email(user, valid_user_password(), %{})
@@ -187,9 +185,7 @@ defmodule TheLittleThinkersSpace.AccountsTest do
   end
 
   describe "deliver_update_email_instructions/3" do
-    setup do
-      %{user: user_fixture()}
-    end
+    setup [:user]
 
     test "sends token through notification", %{user: user} do
       token =
@@ -267,9 +263,7 @@ defmodule TheLittleThinkersSpace.AccountsTest do
   end
 
   describe "update_user_password/3" do
-    setup do
-      %{user: user_fixture()}
-    end
+    setup [:user]
 
     test "validates password", %{user: user} do
       {:error, changeset} =
@@ -323,9 +317,7 @@ defmodule TheLittleThinkersSpace.AccountsTest do
   end
 
   describe "generate_user_session_token/1" do
-    setup do
-      %{user: user_fixture()}
-    end
+    setup [:user]
 
     test "generates a token", %{user: user} do
       token = Accounts.generate_user_session_token(user)
@@ -375,9 +367,7 @@ defmodule TheLittleThinkersSpace.AccountsTest do
   end
 
   describe "deliver_user_confirmation_instructions/2" do
-    setup do
-      %{user: user_fixture()}
-    end
+    setup [:user]
 
     test "sends token through notification", %{user: user} do
       token =
@@ -428,9 +418,7 @@ defmodule TheLittleThinkersSpace.AccountsTest do
   end
 
   describe "deliver_user_reset_password_instructions/2" do
-    setup do
-      %{user: user_fixture()}
-    end
+    setup [:user]
 
     test "sends token through notification", %{user: user} do
       token =
@@ -476,9 +464,7 @@ defmodule TheLittleThinkersSpace.AccountsTest do
   end
 
   describe "reset_user_password/2" do
-    setup do
-      %{user: user_fixture()}
-    end
+    setup [:user]
 
     test "validates password", %{user: user} do
       {:error, changeset} =
@@ -672,9 +658,7 @@ defmodule TheLittleThinkersSpace.AccountsTest do
   ## Crew
 
   describe "connect_users/1" do
-    setup do
-      %{user: user_fixture(), little_thinker: little_thinker_fixture(), admin: admin_fixture()}
-    end
+    setup [:admin, :little_thinker, :user]
 
     test "requires two ids and a relationship type" do
       assert {:error, changeset} = Accounts.connect_users(%{})
@@ -784,9 +768,7 @@ defmodule TheLittleThinkersSpace.AccountsTest do
   end
 
   describe "preload_relationships/1" do
-    setup do
-      %{user: user_fixture(), little_thinker: little_thinker_fixture(), admin: admin_fixture()}
-    end
+    setup [:admin, :little_thinker, :user]
 
     test "returns a user with all their crews and the little thinkers they follow", %{
       user: %{id: user_id},
