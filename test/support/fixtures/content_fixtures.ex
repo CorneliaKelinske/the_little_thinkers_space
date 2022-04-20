@@ -4,6 +4,7 @@ defmodule TheLittleThinkersSpace.ContentFixtures do
   entities via the `TheLittleThinkersSpace.Content` context.
   """
   import TheLittleThinkersSpace.AccountsFixtures
+  alias TheLittleThinkersSpace.Content
 
   @create_image_attrs %{
     description: "some description",
@@ -17,10 +18,10 @@ defmodule TheLittleThinkersSpace.ContentFixtures do
   @doc """
   Generate a upload.
   """
-  def upload_fixture(attrs \\ %{}) do
+
+  def upload(_conn) do
     user = user_fixture()
-    attrs = Enum.into(attrs, @create_image_attrs)
-    {:ok, upload} = TheLittleThinkersSpace.Content.create_upload(user, attrs)
-    upload
+    {:ok, upload} = Content.create_upload(user, @create_image_attrs)
+    %{upload: upload}
   end
 end

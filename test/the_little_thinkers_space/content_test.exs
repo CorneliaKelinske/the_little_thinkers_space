@@ -30,18 +30,16 @@ defmodule TheLittleThinkersSpace.ContentTest do
       orientation: "Landscape"
     }
 
-    setup [:user]
+    setup [:user, :upload]
 
-    test "list_uploads/0 returns all uploads" do
-      upload = upload_fixture()
+    test "list_uploads/0 returns all uploads", %{upload: upload} do
 
       assert Enum.map(Content.list_uploads(), &Map.put(&1, :user, nil)) == [
                Map.put(upload, :user, nil)
              ]
     end
 
-    test "get_upload!/1 returns the upload with given id" do
-      upload = upload_fixture()
+    test "get_upload!/1 returns the upload with given id", %{upload: upload} do
       assert Map.put(Content.get_upload!(upload.id), :user, nil) == Map.put(upload, :user, nil)
     end
 
@@ -57,8 +55,7 @@ defmodule TheLittleThinkersSpace.ContentTest do
       assert {:error, %Ecto.Changeset{}} = Content.create_upload(user, @invalid_attrs)
     end
 
-    test "update_upload/2 with valid data updates the upload" do
-      upload = upload_fixture()
+    test "update_upload/2 with valid data updates the upload", %{upload: upload} do
 
       assert {:ok, %Upload{} = upload} = Content.update_upload(upload, @update_attrs)
       assert upload.description == "some updated description"
@@ -67,22 +64,20 @@ defmodule TheLittleThinkersSpace.ContentTest do
       assert upload.title == "some updated title"
     end
 
-    test "update_upload/2 with invalid data returns error changeset" do
-      upload = upload_fixture()
+    test "update_upload/2 with invalid data returns error changeset", %{upload: upload} do
       assert {:error, %Ecto.Changeset{}} = Content.update_upload(upload, @invalid_attrs)
       assert Map.put(Content.get_upload!(upload.id), :user, nil) == Map.put(upload, :user, nil)
     end
 
-    test "delete_upload/1 deletes the upload" do
+    test "delete_upload/1 deletes the upload", %{upload: upload} do
       target_path = setup_delete_file("test/support/Lifting.jpg")
       delete_path = setup_delete_path(target_path)
-      upload = Map.put(upload_fixture(), :path, delete_path)
+      upload = Map.put(upload, :path, delete_path)
       assert {:ok, %Upload{}} = Content.delete_upload(upload)
       assert_raise Ecto.NoResultsError, fn -> Content.get_upload!(upload.id) end
     end
 
-    test "change_upload/1 returns a upload changeset" do
-      upload = upload_fixture()
+    test "change_upload/1 returns a upload changeset", %{upload: upload} do
       assert %Ecto.Changeset{} = Content.change_upload(upload)
     end
   end
