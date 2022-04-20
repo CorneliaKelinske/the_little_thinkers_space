@@ -38,6 +38,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
          {:ok, thumbnail_show_path} <- UploadPathsHelper.thumbnail_show_path(thumbnail_path),
          {:ok, attrs} <- parse_upload_params(upload_params, show_path, thumbnail_show_path),
          {:ok, upload} <- Content.create_upload(user, attrs) do
+
       conn
       |> put_flash(:info, "File uploaded successfully.")
       |> redirect(to: Routes.upload_path(conn, :show, upload))
