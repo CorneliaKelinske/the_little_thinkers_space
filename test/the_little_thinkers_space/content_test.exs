@@ -33,7 +33,6 @@ defmodule TheLittleThinkersSpace.ContentTest do
     setup [:user, :upload]
 
     test "list_uploads/0 returns all uploads", %{upload: upload} do
-
       assert Enum.map(Content.list_uploads(), &Map.put(&1, :user, nil)) == [
                Map.put(upload, :user, nil)
              ]
@@ -56,7 +55,6 @@ defmodule TheLittleThinkersSpace.ContentTest do
     end
 
     test "update_upload/2 with valid data updates the upload", %{upload: upload} do
-
       assert {:ok, %Upload{} = upload} = Content.update_upload(upload, @update_attrs)
       assert upload.description == "some updated description"
       assert upload.path == "test/support/Lifting.jpg"
