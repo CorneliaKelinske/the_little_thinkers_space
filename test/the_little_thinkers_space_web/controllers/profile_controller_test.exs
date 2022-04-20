@@ -4,9 +4,7 @@ defmodule TheLittleThinkersSpaceWeb.ProfileControllerTest do
   alias TheLittleThinkersSpace.Accounts
   alias TheLittleThinkersSpace.Accounts.Profile
 
-  setup do
-    %{user: user_fixture(), admin: admin_fixture()}
-  end
+  setup [:user, :admin]
 
   @create_attrs %{
     animal: "some animal",

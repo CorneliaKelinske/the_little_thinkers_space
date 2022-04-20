@@ -6,9 +6,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
 
   alias TheLittleThinkersSpace.Content
 
-  setup do
-    %{user: user_fixture(), admin: admin_fixture()}
-  end
+  setup [:user, :admin]
 
   @create_image_attrs %{
     description: "some description",

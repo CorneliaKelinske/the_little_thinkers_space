@@ -3,9 +3,7 @@ defmodule TheLittleThinkersSpaceWeb.UserSessionControllerTest do
 
   import TheLittleThinkersSpace.AccountsFixtures
 
-  setup do
-    %{user: user_fixture()}
-  end
+  setup [:user]
 
   describe "GET /users/log_in" do
     test "renders log in page", %{conn: conn} do

@@ -786,11 +786,7 @@ defmodule TheLittleThinkersSpace.AccountsTest do
       assert %User{id: ^little_thinker_id, crews: crews, little_thinkers: []} =
                Accounts.preload_relationships(little_thinker)
 
-      assert [%User{id: ^admin_id}, %User{id: ^user_id}] = Enum.sort(crews, &(&1.id > &2.id))
+      assert [%User{id: ^user_id}, %User{id: ^admin_id}] = Enum.sort(crews, &(&1.id > &2.id))
     end
-
-    # test "returns an empty list if a user has no connections", %{little_thinker: little_thinker} do
-    #   assert [] == Accounts.list_connected_users(little_thinker.id)
-    # end
   end
 end

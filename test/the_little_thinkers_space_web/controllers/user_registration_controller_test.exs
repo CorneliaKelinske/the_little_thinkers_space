@@ -3,9 +3,7 @@ defmodule TheLittleThinkersSpaceWeb.UserRegistrationControllerTest do
 
   import TheLittleThinkersSpace.AccountsFixtures
 
-  setup do
-    %{user: user_fixture(), admin: admin_fixture()}
-  end
+  setup [:user, :admin]
 
   describe "GET /users/register" do
     test "renders registration page if user is logged in and Admin", %{conn: conn, admin: admin} do

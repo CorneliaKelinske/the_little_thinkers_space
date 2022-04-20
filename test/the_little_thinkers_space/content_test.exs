@@ -1,14 +1,11 @@
 defmodule TheLittleThinkersSpace.ContentTest do
   use TheLittleThinkersSpace.DataCase, async: true
+  import TheLittleThinkersSpace.AccountsFixtures
+  import TheLittleThinkersSpace.ContentFixtures
 
-  alias TheLittleThinkersSpace.Content
+  alias TheLittleThinkersSpace.{Content, Content.Upload}
 
   describe "uploads" do
-    alias TheLittleThinkersSpace.Content.Upload
-
-    import TheLittleThinkersSpace.ContentFixtures
-    import TheLittleThinkersSpace.AccountsFixtures
-
     @valid_attrs %{
       description: "some description",
       file_type: "image/jpeg",
@@ -33,9 +30,7 @@ defmodule TheLittleThinkersSpace.ContentTest do
       orientation: "Landscape"
     }
 
-    setup do
-      %{user: user_fixture()}
-    end
+    setup [:user]
 
     test "list_uploads/0 returns all uploads" do
       upload = upload_fixture()

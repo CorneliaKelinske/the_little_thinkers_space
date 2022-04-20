@@ -5,9 +5,7 @@ defmodule TheLittleThinkersSpaceWeb.UserResetPasswordControllerTest do
   alias TheLittleThinkersSpace.Repo
   import TheLittleThinkersSpace.AccountsFixtures
 
-  setup do
-    %{user: user_fixture()}
-  end
+  setup [:user]
 
   describe "GET /users/reset_password" do
     test "renders the reset password page", %{conn: conn} do
