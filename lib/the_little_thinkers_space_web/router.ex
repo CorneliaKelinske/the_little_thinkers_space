@@ -80,10 +80,14 @@ defmodule TheLittleThinkersSpaceWeb.Router do
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
     get "/home", PageController, :home
     resources "/users/admin", UserController
-    resources "/uploads", UploadController
+    # resources "/uploads", UploadController
     resources "/profiles", ProfileController
     resources "/crew", CrewController
-    resources "/little_thinker", LittleThinkerController
+    resources "/little_thinkers", LittleThinkerController
+
+    resources "/little_thinkers", LittleThinkerController do
+      resources "/uploads", UploadController
+    end
   end
 
   scope "/", TheLittleThinkersSpaceWeb do

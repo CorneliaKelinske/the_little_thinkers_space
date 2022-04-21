@@ -36,3 +36,7 @@ but also an option to see all the relationships (and manipulate accordingly)
 
 10. There will be a fixed order for the user registration:
 Little Thinker first. Parent next. everybody else afterwards
+
+### MORE THINGS
+
+- what about profiles?

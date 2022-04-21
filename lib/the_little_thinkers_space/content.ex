@@ -30,7 +30,17 @@ defmodule TheLittleThinkersSpace.Content do
     |> Repo.all()
     |> Enum.reduce({[], []}, &ImageCacher.reduce_upload_ids/2)
     |> process_uncached_ids()
-    |> Enum.sort(&(&1.id < &2.id))
+    |> Enum.sort(&(&1.id > &2.id))
+  end
+
+  def list_little_thinker_uploads(little_thinker_id) do
+    query = from u in Upload, where: u.user_id == ^little_thinker_id, select: u.id
+
+    query
+    |> Repo.all()
+    |> Enum.reduce({[], []}, &ImageCacher.reduce_upload_ids/2)
+    |> process_uncached_ids()
+    |> Enum.sort(&(&1.id > &2.id))
   end
 
   def process_uncached_ids({uploads, uncached_ids}) do

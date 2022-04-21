@@ -11,6 +11,6 @@
     <% else %>
       <button class="btn-page"><%= link("Ulrik's profile", to: Routes.profile_path(@conn, :show, @lt_profile_id)) %></button>
     <% end %>
-    <button class="btn-page"><%= link("Uploads", to: Routes.upload_path(@conn, :index)) %></button>
+    <button class="btn-page"><%= link("Uploads", to: Routes.little_thinker_upload_path(@conn, :index, @little_thinker)) %></button>
   </div>
 </body>

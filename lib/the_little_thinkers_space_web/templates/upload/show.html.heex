@@ -31,10 +31,10 @@
   </div>
 
   <div class="mx-8 sm:mx-16 my-6">
-    <span class="text-sky-900 text-lg font-semibold tracking-wide"><%= link("Back", to: Routes.upload_path(@conn, :index)) %></span>
+    <span class="text-sky-900 text-lg font-semibold tracking-wide"><%= link("Back", to: Routes.little_thinker_upload_path(@conn, :index, @little_thinker)) %></span>
     <%= if @current_user.role in ["Admin", "The Little Thinker"] do %>
       <span class="text-sky-900 text-lg font-semibold tracking-wide">|</span>
-      <span class="text-sky-900 text-lg font-semibold tracking-wide"><%= link("Edit", to: Routes.upload_path(@conn, :edit, @upload)) %></span>
+      <span class="text-sky-900 text-lg font-semibold tracking-wide"><%= link("Edit", to: Routes.little_thinker_upload_path(@conn, :edit, @little_thinker, @upload)) %></span>
     <% end %>
   </div>
 </body>

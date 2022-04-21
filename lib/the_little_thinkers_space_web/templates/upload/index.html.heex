@@ -13,10 +13,10 @@
         </div>
         <div class="p-4 antialiased text-gray-900">
           <div>
-            <span class="text-gray-600 text-xs uppercase font-semibold tracking-wide pr-4"><%= link("Show", to: Routes.upload_path(@conn, :show, upload)) %></span>
+            <span class="text-gray-600 text-xs uppercase font-semibold tracking-wide pr-4"><%= link("Show", to: Routes.little_thinker_upload_path(@conn, :show, @little_thinker, upload)) %></span>
             <%= if @current_user.role in ["Admin", "The Little Thinker"] do %>
-              <span class="text-gray-600 text-xs uppercase font-semibold tracking-wide pr-4"><%= link("Edit", to: Routes.upload_path(@conn, :edit, upload)) %></span>
-              <span class="text-gray-600 text-xs uppercase font-semibold tracking-wide pr-4"><%= link("Delete", to: Routes.upload_path(@conn, :delete, upload), method: :delete, data: [confirm: "Are you sure?"]) %></span>
+              <span class="text-gray-600 text-xs uppercase font-semibold tracking-wide pr-4"><%= link("Edit", to: Routes.little_thinker_upload_path(@conn, :edit, @little_thinker, upload)) %></span>
+              <span class="text-gray-600 text-xs uppercase font-semibold tracking-wide pr-4"><%= link("Delete", to: Routes.little_thinker_upload_path(@conn, :delete, @little_thinker, upload), method: :delete, data: [confirm: "Are you sure?"]) %></span>
             <% end %>
           </div>
           <h4 class="text-gray-900 font-semibold text-lg tracking-wide truncate"><%= upload.title %></h4>
@@ -28,9 +28,9 @@
 
   <div class="mx-8 sm:mx-16 my-6">
     <span class="text-sky-900 text-lg font-semibold tracking-wide"><%= link("Back", to: Routes.page_path(@conn, :home)) %></span>
-    <%= if @current_user.role in ["Admin", "The Little Thinker"] do %>
+    <%= if @current_user.role in ["The Little Thinker"] do %>
       <span class="text-sky-900 text-lg font-semibold tracking-wide">|</span>
-      <span class="text-sky-900 text-lg font-semibold tracking-wide"><%= link("New Upload", to: Routes.upload_path(@conn, :new)) %></span>
+      <span class="text-sky-900 text-lg font-semibold tracking-wide"><%= link("New Upload", to: Routes.little_thinker_upload_path(@conn, :new, @little_thinker)) %></span>
     <% end %>
   </div>
 </body>
