@@ -58,6 +58,8 @@ defmodule TheLittleThinkersSpace.Accounts do
   def get_user!(id), do: Repo.get!(User, id)
   def get_user(id), do: Repo.get(User, id)
 
+  def get_lt, do: Repo.get_by(User, role: "The Little Thinker")
+
   ## User registration
 
   @doc """
