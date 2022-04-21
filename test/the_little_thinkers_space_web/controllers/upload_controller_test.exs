@@ -64,7 +64,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
 
   describe "index" do
     test "redirects to login when user is not logged in", %{conn: conn} do
-      conn = get(conn, Routes.little_thinker_upload_path(conn, :index))
+      conn = get(conn, Routes.upload_path(conn, :index))
 
       assert html_response(conn, 302) =~
                "<html><body>You are being <a href=\"/users/log_in\">redirected</a>.</body></html>"
