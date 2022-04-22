@@ -14,7 +14,7 @@
         <div class="p-4 antialiased text-gray-900">
           <div>
             <span class="text-gray-600 text-xs uppercase font-semibold tracking-wide pr-4"><%= link("Show", to: Routes.little_thinker_upload_path(@conn, :show, @little_thinker, upload)) %></span>
-            <%= if @current_user.role in ["Admin", "The Little Thinker"] do %>
+            <%= if @current_user.role in ["The Little Thinker"] do %>
               <span class="text-gray-600 text-xs uppercase font-semibold tracking-wide pr-4"><%= link("Edit", to: Routes.little_thinker_upload_path(@conn, :edit, @little_thinker, upload)) %></span>
               <span class="text-gray-600 text-xs uppercase font-semibold tracking-wide pr-4"><%= link("Delete", to: Routes.little_thinker_upload_path(@conn, :delete, @little_thinker, upload), method: :delete, data: [confirm: "Are you sure?"]) %></span>
             <% end %>

@@ -61,36 +61,49 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
   }
 
   describe "index" do
-    test "redirects to login when user is not logged in", %{conn: conn} do
-      conn = get(conn, Routes.little_thinker_upload_path(conn, :index))
+    test "redirects to login when user is not logged in", %{
+      conn: conn,
+      little_thinker: little_thinker
+    } do
+      conn = get(conn, Routes.little_thinker_upload_path(conn, :index, little_thinker))
 
       assert html_response(conn, 302) =~
                "<html><body>You are being <a href=\"/users/log_in\">redirected</a>.</body></html>"
     end
 
-    test "lists all uploads when user is logged in", %{conn: conn, user: user} do
+    test "lists all uploads of the associated little thinker when user is logged in", %{
+      conn: conn,
+      user: user,
+      little_thinker: little_thinker
+    } do
       conn =
         conn
         |> log_in_user(user)
-        |> get(Routes.little_thinker_upload_path(conn, :index))
+        |> get(Routes.little_thinker_upload_path(conn, :index, little_thinker))
 
       assert html_response(conn, 200) =~ "Ulrik's uploads"
     end
   end
 
   describe "new upload" do
-    test "redirects to login when user is not logged in", %{conn: conn} do
-      conn = get(conn, Routes.little_thinker_upload_path(conn, :new))
+    test "redirects to login when user is not logged in", %{
+      conn: conn,
+      little_thinker: little_thinker
+    } do
+      conn = get(conn, Routes.little_thinker_upload_path(conn, :new, little_thinker))
 
       assert html_response(conn, 302) =~
                "<html><body>You are being <a href=\"/users/log_in\">redirected</a>.</body></html>"
     end
 
-    test "renders form when user is logged in and Admin", %{conn: conn, admin: admin} do
+    test "renders form when user is logged in and a Little Thinker", %{
+      conn: conn,
+      little_thinker: little_thinker
+    } do
       conn =
         conn
-        |> log_in_user(admin)
-        |> get(Routes.little_thinker_upload_path(conn, :new))
+        |> log_in_user(little_thinker)
+        |> get(Routes.little_thinker_upload_path(conn, :new, little_thinker))
 
       assert html_response(conn, 200) =~ "New Upload"
     end
@@ -110,71 +123,91 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
   end
 
   describe "create upload" do
-    test "redirects to login when user is not logged in", %{conn: conn} do
-      conn = post(conn, Routes.little_thinker_upload_path(conn, :create), upload: @create_image_attrs)
+    test "redirects to login when user is not logged in", %{
+      conn: conn,
+      little_thinker: little_thinker
+    } do
+      conn =
+        post(conn, Routes.little_thinker_upload_path(conn, :create, little_thinker),
+          upload: @create_image_attrs
+        )
 
       assert html_response(conn, 302) =~
                "<html><body>You are being <a href=\"/users/log_in\">redirected</a>.</body></html>"
     end
 
-    test "redirects to show when data is valid image data and user is logged in and Little Thinker", %{
-      conn: conn,
-      little_thinker: little_thinker
-    } do
-      IO.inspect(little_thinker.id)
+    test "redirects to show when data is valid image data and user is logged in and Little Thinker",
+         %{
+           conn: conn,
+           little_thinker: little_thinker
+         } do
       conn =
         conn
-        |> log_in_user(little_thinker) |> IO.inspect(label: "127", limit: :infinity, charlists: false)
-        |> post(Routes.little_thinker_upload_path(conn, :create, little_thinker), upload: @create_image_attrs)
-      IO.inspect(little_thinker.id)
-      IO.inspect(conn)
+        |> log_in_user(little_thinker)
+        |> post(Routes.little_thinker_upload_path(conn, :create, little_thinker),
+          upload: @create_image_attrs
+        )
 
       assert %{id: id} = redirected_params(conn)
-      IO.inspect(redirected_params(conn))
-      assert redirected_to(conn) == Routes.little_thinker_upload_path(conn, :show, little_thinker.id, id)
+
+      assert redirected_to(conn) ==
+               Routes.little_thinker_upload_path(conn, :show, little_thinker.id, id)
 
       conn = get(conn, Routes.little_thinker_upload_path(conn, :show, little_thinker.id, id))
       assert html_response(conn, 200) =~ "some title"
     end
 
-    test "redirects to show when data is valid video data and user is logged in and Admin", %{
-      conn: conn,
-      admin: admin
-    } do
+    test "redirects to show when data is valid video data and user is logged in and a Little Thinker",
+         %{
+           conn: conn,
+           little_thinker: little_thinker
+         } do
       target_path = setup_video_file("test/support/IMG_5257.MOV")
       plug = Map.get(@create_video_attrs, :upload) |> Map.put(:path, target_path)
       new_video_attrs = Map.put(@create_video_attrs, :upload, plug)
 
       conn =
         conn
-        |> log_in_user(admin)
-        |> post(Routes.little_thinker_upload_path(conn, :create), upload: new_video_attrs)
+        |> log_in_user(little_thinker)
+        |> post(Routes.little_thinker_upload_path(conn, :create, little_thinker),
+          upload: new_video_attrs
+        )
 
       assert %{id: id} = redirected_params(conn)
-      assert redirected_to(conn) == Routes.little_thinker_upload_path(conn, :show, id)
 
-      conn = get(conn, Routes.little_thinker_upload_path(conn, :show, id))
+      assert redirected_to(conn) ==
+               Routes.little_thinker_upload_path(conn, :show, little_thinker, id)
+
+      conn = get(conn, Routes.little_thinker_upload_path(conn, :show, little_thinker, id))
       assert html_response(conn, 200) =~ "some title"
     end
 
-    test "renders errors when data is invalid and user is logged in and Admin", %{
+    test "renders errors when data is invalid and user is logged in and a Little Thinker", %{
       conn: conn,
-      admin: admin
+      little_thinker: little_thinker
     } do
       conn =
         conn
-        |> log_in_user(admin)
-        |> post(Routes.little_thinker_upload_path(conn, :create), upload: @invalid_attrs)
+        |> log_in_user(little_thinker)
+        |> post(Routes.little_thinker_upload_path(conn, :create, little_thinker),
+          upload: @invalid_attrs
+        )
 
       assert html_response(conn, 302) =~
-               "<html><body>You are being <a href=\"/uploads/new\">redirected</a>.</body></html>"
+               "<html><body>You are being <a href=\"/little_thinkers/#{little_thinker.id}/uploads/new\">redirected</a>.</body></html>"
     end
 
-    test "redirects to home when user is logged in but no Admin", %{conn: conn, user: user} do
+    test "redirects to home when user is logged in but not a little_thinker", %{
+      conn: conn,
+      user: user,
+      little_thinker: little_thinker
+    } do
       conn =
         conn
         |> log_in_user(user)
-        |> post(Routes.little_thinker_upload_path(conn, :create), upload: @create_video_attrs)
+        |> post(Routes.little_thinker_upload_path(conn, :create, little_thinker),
+          upload: @create_video_attrs
+        )
 
       assert html_response(conn, 302) =~ "You are being <a href=\"/home\">redirected</a>."
     end
@@ -183,35 +216,41 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
   describe "edit upload" do
     setup [:upload]
 
-    test "redirects to login when user is not logged in", %{conn: conn, upload: upload} do
-      conn = get(conn, Routes.little_thinker_upload_path(conn, :edit, upload))
+    test "redirects to login when user is not logged in", %{
+      conn: conn,
+      upload: upload,
+      little_thinker: little_thinker
+    } do
+      conn = get(conn, Routes.little_thinker_upload_path(conn, :edit, little_thinker, upload))
 
       assert html_response(conn, 302) =~
                "<html><body>You are being <a href=\"/users/log_in\">redirected</a>.</body></html>"
     end
 
-    test "renders form for editing chosen upload when user is logged in and Admin", %{
-      conn: conn,
-      upload: upload,
-      admin: admin
-    } do
+    test "renders form for editing chosen upload when user is logged in and the Little Thinker",
+         %{
+           conn: conn,
+           upload: upload,
+           little_thinker: little_thinker
+         } do
       conn =
         conn
-        |> log_in_user(admin)
-        |> get(Routes.little_thinker_upload_path(conn, :edit, upload))
+        |> log_in_user(little_thinker)
+        |> get(Routes.little_thinker_upload_path(conn, :edit, little_thinker, upload))
 
       assert html_response(conn, 200) =~ "Edit Upload"
     end
 
-    test "redirects to home when user is logged in but no Admin", %{
+    test "redirects to home when user is logged in but not a Little Thinker", %{
       conn: conn,
       upload: upload,
-      user: user
+      user: user,
+      little_thinker: little_thinker
     } do
       conn =
         conn
         |> log_in_user(user)
-        |> get(Routes.little_thinker_upload_path(conn, :edit, upload))
+        |> get(Routes.little_thinker_upload_path(conn, :edit, little_thinker, upload))
 
       assert html_response(conn, 302) =~ "<a href=\"/home\">redirected</a>."
     end
@@ -220,44 +259,61 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
   describe "update upload" do
     setup [:upload]
 
-    test "redirects to login when user is not logged in", %{conn: conn, upload: upload} do
-      conn = get(conn, Routes.little_thinker_upload_path(conn, :update, upload))
+    test "redirects to login when user is not logged in", %{
+      conn: conn,
+      upload: upload,
+      little_thinker: little_thinker
+    } do
+      conn = get(conn, Routes.little_thinker_upload_path(conn, :update, little_thinker, upload))
 
       assert html_response(conn, 302) =~
                "<html><body>You are being <a href=\"/users/log_in\">redirected</a>.</body></html>"
     end
 
-    test "redirects when data is valid and user is logged in and Admin", %{
+    test "redirects when data is valid and user is logged in and a Little Thinker", %{
       conn: conn,
-      admin: admin
+      little_thinker: little_thinker
     } do
       conn =
         conn
-        |> log_in_user(admin)
-        |> post(Routes.little_thinker_upload_path(conn, :create), upload: @create_image_attrs)
+        |> log_in_user(little_thinker)
+        |> post(Routes.little_thinker_upload_path(conn, :create, little_thinker),
+          upload: @create_image_attrs
+        )
 
       assert %{id: id} = redirected_params(conn)
       upload = Content.get_upload(id)
-      conn = put(conn, Routes.little_thinker_upload_path(conn, :update, upload), upload: @update_attrs)
 
-      assert redirected_to(conn) == Routes.little_thinker_upload_path(conn, :show, upload)
+      conn =
+        put(conn, Routes.little_thinker_upload_path(conn, :update, little_thinker, upload),
+          upload: @update_attrs
+        )
 
-      conn = get(conn, Routes.little_thinker_upload_path(conn, :show, upload))
+      assert redirected_to(conn) ==
+               Routes.little_thinker_upload_path(conn, :show, little_thinker, upload)
+
+      conn = get(conn, Routes.little_thinker_upload_path(conn, :show, little_thinker, upload))
       assert html_response(conn, 200) =~ "some title"
     end
 
-    test "renders errors when data is invalid and user is logged in and Admin", %{
+    test "renders errors when data is invalid and user is logged in and a Little Thinker", %{
       conn: conn,
-      admin: admin
+      little_thinker: little_thinker
     } do
       conn =
         conn
-        |> log_in_user(admin)
-        |> post(Routes.little_thinker_upload_path(conn, :create), upload: @create_image_attrs)
+        |> log_in_user(little_thinker)
+        |> post(Routes.little_thinker_upload_path(conn, :create, little_thinker),
+          upload: @create_image_attrs
+        )
 
       assert %{id: id} = redirected_params(conn)
       upload = Content.get_upload(id)
-      conn = put(conn, Routes.little_thinker_upload_path(conn, :update, upload), upload: @invalid_attrs)
+
+      conn =
+        put(conn, Routes.little_thinker_upload_path(conn, :update, little_thinker, upload),
+          upload: @invalid_attrs
+        )
 
       assert html_response(conn, 200) =~ "Edit Upload"
     end
@@ -265,12 +321,15 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
     test "redirects to home when user is logged in but no Admin", %{
       conn: conn,
       upload: upload,
-      user: user
+      user: user,
+      little_thinker: little_thinker
     } do
       conn =
         conn
         |> log_in_user(user)
-        |> put(Routes.little_thinker_upload_path(conn, :update, upload), upload: @update_attrs)
+        |> put(Routes.little_thinker_upload_path(conn, :update, little_thinker, upload),
+          upload: @update_attrs
+        )
 
       assert html_response(conn, 302) =~ "<a href=\"/home\">redirected</a>."
     end
@@ -279,42 +338,53 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
   describe "delete upload" do
     setup [:upload]
 
-    test "redirects to login when user is not logged in", %{conn: conn, upload: upload} do
-      conn = delete(conn, Routes.little_thinker_upload_path(conn, :delete, upload))
+    test "redirects to login when user is not logged in", %{
+      conn: conn,
+      upload: upload,
+      little_thinker: little_thinker
+    } do
+      conn =
+        delete(conn, Routes.little_thinker_upload_path(conn, :delete, little_thinker, upload))
 
       assert html_response(conn, 302) =~
                "<html><body>You are being <a href=\"/users/log_in\">redirected</a>.</body></html>"
     end
 
-    test "deletes chosen upload when user is logged in and Admin", %{
+    test "deletes chosen upload when user is logged in and a Little Thinker", %{
       conn: conn,
-      admin: admin
+      little_thinker: little_thinker
     } do
       conn =
         conn
-        |> log_in_user(admin)
-        |> post(Routes.little_thinker_upload_path(conn, :create), upload: @create_image_attrs)
+        |> log_in_user(little_thinker)
+        |> post(Routes.little_thinker_upload_path(conn, :create, little_thinker),
+          upload: @create_image_attrs
+        )
 
       assert %{id: id} = redirected_params(conn)
       upload = Content.get_upload(id)
-      conn = delete(conn, Routes.little_thinker_upload_path(conn, :delete, upload))
 
-      assert redirected_to(conn) == Routes.little_thinker_upload_path(conn, :index)
+      conn =
+        delete(conn, Routes.little_thinker_upload_path(conn, :delete, little_thinker, upload))
+
+      assert redirected_to(conn) ==
+               Routes.little_thinker_upload_path(conn, :index, little_thinker)
 
       assert_error_sent 404, fn ->
-        get(conn, Routes.little_thinker_upload_path(conn, :show, upload))
+        get(conn, Routes.little_thinker_upload_path(conn, :show, little_thinker, upload))
       end
     end
 
-    test "redirects to home when user is logged in but no Admin", %{
+    test "redirects to home when user is logged in but not a Little Thinker", %{
       conn: conn,
       upload: upload,
-      user: user
+      user: user,
+      little_thinker: little_thinker
     } do
       conn =
         conn
         |> log_in_user(user)
-        |> delete(Routes.little_thinker_upload_path(conn, :delete, upload))
+        |> delete(Routes.little_thinker_upload_path(conn, :delete, little_thinker, upload))
 
       assert html_response(conn, 302) =~ "<a href=\"/home\">redirected</a>."
     end

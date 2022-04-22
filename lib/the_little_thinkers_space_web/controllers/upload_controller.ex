@@ -33,7 +33,10 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     end
   end
 
-  def create(conn, %{"upload" => %{"upload" => upload_plug} = upload_params, "little_thinker_id" => little_thinker_id}) do
+  def create(conn, %{
+        "upload" => %{"upload" => upload_plug} = upload_params,
+        "little_thinker_id" => little_thinker_id
+      }) do
     user = conn.assigns.current_user
     little_thinker_id = String.to_integer(little_thinker_id)
     little_thinker = Accounts.get_user!(little_thinker_id)
@@ -49,7 +52,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
          {:ok, upload} <- Content.create_upload(user, attrs) do
       conn
       |> put_flash(:info, "File uploaded successfully.")
-      |> redirect(to: Routes.little_thinker_upload_path(conn, :show, upload, little_thinker))
+      |> redirect(to: Routes.little_thinker_upload_path(conn, :show, little_thinker, upload))
     else
       {:error, %Ecto.Changeset{} = changeset} ->
         conn
@@ -116,7 +119,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     render(conn, "show.html", upload: upload, little_thinker: little_thinker)
   end
 
-  def edit(conn, %{"id" => id,  "little_thinker_id" => little_thinker_id}) do
+  def edit(conn, %{"id" => id, "little_thinker_id" => little_thinker_id}) do
     user = conn.assigns.current_user
     little_thinker_id = String.to_integer(little_thinker_id)
     little_thinker = Accounts.get_user!(little_thinker_id)
@@ -125,11 +128,21 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
       %Upload{path: path} = upload = Content.get_upload!(id)
       upload_name = Path.basename(path)
       changeset = Content.change_upload(upload)
-      render(conn, "edit.html", upload: upload, upload_name: upload_name, changeset: changeset, little_thinker: little_thinker)
+
+      render(conn, "edit.html",
+        upload: upload,
+        upload_name: upload_name,
+        changeset: changeset,
+        little_thinker: little_thinker
+      )
     end
   end
 
-  def update(conn, %{"id" => id, "upload" => upload_params, "little_thinker_id" => little_thinker_id}) do
+  def update(conn, %{
+        "id" => id,
+        "upload" => upload_params,
+        "little_thinker_id" => little_thinker_id
+      }) do
     user = conn.assigns.current_user
     little_thinker_id = String.to_integer(little_thinker_id)
     little_thinker = Accounts.get_user!(little_thinker_id)
@@ -142,10 +155,15 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
         {:ok, upload} ->
           conn
           |> put_flash(:info, "Upload updated successfully.")
-          |> redirect(to: Routes.little_thinker_upload_path(conn, :show, upload, little_thinker))
+          |> redirect(to: Routes.little_thinker_upload_path(conn, :show, little_thinker, upload))
 
         {:error, %Ecto.Changeset{} = changeset} ->
-          render(conn, "edit.html", upload: upload, changeset: changeset, upload_name: upload_name, little_thinker: little_thinker)
+          render(conn, "edit.html",
+            upload: upload,
+            changeset: changeset,
+            upload_name: upload_name,
+            little_thinker: little_thinker
+          )
       end
     end
   end
