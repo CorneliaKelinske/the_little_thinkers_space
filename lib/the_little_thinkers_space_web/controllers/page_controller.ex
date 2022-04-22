@@ -4,14 +4,14 @@ defmodule TheLittleThinkersSpaceWeb.PageController do
 
   def index(conn, _params) do
     if conn.assigns[:current_user] do
-      render(conn, "home.html", lt_profile_id: lt_profile_id())
+      render(conn, "home.html", lt_profile_id: lt_profile_id(), little_thinker: Accounts.get_lt())
     else
       render(conn, "index.html")
     end
   end
 
   def home(conn, _params) do
-    render(conn, "home.html", lt_profile_id: lt_profile_id())
+    render(conn, "home.html", lt_profile_id: lt_profile_id(), little_thinker: Accounts.get_lt())
   end
 
   defp lt_profile_id do

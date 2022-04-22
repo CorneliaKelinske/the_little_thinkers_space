@@ -47,7 +47,6 @@ defmodule TheLittleThinkersSpace.Content.Upload do
     |> unique_constraint(:thumbnail, message: "Thumbnail has already been created!")
   end
 
-  def authorize(_, %User{role: "Admin"}, _), do: :ok
   def authorize(_, %User{role: "The Little Thinker"}, _), do: :ok
   def authorize(action, %User{}, %Upload{}) when action in [:show, :index], do: :ok
   def authorize(_action, _user, _upload), do: :error

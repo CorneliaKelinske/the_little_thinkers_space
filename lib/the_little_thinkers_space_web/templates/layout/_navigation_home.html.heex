@@ -1,7 +1,7 @@
 <nav class="grid place-items-center w-screen rounded bg-sky-900 bg-opacity-80 text-gray-900">
   <div class="grid p-4 gap-4 rounded xs:grid-cols-1 xs:gap-1 sm:grid-cols-2 sm:gap-2 md:grid-cols-3 md:gap-3 lg:grid-cols-8 lg:gap-4">
     <button class="font-medium text-4xl xs:place-self-center sm:col-span-2 md:col-span-3 lg:col-span-2"><%= link("The Little Thinker's Space", to: Routes.page_path(@conn, :home)) %></button>
-    <button class="btn-nav xs:place-self-center"><%= link("Uploads", to: Routes.upload_path(@conn, :index)) %></button>
+
     <button class="btn-nav xs:place-self-center"><%= link("#{@current_user.first_name}", to: Routes.profile_path(@conn, :new)) %></button>
     <button class="btn-nav xs:place-self-center"><%= link("Settings", to: Routes.user_settings_path(@conn, :edit)) %></button>
     <button class="btn-nav xs:place-self-center"><%= link("My Little Thinkers", to: Routes.little_thinker_path(@conn, :index)) %></button>

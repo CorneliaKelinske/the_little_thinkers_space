@@ -4,7 +4,7 @@ defmodule TheLittleThinkersSpaceWeb.ProfileControllerTest do
   alias TheLittleThinkersSpace.Accounts
   alias TheLittleThinkersSpace.Accounts.Profile
 
-  setup [:user, :admin]
+  setup [:user, :admin, :profile, :lt_profile]
 
   @create_attrs %{
     animal: "some animal",
@@ -141,8 +141,6 @@ defmodule TheLittleThinkersSpaceWeb.ProfileControllerTest do
   end
 
   describe "show profile" do
-    setup [:profile, :lt_profile]
-
     test "redirects to login when user is not logged in", %{conn: conn, profile: profile} do
       conn = get(conn, Routes.profile_path(conn, :show, profile))
 
@@ -203,8 +201,6 @@ defmodule TheLittleThinkersSpaceWeb.ProfileControllerTest do
   end
 
   describe "edit profile" do
-    setup [:profile]
-
     test "renders form for editing profile when user is logged in and owns the profile", %{
       conn: conn,
       user: user
@@ -236,8 +232,6 @@ defmodule TheLittleThinkersSpaceWeb.ProfileControllerTest do
   end
 
   describe "update profile" do
-    setup [:profile]
-
     test "redirects when data is valid and logged in users are updating their own profile", %{
       conn: conn,
       user: user
@@ -289,8 +283,6 @@ defmodule TheLittleThinkersSpaceWeb.ProfileControllerTest do
   end
 
   describe "delete profile" do
-    setup [:profile]
-
     test "deletes chosen profile when logged in users are deleting their own profile", %{
       conn: conn,
       user: user
