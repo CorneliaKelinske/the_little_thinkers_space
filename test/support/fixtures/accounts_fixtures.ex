@@ -6,6 +6,23 @@ defmodule TheLittleThinkersSpace.AccountsFixtures do
 
   alias TheLittleThinkersSpace.{Accounts, Repo}
 
+  @valid_profile_attrs %{
+    animal: "some animal",
+    belongs_to_lt: false,
+    birthday: ~D[2021-10-18],
+    book: "some book",
+    color: "some color",
+    first_name: "some first_name",
+    food: "some food",
+    future: "some future",
+    joke: "some joke",
+    last_name: "some last_name",
+    movie: "some movie",
+    nickname: "some nickname",
+    song: "some song",
+    superhero: "some superhero"
+  }
+
   def unique_user_email, do: "user#{System.unique_integer()}@example.com"
   def valid_user_password, do: "hello world!"
   def valid_user_role, do: "Crew"
@@ -102,26 +119,7 @@ defmodule TheLittleThinkersSpace.AccountsFixtures do
     token
   end
 
-  @doc """
-  Generate a profile.
-  """
-
-  @valid_profile_attrs %{
-    animal: "some animal",
-    belongs_to_lt: false,
-    birthday: ~D[2021-10-18],
-    book: "some book",
-    color: "some color",
-    first_name: "some first_name",
-    food: "some food",
-    future: "some future",
-    joke: "some joke",
-    last_name: "some last_name",
-    movie: "some movie",
-    nickname: "some nickname",
-    song: "some song",
-    superhero: "some superhero"
-  }
+  # Profiles
 
   def profile(_context) do
     {:ok, profile} = Accounts.create_profile(@valid_profile_attrs)

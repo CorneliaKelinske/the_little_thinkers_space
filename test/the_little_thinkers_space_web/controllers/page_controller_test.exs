@@ -2,7 +2,7 @@ defmodule TheLittleThinkersSpaceWeb.PageControllerTest do
   use TheLittleThinkersSpaceWeb.ConnCase, async: true
   import TheLittleThinkersSpace.AccountsFixtures
 
-  setup [:user]
+  setup [:user, :little_thinker]
 
   describe "GET /" do
     test "redirects to home if user is logged in", %{conn: conn, user: user} do
