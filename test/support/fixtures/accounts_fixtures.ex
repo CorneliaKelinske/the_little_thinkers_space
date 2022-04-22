@@ -63,6 +63,11 @@ defmodule TheLittleThinkersSpace.AccountsFixtures do
     %{little_thinker: little_thinker}
   end
 
+  def admin(_context) do
+    {:ok, admin} = Accounts.register_user(admin_attributes())
+    %{admin: admin}
+  end
+
   def with_crew(%{user: user}) do
     {:ok, friend} = Accounts.register_user(valid_user_attributes())
 
@@ -91,24 +96,6 @@ defmodule TheLittleThinkersSpace.AccountsFixtures do
     %{user: user}
   end
 
-  def admin_fixture(attrs \\ %{}) do
-    {:ok, admin} =
-      attrs
-      |> admin_attributes()
-      |> Accounts.register_user()
-
-    admin
-  end
-
-  def little_thinker_fixture(attrs \\ %{}) do
-    {:ok, little_thinker} =
-      attrs
-      |> little_thinker_attributes()
-      |> Accounts.register_user()
-
-    little_thinker
-  end
-
   def extract_user_token(fun) do
     {:ok, captured_email} = fun.(&"[TOKEN]#{&1}[TOKEN]")
     [_, token | _] = String.split(captured_email.text_body, "[TOKEN]")
@@ -118,51 +105,32 @@ defmodule TheLittleThinkersSpace.AccountsFixtures do
   @doc """
   Generate a profile.
   """
-  def profile_fixture(attrs \\ %{}) do
-    {:ok, profile} =
-      attrs
-      |> Enum.into(%{
-        animal: "some animal",
-        belongs_to_lt: false,
-        birthday: ~D[2021-10-18],
-        book: "some book",
-        color: "some color",
-        first_name: "some first_name",
-        food: "some food",
-        future: "some future",
-        joke: "some joke",
-        last_name: "some last_name",
-        movie: "some movie",
-        nickname: "some nickname",
-        song: "some song",
-        superhero: "some superhero"
-      })
-      |> Accounts.create_profile()
 
-    profile
+  @valid_profile_attrs %{
+    animal: "some animal",
+    belongs_to_lt: false,
+    birthday: ~D[2021-10-18],
+    book: "some book",
+    color: "some color",
+    first_name: "some first_name",
+    food: "some food",
+    future: "some future",
+    joke: "some joke",
+    last_name: "some last_name",
+    movie: "some movie",
+    nickname: "some nickname",
+    song: "some song",
+    superhero: "some superhero"
+  }
+
+  def profile(_context) do
+    {:ok, profile} = Accounts.create_profile(@valid_profile_attrs)
+    %{profile: profile}
   end
 
-  def lt_profile_fixture(attrs \\ %{}) do
-    {:ok, lt_profile} =
-      attrs
-      |> Enum.into(%{
-        animal: "some animal",
-        belongs_to_lt: true,
-        birthday: ~D[2021-10-18],
-        book: "some book",
-        color: "some color",
-        first_name: "some first_name",
-        food: "some food",
-        future: "some future",
-        joke: "some joke",
-        last_name: "some last_name",
-        movie: "some movie",
-        nickname: "some nickname",
-        song: "some song",
-        superhero: "some superhero"
-      })
-      |> Accounts.create_profile()
-
-    lt_profile
+  def lt_profile(_context) do
+    lt_profile_attrs = Map.put(@valid_profile_attrs, :belongs_to_lt, true)
+    {:ok, lt_profile} = Accounts.create_profile(lt_profile_attrs)
+    %{lt_profile: lt_profile}
   end
 end

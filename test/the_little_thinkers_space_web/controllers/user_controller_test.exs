@@ -6,9 +6,7 @@ defmodule TheLittleThinkersSpaceWeb.UserControllerTest do
   @update_attrs %{first_name: "updated first_name"}
   @invalid_attrs %{first_name: nil}
 
-  setup do
-    %{user: user_fixture(), admin: admin_fixture()}
-  end
+  setup [:user, :admin]
 
   describe "index" do
     test "redirects to login when user is not logged in", %{conn: conn} do

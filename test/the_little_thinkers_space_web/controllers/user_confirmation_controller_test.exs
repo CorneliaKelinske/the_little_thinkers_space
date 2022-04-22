@@ -5,9 +5,7 @@ defmodule TheLittleThinkersSpaceWeb.UserConfirmationControllerTest do
   alias TheLittleThinkersSpace.Repo
   import TheLittleThinkersSpace.AccountsFixtures
 
-  setup do
-    %{user: user_fixture()}
-  end
+  setup [:user]
 
   describe "GET /users/confirm" do
     test "renders the resend confirmation page", %{conn: conn} do

@@ -6,9 +6,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
 
   alias TheLittleThinkersSpace.Content
 
-  setup do
-    %{user: user_fixture(), admin: admin_fixture()}
-  end
+  setup [:user, :admin]
 
   @create_image_attrs %{
     description: "some description",
@@ -178,7 +176,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
   end
 
   describe "edit upload" do
-    setup [:create_upload]
+    setup [:upload]
 
     test "redirects to login when user is not logged in", %{conn: conn, upload: upload} do
       conn = get(conn, Routes.upload_path(conn, :edit, upload))
@@ -215,7 +213,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
   end
 
   describe "update upload" do
-    setup [:create_upload]
+    setup [:upload]
 
     test "redirects to login when user is not logged in", %{conn: conn, upload: upload} do
       conn = get(conn, Routes.upload_path(conn, :update, upload))
@@ -274,7 +272,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
   end
 
   describe "delete upload" do
-    setup [:create_upload]
+    setup [:upload]
 
     test "redirects to login when user is not logged in", %{conn: conn, upload: upload} do
       conn = delete(conn, Routes.upload_path(conn, :delete, upload))
@@ -315,11 +313,6 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
 
       assert html_response(conn, 302) =~ "<a href=\"/home\">redirected</a>."
     end
-  end
-
-  defp create_upload(_) do
-    upload = upload_fixture()
-    %{upload: upload}
   end
 
   defp setup_video_file(path) do

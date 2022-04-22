@@ -5,13 +5,15 @@ defmodule TheLittleThinkersSpace.AccountsTest do
   alias TheLittleThinkersSpace.Accounts
   alias TheLittleThinkersSpace.Accounts.{User, UserToken}
 
+  setup [:user, :admin]
+
   describe "get_user_by_first_and_last_name/2" do
     test "does not return user if the first and last name combination does not exist" do
       refute Accounts.get_user_by_first_and_last_name("Random", "Random")
     end
 
-    test "returns the user if the first and last name combination exists" do
-      %{first_name: first_name, last_name: last_name} = user = user_fixture()
+    test "returns the user if the first and last name combination exists", %{user: user} do
+      %{first_name: first_name, last_name: last_name} = user
 
       assert %User{first_name: ^first_name, last_name: ^last_name} =
                Accounts.get_user_by_first_and_last_name(user.first_name, user.last_name)
@@ -23,8 +25,8 @@ defmodule TheLittleThinkersSpace.AccountsTest do
       refute Accounts.get_user_by_email("unknown@example.com")
     end
 
-    test "returns the user if the email exists" do
-      %{id: id} = user = user_fixture()
+    test "returns the user if the email exists", %{user: user} do
+      %{id: id} = user
       assert %User{id: ^id} = Accounts.get_user_by_email(user.email)
     end
   end
@@ -34,13 +36,12 @@ defmodule TheLittleThinkersSpace.AccountsTest do
       refute Accounts.get_user_by_email_and_password("unknown@example.com", "hello world!")
     end
 
-    test "does not return the user if the password is not valid" do
-      user = user_fixture()
+    test "does not return the user if the password is not valid", %{user: user} do
       refute Accounts.get_user_by_email_and_password(user.email, "invalid")
     end
 
-    test "returns the user if the email and password are valid" do
-      %{id: id} = user = user_fixture()
+    test "returns the user if the email and password are valid", %{user: user} do
+      %{id: id} = user
 
       assert %User{id: ^id} =
                Accounts.get_user_by_email_and_password(user.email, valid_user_password())
@@ -54,8 +55,8 @@ defmodule TheLittleThinkersSpace.AccountsTest do
       end
     end
 
-    test "returns the user with the given id" do
-      %{id: id} = user = user_fixture()
+    test "returns the user with the given id", %{user: user} do
+      %{id: id} = user
       assert %User{id: ^id} = Accounts.get_user!(user.id)
     end
   end
@@ -86,8 +87,8 @@ defmodule TheLittleThinkersSpace.AccountsTest do
       assert "should be at most 72 character(s)" in errors_on(changeset).password
     end
 
-    test "validates email uniqueness" do
-      %{email: email} = user_fixture()
+    test "validates email uniqueness", %{user: user} do
+      %{email: email} = user
       {:error, changeset} = Accounts.register_user(%{email: email})
       assert "has already been taken" in errors_on(changeset).email
 
@@ -137,9 +138,7 @@ defmodule TheLittleThinkersSpace.AccountsTest do
   end
 
   describe "apply_user_email/3" do
-    setup do
-      %{user: user_fixture()}
-    end
+    setup [:user]
 
     test "requires email to change", %{user: user} do
       {:error, changeset} = Accounts.apply_user_email(user, valid_user_password(), %{})
@@ -187,9 +186,7 @@ defmodule TheLittleThinkersSpace.AccountsTest do
   end
 
   describe "deliver_update_email_instructions/3" do
-    setup do
-      %{user: user_fixture()}
-    end
+    setup [:user]
 
     test "sends token through notification", %{user: user} do
       token =
@@ -267,9 +264,7 @@ defmodule TheLittleThinkersSpace.AccountsTest do
   end
 
   describe "update_user_password/3" do
-    setup do
-      %{user: user_fixture()}
-    end
+    setup [:user]
 
     test "validates password", %{user: user} do
       {:error, changeset} =
@@ -323,10 +318,6 @@ defmodule TheLittleThinkersSpace.AccountsTest do
   end
 
   describe "generate_user_session_token/1" do
-    setup do
-      %{user: user_fixture()}
-    end
-
     test "generates a token", %{user: user} do
       token = Accounts.generate_user_session_token(user)
       assert user_token = Repo.get_by(UserToken, token: token)
@@ -336,7 +327,7 @@ defmodule TheLittleThinkersSpace.AccountsTest do
       assert_raise Ecto.ConstraintError, fn ->
         Repo.insert!(%UserToken{
           token: user_token.token,
-          user_id: user_fixture().id,
+          user_id: user.id,
           context: "session"
         })
       end
@@ -366,8 +357,7 @@ defmodule TheLittleThinkersSpace.AccountsTest do
   end
 
   describe "delete_session_token/1" do
-    test "deletes the token" do
-      user = user_fixture()
+    test "deletes the token", %{user: user} do
       token = Accounts.generate_user_session_token(user)
       assert Accounts.delete_session_token(token) == :ok
       refute Accounts.get_user_by_session_token(token)
@@ -375,9 +365,7 @@ defmodule TheLittleThinkersSpace.AccountsTest do
   end
 
   describe "deliver_user_confirmation_instructions/2" do
-    setup do
-      %{user: user_fixture()}
-    end
+    setup [:user]
 
     test "sends token through notification", %{user: user} do
       token =
@@ -428,9 +416,7 @@ defmodule TheLittleThinkersSpace.AccountsTest do
   end
 
   describe "deliver_user_reset_password_instructions/2" do
-    setup do
-      %{user: user_fixture()}
-    end
+    setup [:user]
 
     test "sends token through notification", %{user: user} do
       token =
@@ -476,9 +462,7 @@ defmodule TheLittleThinkersSpace.AccountsTest do
   end
 
   describe "reset_user_password/2" do
-    setup do
-      %{user: user_fixture()}
-    end
+    setup [:user]
 
     test "validates password", %{user: user} do
       {:error, changeset} =
@@ -519,24 +503,21 @@ defmodule TheLittleThinkersSpace.AccountsTest do
   end
 
   describe "update_user/2" do
-    test "update_user/2 with valid data updates the user" do
-      user = user_fixture()
+    test "update_user/2 with valid data updates the user", %{user: user} do
       update_attrs = %{first_name: "Karen", last_name: "Murphy"}
       assert {:ok, %User{} = user} = Accounts.update_user(user, update_attrs)
       assert user.first_name == "Karen"
       assert user.last_name == "Murphy"
     end
 
-    test "update_user/2 with invalid data returns error changeset" do
-      user = user_fixture()
+    test "update_user/2 with invalid data returns error changeset", %{user: user} do
       invalid_update_attrs = %{first_name: nil, last_name: nil}
       assert {:error, %Ecto.Changeset{}} = Accounts.update_user(user, invalid_update_attrs)
       assert user == Accounts.get_user!(user.id)
     end
 
-    test "update_user/2 does returns error changeset when first and last name combination provided already exists" do
-      user = user_fixture()
-      admin = admin_fixture()
+    test "update_user/2 does returns error changeset when first and last name combination provided already exists",
+         %{user: user, admin: admin} do
       duplicate_update_attrs = %{first_name: admin.first_name, last_name: admin.last_name}
       {:error, changeset} = Accounts.update_user(user, duplicate_update_attrs)
       assert %{first_name: ["has already been taken"]} == errors_on(changeset)
@@ -546,6 +527,7 @@ defmodule TheLittleThinkersSpace.AccountsTest do
 
   describe "profiles" do
     alias TheLittleThinkersSpace.Accounts.Profile
+    setup [:profile]
 
     @invalid_attrs %{
       animal: nil,
@@ -564,13 +546,11 @@ defmodule TheLittleThinkersSpace.AccountsTest do
       superhero: nil
     }
 
-    test "list_profiles/0 returns all profiles" do
-      profile = profile_fixture()
+    test "list_profiles/0 returns all profiles", %{profile: profile} do
       assert Accounts.list_profiles() == [profile]
     end
 
-    test "get_profile!/1 returns the profile with given id" do
-      profile = profile_fixture()
+    test "get_profile!/1 returns the profile with given id", %{profile: profile} do
       assert Accounts.get_profile!(profile.id) == profile
     end
 
@@ -613,9 +593,7 @@ defmodule TheLittleThinkersSpace.AccountsTest do
       assert {:error, %Ecto.Changeset{}} = Accounts.create_profile(@invalid_attrs)
     end
 
-    test "update_profile/2 with valid data updates the profile" do
-      profile = profile_fixture()
-
+    test "update_profile/2 with valid data updates the profile", %{profile: profile} do
       update_attrs = %{
         animal: "some updated animal",
         belongs_to_lt: false,
@@ -650,21 +628,17 @@ defmodule TheLittleThinkersSpace.AccountsTest do
       assert profile.superhero == "some updated superhero"
     end
 
-    test "update_profile/2 with invalid data returns error changeset" do
-      profile = profile_fixture()
+    test "update_profile/2 with invalid data returns error changeset", %{profile: profile} do
       assert {:error, %Ecto.Changeset{}} = Accounts.update_profile(profile, @invalid_attrs)
       assert profile == Accounts.get_profile!(profile.id)
     end
 
-    test "delete_profile/1 deletes the profile" do
-      profile = profile_fixture()
+    test "delete_profile/1 deletes the profile", %{profile: profile} do
       assert {:ok, %Profile{}} = Accounts.delete_profile(profile)
       assert_raise Ecto.NoResultsError, fn -> Accounts.get_profile!(profile.id) end
     end
 
-    test "change_profile/1 returns a profile changeset" do
-      # user = user_fixture()
-      profile = profile_fixture()
+    test "change_profile/1 returns a profile changeset", %{profile: profile} do
       assert %Ecto.Changeset{} = Accounts.change_profile(profile)
     end
   end
@@ -672,9 +646,7 @@ defmodule TheLittleThinkersSpace.AccountsTest do
   ## Crew
 
   describe "connect_users/1" do
-    setup do
-      %{user: user_fixture(), little_thinker: little_thinker_fixture(), admin: admin_fixture()}
-    end
+    setup [:admin, :little_thinker, :user]
 
     test "requires two ids and a relationship type" do
       assert {:error, changeset} = Accounts.connect_users(%{})
@@ -784,9 +756,7 @@ defmodule TheLittleThinkersSpace.AccountsTest do
   end
 
   describe "preload_relationships/1" do
-    setup do
-      %{user: user_fixture(), little_thinker: little_thinker_fixture(), admin: admin_fixture()}
-    end
+    setup [:admin, :little_thinker, :user]
 
     test "returns a user with all their crews and the little thinkers they follow", %{
       user: %{id: user_id},
@@ -804,11 +774,7 @@ defmodule TheLittleThinkersSpace.AccountsTest do
       assert %User{id: ^little_thinker_id, crews: crews, little_thinkers: []} =
                Accounts.preload_relationships(little_thinker)
 
-      assert [%User{id: ^admin_id}, %User{id: ^user_id}] = Enum.sort(crews, &(&1.id > &2.id))
+      assert [%User{id: ^user_id}, %User{id: ^admin_id}] = Enum.sort(crews, &(&1.id > &2.id))
     end
-
-    # test "returns an empty list if a user has no connections", %{little_thinker: little_thinker} do
-    #   assert [] == Accounts.list_connected_users(little_thinker.id)
-    # end
   end
 end
