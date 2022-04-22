@@ -141,7 +141,7 @@ defmodule TheLittleThinkersSpaceWeb.ProfileControllerTest do
   end
 
   describe "show profile" do
-    setup [:create_profile, :create_lt_profile]
+    setup [:profile, :lt_profile]
 
     test "redirects to login when user is not logged in", %{conn: conn, profile: profile} do
       conn = get(conn, Routes.profile_path(conn, :show, profile))
@@ -203,7 +203,7 @@ defmodule TheLittleThinkersSpaceWeb.ProfileControllerTest do
   end
 
   describe "edit profile" do
-    setup [:create_profile]
+    setup [:profile]
 
     test "renders form for editing profile when user is logged in and owns the profile", %{
       conn: conn,
@@ -236,7 +236,7 @@ defmodule TheLittleThinkersSpaceWeb.ProfileControllerTest do
   end
 
   describe "update profile" do
-    setup [:create_profile]
+    setup [:profile]
 
     test "redirects when data is valid and logged in users are updating their own profile", %{
       conn: conn,
@@ -289,7 +289,7 @@ defmodule TheLittleThinkersSpaceWeb.ProfileControllerTest do
   end
 
   describe "delete profile" do
-    setup [:create_profile]
+    setup [:profile]
 
     test "deletes chosen profile when logged in users are deleting their own profile", %{
       conn: conn,
@@ -326,15 +326,5 @@ defmodule TheLittleThinkersSpaceWeb.ProfileControllerTest do
       assert html_response(conn, 302) =~
                "<html><body>You are being <a href=\"/users/log_in\">redirected</a>.</body></html>"
     end
-  end
-
-  defp create_profile(_) do
-    profile = profile_fixture()
-    %{profile: profile}
-  end
-
-  defp create_lt_profile(_) do
-    lt_profile = lt_profile_fixture()
-    %{lt_profile: lt_profile}
   end
 end
