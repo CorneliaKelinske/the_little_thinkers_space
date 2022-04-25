@@ -11,7 +11,6 @@ defmodule TheLittleThinkersSpaceWeb.PageController do
   end
 
   def home(conn, _params) do
-    current_user = conn.assigns.current_user
     render(conn, "home.html", lt_profile_id: lt_profile_id(), little_thinker: Accounts.get_lt())
   end
 

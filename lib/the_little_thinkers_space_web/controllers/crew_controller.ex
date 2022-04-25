@@ -4,8 +4,6 @@ defmodule TheLittleThinkersSpaceWeb.CrewController do
   """
   use TheLittleThinkersSpaceWeb, :controller
 
-  alias TheLittleThinkersSpace.Accounts
-
   action_fallback TheLittleThinkersSpaceWeb.FallbackController
 
   def index(conn, _params) do

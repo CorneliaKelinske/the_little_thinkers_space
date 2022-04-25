@@ -232,7 +232,6 @@ defmodule TheLittleThinkersSpace.Accounts do
     |> Repo.one()
   end
 
-
   @doc """
   Deletes the signed token with the given context.
   """

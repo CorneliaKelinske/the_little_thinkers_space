@@ -65,12 +65,13 @@ defmodule TheLittleThinkersSpace.Accounts.UserToken do
 
   def verify_session_token_query(token) do
     from user in TheLittleThinkersSpace.Accounts.User,
-    join: token in TheLittleThinkersSpace.Accounts.UserToken, on: token.user_id == user.id,
-    where: token.token == ^token,
-    where: token.context == "session",
-    where: token.inserted_at > ago(@session_validity_in_days, "day"),
-    preload: [:crews, :little_thinkers],
-    select: user
+      join: token in TheLittleThinkersSpace.Accounts.UserToken,
+      on: token.user_id == user.id,
+      where: token.token == ^token,
+      where: token.context == "session",
+      where: token.inserted_at > ago(@session_validity_in_days, "day"),
+      preload: [:crews, :little_thinkers],
+      select: user
   end
 
   @doc """
