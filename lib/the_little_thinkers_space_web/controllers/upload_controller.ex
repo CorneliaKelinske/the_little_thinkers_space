@@ -16,7 +16,6 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
   def index(conn, %{"little_thinker_id" => little_thinker_id}) do
     little_thinker_id = String.to_integer(little_thinker_id)
     little_thinker = Accounts.get_user!(little_thinker_id)
-
     uploads = Content.list_little_thinker_uploads(little_thinker_id)
 
     render(conn, "index.html", little_thinker: little_thinker, uploads: uploads)
