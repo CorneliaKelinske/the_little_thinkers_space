@@ -49,6 +49,16 @@ defmodule TheLittleThinkersSpace.Content.Upload do
 
   def authorize(_, %User{role: "The Little Thinker"}, _), do: :ok
   def authorize(:index, %User{}, _upload), do: :ok
-  def authorize(:show, %User{}, %Upload{}), do: :ok
+
+  def authorize(:show, %User{little_thinkers: little_thinkers}, %Upload{user_id: id}) do
+    little_thinkers
+    |> Enum.map(& &1.id)
+    |> Enum.member?(id)
+    |> case do
+      true -> :ok
+      false -> :error
+    end
+  end
+
   def authorize(_action, _user, _upload), do: :error
 end

@@ -3,7 +3,6 @@ defmodule TheLittleThinkersSpace.ContentFixtures do
   This module defines test helpers for creating
   entities via the `TheLittleThinkersSpace.Content` context.
   """
-  import TheLittleThinkersSpace.AccountsFixtures
   alias TheLittleThinkersSpace.Content
 
   @create_image_attrs %{
@@ -19,9 +18,8 @@ defmodule TheLittleThinkersSpace.ContentFixtures do
   Generate a upload.
   """
 
-  def upload(_conn) do
-    user = user_fixture()
-    {:ok, upload} = Content.create_upload(user, @create_image_attrs)
+  def upload(%{little_thinker: little_thinker}) do
+    {:ok, upload} = Content.create_upload(little_thinker, @create_image_attrs)
     %{upload: upload}
   end
 end
