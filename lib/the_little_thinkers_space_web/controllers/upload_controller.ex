@@ -14,11 +14,15 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
   action_fallback TheLittleThinkersSpaceWeb.FallbackController
 
   def index(conn, %{"little_thinker_id" => little_thinker_id}) do
+    user = conn.assigns.current_user
     little_thinker_id = String.to_integer(little_thinker_id)
     little_thinker = Accounts.get_user!(little_thinker_id)
-    uploads = Content.list_little_thinker_uploads(little_thinker_id)
 
-    render(conn, "index.html", little_thinker: little_thinker, uploads: uploads)
+    with :ok <- Bodyguard.permit(Upload, :index, user) do
+      uploads = Content.list_little_thinker_uploads(little_thinker_id)
+
+      render(conn, "index.html", little_thinker: little_thinker, uploads: uploads)
+    end
   end
 
   def new(conn, %{"little_thinker_id" => little_thinker_id} = params) do
@@ -111,11 +115,16 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
   end
 
   def show(conn, %{"id" => id, "little_thinker_id" => little_thinker_id}) do
+    user = conn.assigns.current_user
     little_thinker_id = String.to_integer(little_thinker_id)
     little_thinker = Accounts.get_user!(little_thinker_id)
     id = String.to_integer(id)
+
     upload = Content.get_upload_from_cache_or_repo(id)
-    render(conn, "show.html", upload: upload, little_thinker: little_thinker)
+
+    with :ok <- Bodyguard.permit(Upload, :show, user, upload) do
+      render(conn, "show.html", upload: upload, little_thinker: little_thinker)
+    end
   end
 
   def edit(conn, %{"id" => id, "little_thinker_id" => little_thinker_id}) do

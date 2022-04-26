@@ -85,6 +85,34 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
     end
   end
 
+  describe "show upload" do
+    setup [:upload]
+    test "redirects to login when user is not logged in", %{
+      conn: conn,
+      upload: upload,
+      little_thinker: little_thinker
+    } do
+      conn = get(conn, Routes.little_thinker_upload_path(conn, :show, little_thinker, upload))
+
+      assert html_response(conn, 302) =~
+               "<html><body>You are being <a href=\"/users/log_in\">redirected</a>.</body></html>"
+    end
+
+    test "shows user an upload of an associated little thinker when user is logged in", %{
+      conn: conn,
+      user: user,
+      little_thinker: little_thinker,
+      upload: upload
+    } do
+      conn =
+        conn
+        |> log_in_user(user)
+        |> get(Routes.little_thinker_upload_path(conn, :show, little_thinker, upload))
+
+      assert html_response(conn, 200) =~ "some title"
+    end
+  end
+
   describe "new upload" do
     test "redirects to login when user is not logged in", %{
       conn: conn,
