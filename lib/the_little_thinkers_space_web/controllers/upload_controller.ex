@@ -17,10 +17,9 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     user = conn.assigns.current_user
     little_thinker_id = String.to_integer(little_thinker_id)
     little_thinker = Accounts.get_user!(little_thinker_id)
+    uploads = Content.list_little_thinker_uploads(little_thinker_id) |> IO.inspect(label: "20", limit: :infinity, charlists: false)
 
-    with :ok <- Bodyguard.permit(Upload, :index, user) do
-      uploads = Content.list_little_thinker_uploads(little_thinker_id)
-
+    with :ok <- Bodyguard.permit(Upload, :index, user, {uploads, little_thinker_id}) do
       render(conn, "index.html", little_thinker: little_thinker, uploads: uploads)
     end
   end

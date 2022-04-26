@@ -48,7 +48,7 @@ defmodule TheLittleThinkersSpace.Content.Upload do
   end
 
   def authorize(_, %User{role: "The Little Thinker"}, _), do: :ok
-  def authorize(:index, %User{}, _upload), do: :ok
+  #def authorize(:index, %User{}, _upload), do: :ok
 
   def authorize(:show, %User{little_thinkers: little_thinkers}, %Upload{user_id: id}) do
     little_thinkers
@@ -59,6 +59,11 @@ defmodule TheLittleThinkersSpace.Content.Upload do
       false -> :error
     end
   end
+
+  def authorize(:index, %User{little_thinkers: little_thinkers}, {uploads, little_thinker_id}) do
+  
+  end
+
 
   def authorize(_action, _user, _upload), do: :error
 end

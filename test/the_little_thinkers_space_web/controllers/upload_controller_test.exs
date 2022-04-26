@@ -6,7 +6,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
 
   alias TheLittleThinkersSpace.{Accounts, Content, Repo}
 
-  setup [:user, :admin, :little_thinker]
+  setup [:user, :admin, :little_thinker, :upload]
 
   @create_image_attrs %{
     description: "some description",
@@ -76,6 +76,14 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
       user: user,
       little_thinker: little_thinker
     } do
+      Accounts.connect_users(%{
+        little_thinker_id: little_thinker.id,
+        user_id: user.id,
+        type: "Friend"
+      })
+
+      user = Repo.preload(user, [:little_thinkers])
+      
       conn =
         conn
         |> log_in_user(user)
@@ -86,7 +94,6 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
   end
 
   describe "show upload" do
-    setup [:upload]
 
     test "redirects to login when user is not logged in", %{
       conn: conn,
@@ -267,7 +274,6 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
   end
 
   describe "edit upload" do
-    setup [:upload]
 
     test "redirects to login when user is not logged in", %{
       conn: conn,
@@ -310,7 +316,6 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
   end
 
   describe "update upload" do
-    setup [:upload]
 
     test "redirects to login when user is not logged in", %{
       conn: conn,
@@ -389,7 +394,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
   end
 
   describe "delete upload" do
-    setup [:upload]
+
 
     test "redirects to login when user is not logged in", %{
       conn: conn,
