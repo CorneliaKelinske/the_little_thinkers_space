@@ -68,5 +68,5 @@ defmodule TheLittleThinkersSpace.Accounts.Profile do
       do: :ok
 
   def authorize(:show, %User{}, %Profile{belongs_to_lt: true}), do: :ok
-  def authorize(_action, _, __profile), do: :error
+  def authorize(_action, _, _profile), do: :error
 end

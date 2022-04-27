@@ -4,14 +4,10 @@ defmodule TheLittleThinkersSpaceWeb.LittleThinkerController do
   """
   use TheLittleThinkersSpaceWeb, :controller
 
-  alias TheLittleThinkersSpace.Accounts
-
   action_fallback TheLittleThinkersSpaceWeb.FallbackController
 
   def index(conn, _params) do
-    current_user = conn.assigns.current_user
-    user = Accounts.preload_relationships(current_user)
-
+    user = conn.assigns.current_user
     render(conn, "index.html", user: user)
   end
 end

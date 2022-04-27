@@ -40,3 +40,28 @@ Little Thinker first. Parent next. everybody else afterwards
 ### MORE THINGS
 
 - what about profiles?
+
+### How to make a fish function
+
+```
+alias -s functionname="cool scripty stuff"
+```
+
+### Edit a function
+
+(don't forget to ctrl + s, ctrl + q to save and quit)
+
+```
+micro ~/.config/fish/functions/cts.fish
+```
+
+### How to blow away and recompile your project in the morning
+
+Make sure that VS code is CLOSED
+
+Start up a terminal
+Navigate to your project directory
+
+```
+rm -rf _build .elixir_ls && MIX_ENV=test mix compile && mix check
+```

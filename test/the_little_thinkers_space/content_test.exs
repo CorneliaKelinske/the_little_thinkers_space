@@ -30,7 +30,7 @@ defmodule TheLittleThinkersSpace.ContentTest do
       orientation: "Landscape"
     }
 
-    setup [:user, :upload]
+    setup [:user, :little_thinker, :upload]
 
     test "list_uploads/0 returns all uploads", %{upload: upload} do
       assert Enum.map(Content.list_uploads(), &Map.put(&1, :user, nil)) == [
