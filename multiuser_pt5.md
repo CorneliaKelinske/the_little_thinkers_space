@@ -1,5 +1,26 @@
-1. Do profiles need to be a nested resource?
-(Little Thinker can only see profiles of crew connected to him/her)
+00. Make a markdown file with all the navigation code I am deleting for reference
+0. Remove all links that pertain to the little thinker from the navbar
+
+0.1 Change the design of the "home" page.
+
+- For regular users: button "choose your little thinker" -> leads to little_thinker_index
+- If current.user role == Little Thinker, have link "enter my space" -> little_thinker_show
+[later on, I can add choose my little thinker button here as well]
+
+
+0.2 Create a little_thinker_show_page
+- Link to little_thinker_Profile (if it exists)
+- link to uploads
+
+if parent:
+link to crew
+
+
+if user === little thinker
+link to crew
+link to uploads
+
+
 
 2. Parents need to be able to see their little thinker's crew
 
