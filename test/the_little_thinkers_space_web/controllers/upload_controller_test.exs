@@ -71,6 +71,21 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
                "<html><body>You are being <a href=\"/users/log_in\">redirected</a>.</body></html>"
     end
 
+    test "redirects logged in user to home when they are not associated with the little thinker who owns the given uploads",
+         %{
+           conn: conn,
+           user: user,
+           little_thinker: little_thinker,
+           upload: upload
+         } do
+      conn =
+        conn
+        |> log_in_user(user)
+        |> get(Routes.little_thinker_upload_path(conn, :index, little_thinker))
+
+      assert html_response(conn, 302) =~ "You are being <a href=\"/home\">redirected</a>."
+    end
+
     test "lists all uploads of the associated little thinker when user is logged in", %{
       conn: conn,
       user: user,
@@ -83,7 +98,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
       })
 
       user = Repo.preload(user, [:little_thinkers])
-      
+
       conn =
         conn
         |> log_in_user(user)
@@ -94,7 +109,6 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
   end
 
   describe "show upload" do
-
     test "redirects to login when user is not logged in", %{
       conn: conn,
       upload: upload,
@@ -274,7 +288,6 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
   end
 
   describe "edit upload" do
-
     test "redirects to login when user is not logged in", %{
       conn: conn,
       upload: upload,
@@ -316,7 +329,6 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
   end
 
   describe "update upload" do
-
     test "redirects to login when user is not logged in", %{
       conn: conn,
       upload: upload,
@@ -394,8 +406,6 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
   end
 
   describe "delete upload" do
-
-
     test "redirects to login when user is not logged in", %{
       conn: conn,
       upload: upload,
