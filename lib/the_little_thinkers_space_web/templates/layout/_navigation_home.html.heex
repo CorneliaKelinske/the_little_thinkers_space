@@ -4,16 +4,13 @@
 
     <button class="btn-nav xs:place-self-center"><%= link("#{@current_user.first_name}", to: Routes.profile_path(@conn, :new)) %></button>
     <button class="btn-nav xs:place-self-center"><%= link("Settings", to: Routes.user_settings_path(@conn, :edit)) %></button>
-    <button class="btn-nav xs:place-self-center"><%= link("My Little Thinkers", to: Routes.little_thinker_path(@conn, :index)) %></button>
-    <%= if @current_user.role in ["The Little Thinker"] do %>
-      <button class="btn-nav xs:place-self-center"><%= link("Ulrik's crew", to: Routes.crew_path(@conn, :index)) %></button>
-    <% else %>
-    <% end %>
+
     <%= if @current_user.role == "Admin" do %>
       <button class="btn-nav xs:place-self-center"><%= link("User Admin", to: Routes.user_path(@conn, :index)) %></button>
     <% else %>
       <button class="btn-nav xs:place-self-center"><%= link("Contact", to: Routes.contact_path(@conn, :new)) %></button>
     <% end %>
+    <button class="btn-nav xs:place-self-center"><%= link("Home", to: Routes.page_path(@conn, :home)) %></button>
     <button class="btn-nav xs:place-self-center"><%= link("Log out", to: Routes.user_session_path(@conn, :delete), method: :delete) %></button>
   </div>
 </nav>

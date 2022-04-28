@@ -75,8 +75,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
          %{
            conn: conn,
            user: user,
-           little_thinker: little_thinker,
-           upload: upload
+           little_thinker: little_thinker
          } do
       conn =
         conn
