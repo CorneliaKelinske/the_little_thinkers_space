@@ -1,23 +1,15 @@
 defmodule TheLittleThinkersSpaceWeb.PageController do
   use TheLittleThinkersSpaceWeb, :controller
-  alias TheLittleThinkersSpace.{Accounts, Accounts.Profile}
 
   def index(conn, _params) do
     if conn.assigns[:current_user] do
-      render(conn, "home.html", lt_profile_id: lt_profile_id(), little_thinker: Accounts.get_lt())
+      render(conn, "home.html")
     else
       render(conn, "index.html")
     end
   end
 
   def home(conn, _params) do
-    render(conn, "home.html", lt_profile_id: lt_profile_id(), little_thinker: Accounts.get_lt())
-  end
-
-  defp lt_profile_id do
-    case Accounts.get_lt_profile() do
-      %Profile{id: id} -> id
-      _ -> nil
-    end
+    render(conn, "home.html")
   end
 end

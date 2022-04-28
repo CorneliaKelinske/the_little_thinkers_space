@@ -7,6 +7,7 @@
 - If current.user role == Little Thinker, have link "enter my space" -> little_thinker_show
 [later on, I can add choose my little thinker button here as well]
 
+0.1.1 Make it so that the button for choosing a little thinker only appears to a little thinker if he has other little thinkers
 
 0.2 Create a little_thinker_show_page
 - Link to little_thinker_Profile (if it exists)
@@ -19,6 +20,8 @@ link to crew
 if user === little thinker
 link to crew
 link to uploads
+
+
 
 
 
