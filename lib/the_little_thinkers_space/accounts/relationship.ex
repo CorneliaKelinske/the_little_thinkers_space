@@ -7,6 +7,10 @@ defmodule TheLittleThinkersSpace.Accounts.Relationship do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias TheLittleThinkersSpace.Accounts.User
+
+  @behaviour Bodyguard.Policy
+
   @valid_types ["Parent", "Friend", "Family"]
 
   schema "relationships" do
@@ -26,4 +30,19 @@ defmodule TheLittleThinkersSpace.Accounts.Relationship do
     |> unique_constraint([:little_thinker_id, :user_id])
     |> validate_inclusion(:type, @valid_types)
   end
+
+  def authorize(_, %User{role: "Admin"}, _), do: :ok
+  # Authorization for little_thinker :show
+  def authorize(_, %User{id: id}, %{id: id}), do: :ok
+  def authorize(:show, %User{little_thinkers: little_thinkers}, %{id: id}) do
+    little_thinkers
+    |> Enum.map(& &1.id)
+    |> Enum.member?(id)
+    |> case do
+      true -> :ok
+      false -> :error
+    end
+  end
+
+  def authorize(_action, _user, _), do: :error
 end

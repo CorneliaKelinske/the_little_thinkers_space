@@ -4,6 +4,8 @@
 
 0.3 Link to the little thinker show page from the little thinker index page
 
+0.3.1 Add authorization for little_thinker index and crew_index
+
 0.4 make lt show page better
 - Link to little_thinker_Profile (if it exists)
 - link to uploads

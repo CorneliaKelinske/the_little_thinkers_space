@@ -17,7 +17,7 @@
           <tr>
             <td class="text-left text-gray-900 p-2 font-semibold"><%= little_thinker.first_name %></td>
             <td class="text-left text-gray-900 p-2"><%= little_thinker.last_name %></td>
-            <td class="text-gray-600 text-xs uppercase font-semibold tracking-wide p-2"><%= display_profile_link(little_thinker.id) %></td>
+            <td class="text-gray-600 text-xs uppercase font-semibold tracking-wide p-2"><%= link("SELECT", to: Routes.little_thinker_path(@conn, :show, little_thinker)) %></td>
           </tr>
         <% end %>
       </table>
