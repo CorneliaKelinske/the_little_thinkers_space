@@ -1,15 +1,10 @@
-00. Make a markdown file with all the navigation code I am deleting for reference
-0. Remove all links that pertain to the little thinker from the navbar
 
-0.1 Change the design of the "home" page.
 
-- For regular users: button "choose your little thinker" -> leads to little_thinker_index
-- If current.user role == Little Thinker, have link "enter my space" -> little_thinker_show
-[later on, I can add choose my little thinker button here as well]
+0.2 Create a simple little_thinker_show_page
 
-0.1.1 Make it so that the button for choosing a little thinker only appears to a little thinker if he has other little thinkers
+0.3 Link to the little thinker show page from the little thinker index page
 
-0.2 Create a little_thinker_show_page
+0.4 make lt show page better
 - Link to little_thinker_Profile (if it exists)
 - link to uploads
 
@@ -22,6 +17,7 @@ link to crew
 link to uploads
 
 
+1. Link to the little thinker show page from the little thinker index page
 
 
 
