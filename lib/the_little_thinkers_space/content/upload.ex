@@ -51,9 +51,18 @@ defmodule TheLittleThinkersSpace.Content.Upload do
   def authorize(:index, %User{role: "The Little Thinker", id: id}, {_uploads, little_thinker_id})
       when id == little_thinker_id,
       do: :ok
-  def authorize(:new, %User{role: "The Little Thinker", id: id}, little_thinker_id) when id == little_thinker_id, do: :ok
-  def authorize(:create, %User{role: "The Little Thinker", id: id}, {_uploads, little_thinker_id}) when id == little_thinker_id, do: :ok
-  def authorize(action, %User{role: "The Little Thinker", id: id}, %Upload{user_id: id}) when action in [:show, :edit, :update, :delete], do: :ok
+
+  def authorize(:new, %User{role: "The Little Thinker", id: id}, little_thinker_id)
+      when id == little_thinker_id,
+      do: :ok
+
+  def authorize(:create, %User{role: "The Little Thinker", id: id}, {_uploads, little_thinker_id})
+      when id == little_thinker_id,
+      do: :ok
+
+  def authorize(action, %User{role: "The Little Thinker", id: id}, %Upload{user_id: id})
+      when action in [:show, :edit, :update, :delete],
+      do: :ok
 
   def authorize(:show, %User{little_thinkers: little_thinkers}, %Upload{
         user_id: little_thinker_id

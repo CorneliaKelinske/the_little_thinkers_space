@@ -42,6 +42,8 @@ Admin can create the new user in the online interface and connect them to the lt
 
 6. Create demo content
 
+6.1 Maybe add auth tests for second little thinker?!!!
+
 7. Make a nice little video
 
 8. Find a way to play video on the little_thinkers index page

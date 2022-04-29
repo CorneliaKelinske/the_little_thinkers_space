@@ -155,6 +155,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     little_thinker_id = String.to_integer(little_thinker_id)
     little_thinker = Accounts.get_user!(little_thinker_id)
     %Upload{path: path} = upload = Content.get_upload!(id)
+
     with :ok <- Bodyguard.permit(Upload, :update, user, upload) do
       upload_name = Path.basename(path)
 
@@ -180,8 +181,8 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     little_thinker_id = String.to_integer(little_thinker_id)
     little_thinker = Accounts.get_user!(little_thinker_id)
 
-    with  upload <- Content.get_upload!(id),
-          :ok <- Bodyguard.permit(Upload, :delete, user, upload),
+    with upload <- Content.get_upload!(id),
+         :ok <- Bodyguard.permit(Upload, :delete, user, upload),
          {:ok, _upload} <- Content.delete_upload(upload) do
       conn
       |> put_flash(:info, "Upload deleted successfully.")
