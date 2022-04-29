@@ -34,6 +34,7 @@ defmodule TheLittleThinkersSpace.Accounts.Relationship do
   def authorize(_, %User{role: "Admin"}, _), do: :ok
   # Authorization for little_thinker :show
   def authorize(_, %User{id: id}, %{id: id}), do: :ok
+
   def authorize(:show, %User{little_thinkers: little_thinkers}, %{id: id}) do
     little_thinkers
     |> Enum.map(& &1.id)
