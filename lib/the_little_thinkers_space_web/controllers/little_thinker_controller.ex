@@ -4,7 +4,7 @@ defmodule TheLittleThinkersSpaceWeb.LittleThinkerController do
   """
   use TheLittleThinkersSpaceWeb, :controller
 
-  alias TheLittleThinkersSpace.{Accounts, Accounts.User, Accounts.Relationship}
+  alias TheLittleThinkersSpace.{Accounts, Accounts.Relationship, Accounts.User}
 
   action_fallback TheLittleThinkersSpaceWeb.FallbackController
 
