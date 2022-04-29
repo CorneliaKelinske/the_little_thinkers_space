@@ -23,7 +23,7 @@ link to uploads
 
 
 
-2. Parents need to be able to see their little thinker's crew
+2. Parents need to be able to see their little thinker's crew [maybe verify in the crew view]
 
 3. Parents will have the option to remove or add crew members (should little thinker have that option as well)? (crew show page and then edit)
 What I envision is that both the link to add and remove crew member leads to a crew form.
