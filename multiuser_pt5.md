@@ -7,7 +7,7 @@
 
 
 0.4 make lt show page better
-- Link to little_thinker_Profile (if it exists)
+- Link to little_thinker_Profile (if it exists) NEED TO CHANGE AUTHORIZATION HERE!!!!
 - link to uploads
 
 if parent:
@@ -41,6 +41,8 @@ Admin can create the new user in the online interface and connect them to the lt
 5. Create a second little thinker for demo purposes. create some crew. make sure it works.
 
 6. Create demo content
+
+6.1 Maybe add auth tests for second little thinker?!!!
 
 7. Make a nice little video
 

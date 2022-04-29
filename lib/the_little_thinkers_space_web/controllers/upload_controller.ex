@@ -25,12 +25,12 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     end
   end
 
-  def new(conn, %{"little_thinker_id" => little_thinker_id} = params) do
+  def new(conn, %{"little_thinker_id" => little_thinker_id}) do
     user = conn.assigns.current_user
     little_thinker_id = String.to_integer(little_thinker_id)
     little_thinker = Accounts.get_user!(little_thinker_id)
 
-    with :ok <- Bodyguard.permit(Upload, :new, user, params) do
+    with :ok <- Bodyguard.permit(Upload, :new, user, little_thinker_id) do
       changeset = Content.change_upload(%Upload{})
       render(conn, "new.html", changeset: changeset, little_thinker: little_thinker)
     end
@@ -44,7 +44,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     little_thinker_id = String.to_integer(little_thinker_id)
     little_thinker = Accounts.get_user!(little_thinker_id)
 
-    with :ok <- Bodyguard.permit(Upload, :create, user, upload_params),
+    with :ok <- Bodyguard.permit(Upload, :create, user, {upload_params, little_thinker_id}),
          {:ok, upload_plug} <- FileSizeChecker.small_enough?(upload_plug),
          {:ok, upload_plug} <- FileCompressor.compress_file(upload_plug),
          {:ok, storage_path} <- Content.store_file(upload_plug, user.id),
@@ -131,9 +131,9 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     user = conn.assigns.current_user
     little_thinker_id = String.to_integer(little_thinker_id)
     little_thinker = Accounts.get_user!(little_thinker_id)
+    %Upload{path: path} = upload = Content.get_upload!(id)
 
-    with :ok <- Bodyguard.permit(Upload, :edit, user, id) do
-      %Upload{path: path} = upload = Content.get_upload!(id)
+    with :ok <- Bodyguard.permit(Upload, :edit, user, upload) do
       upload_name = Path.basename(path)
       changeset = Content.change_upload(upload)
 
@@ -154,9 +154,9 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     user = conn.assigns.current_user
     little_thinker_id = String.to_integer(little_thinker_id)
     little_thinker = Accounts.get_user!(little_thinker_id)
+    %Upload{path: path} = upload = Content.get_upload!(id)
 
-    with :ok <- Bodyguard.permit(Upload, :update, user, %{}) do
-      %Upload{path: path} = upload = Content.get_upload!(id)
+    with :ok <- Bodyguard.permit(Upload, :update, user, upload) do
       upload_name = Path.basename(path)
 
       case Content.update_upload(upload, upload_params) do
@@ -181,8 +181,8 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     little_thinker_id = String.to_integer(little_thinker_id)
     little_thinker = Accounts.get_user!(little_thinker_id)
 
-    with :ok <- Bodyguard.permit(Upload, :delete, user, id),
-         upload <- Content.get_upload!(id),
+    with upload <- Content.get_upload!(id),
+         :ok <- Bodyguard.permit(Upload, :delete, user, upload),
          {:ok, _upload} <- Content.delete_upload(upload) do
       conn
       |> put_flash(:info, "Upload deleted successfully.")
