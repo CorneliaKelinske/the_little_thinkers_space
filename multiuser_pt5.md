@@ -4,7 +4,7 @@
 
 0.3 Link to the little thinker show page from the little thinker index page
 
-0.3.1 Add authorization for little_thinker index and crew_index
+
 
 0.4 make lt show page better
 - Link to little_thinker_Profile (if it exists)
@@ -25,7 +25,7 @@ link to uploads
 
 2. Parents need to be able to see their little thinker's crew
 
-3. Parents will have the option to remove or add crew members (should little thinker have that option as well)?
+3. Parents will have the option to remove or add crew members (should little thinker have that option as well)? (crew show page and then edit)
 What I envision is that both the link to add and remove crew member leads to a crew form.
 In the remove form, the parent will enter the crews first and last name and submit. Form will be sent to admin, who will remove crew.
 If crew is not connected to anyone else, user will be deleted.
