@@ -7,7 +7,7 @@
 
 
 0.4 make lt show page better
-- Link to little_thinker_Profile (if it exists)
+- Link to little_thinker_Profile (if it exists) NEED TO CHANGE AUTHORIZATION HERE!!!!
 - link to uploads
 
 if parent:

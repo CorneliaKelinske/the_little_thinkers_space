@@ -6,7 +6,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
 
   alias TheLittleThinkersSpace.{Accounts, Content, Repo}
 
-  setup [:user, :admin, :little_thinker, :upload]
+  setup [:user, :little_thinker, :upload]
 
   @create_image_attrs %{
     description: "some description",
@@ -101,6 +101,18 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
       conn =
         conn
         |> log_in_user(user)
+        |> get(Routes.little_thinker_upload_path(conn, :index, little_thinker))
+
+      assert html_response(conn, 200) =~ "Ulrik's uploads"
+    end
+
+    test "lists all uploads to the little thinker who owns the respective uploads", %{
+      conn: conn,
+      little_thinker: little_thinker
+    } do
+      conn =
+        conn
+        |> log_in_user(little_thinker)
         |> get(Routes.little_thinker_upload_path(conn, :index, little_thinker))
 
       assert html_response(conn, 200) =~ "Ulrik's uploads"
@@ -209,7 +221,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
                "<html><body>You are being <a href=\"/users/log_in\">redirected</a>.</body></html>"
     end
 
-    test "redirects to show when data is valid image data and user is logged in and Little Thinker",
+    test "redirects to show when data is valid image data and user is logged in and a Little Thinker",
          %{
            conn: conn,
            little_thinker: little_thinker
@@ -230,7 +242,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
       assert html_response(conn, 200) =~ "some title"
     end
 
-    test "redirects to show when data is valid video data and user is logged in and a Little Thinker",
+    test "redirects to show when data is valid video data and user is logged in and the Little Thinker",
          %{
            conn: conn,
            little_thinker: little_thinker
@@ -298,7 +310,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
                "<html><body>You are being <a href=\"/users/log_in\">redirected</a>.</body></html>"
     end
 
-    test "renders form for editing chosen upload when user is logged in and the Little Thinker",
+    test "renders form for editing chosen upload when user is logged in and the Little Thinker owning the respective upload",
          %{
            conn: conn,
            upload: upload,
@@ -339,7 +351,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
                "<html><body>You are being <a href=\"/users/log_in\">redirected</a>.</body></html>"
     end
 
-    test "redirects when data is valid and user is logged in and a Little Thinker", %{
+    test "redirects when data is valid and user is logged in and the Little Thinker owning the upload", %{
       conn: conn,
       little_thinker: little_thinker
     } do
