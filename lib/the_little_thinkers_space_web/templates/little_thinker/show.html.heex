@@ -1,0 +1,7 @@
+<body class="bg-colors bg-cover">
+  <h1 class="w-screen text-sky-900 font-bold text-center text-4xl p-4">Welcome to <%= @little_thinker.first_name %>'s Space!</h1>
+
+  <div class="mx-8 sm:mx-16 my-6">
+    <span class="text-sky-900 text-lg font-semibold tracking-wide"><%= link("Back", to: Routes.little_thinker_path(@conn, :index)) %></span>
+  </div>
+</body>
