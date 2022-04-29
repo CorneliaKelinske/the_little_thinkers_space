@@ -2,6 +2,7 @@
   <h1 class="w-screen text-sky-900 font-bold text-center text-4xl p-4">Welcome to <%= @little_thinker.first_name %>'s Space!</h1>
   <div class="mt-4 mb-48 flex justify-center w-screen">
     <button class="btn-page"><%= link("Uploads", to: Routes.little_thinker_upload_path(@conn, :index, @little_thinker)) %></button>
+    <button class="btn-page"><%= display_profile_link(@little_thinker) %></button>
   </div>
   <div class="mx-8 sm:mx-16 my-6">
     <span class="text-sky-900 text-lg font-semibold tracking-wide"><%= link("Back", to: Routes.little_thinker_path(@conn, :index)) %></span>

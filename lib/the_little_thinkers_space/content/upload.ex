@@ -64,6 +64,7 @@ defmodule TheLittleThinkersSpace.Content.Upload do
       when action in [:show, :edit, :update, :delete],
       do: :ok
 
+  # Authorization for other users in relation to uploads
   def authorize(:show, %User{little_thinkers: little_thinkers}, %Upload{
         user_id: little_thinker_id
       }) do
