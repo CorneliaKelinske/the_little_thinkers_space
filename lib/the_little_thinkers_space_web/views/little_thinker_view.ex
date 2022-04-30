@@ -12,6 +12,4 @@ defmodule TheLittleThinkersSpaceWeb.LittleThinkerView do
         content_tag(:a, "Future home of #{little_thinker.first_name}'s profile")
     end
   end
-
-
 end

@@ -38,11 +38,11 @@ Admin can create the new user in the online interface and connect them to the lt
 
 4. Figure out how to best arrange the navigation elements with focus on what regular (non-Admin) users see.
 
-5. Create a second little thinker for demo purposes. create some crew. make sure it works.
+5. Create a second little thinker for demo purposes. create some crew. make sure it works. 
 
 6. Create demo content
 
-6.1 Maybe add auth tests for second little thinker?!!!
+6.1 Maybe add auth tests for second little thinker?!!! YEP !!!!!!
 
 7. Make a nice little video
 

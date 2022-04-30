@@ -1,10 +1,9 @@
 defmodule TheLittleThinkersSpaceWeb.ProfileControllerTest do
   use TheLittleThinkersSpaceWeb.ConnCase, async: true
   import TheLittleThinkersSpace.AccountsFixtures
-  alias TheLittleThinkersSpace.Accounts
-  alias TheLittleThinkersSpace.Accounts.Profile
+  alias TheLittleThinkersSpace.{Accounts, Accounts.Profile, Repo}
 
-  setup [:user, :admin, :profile, :lt_profile]
+  setup [:user, :admin, :profile, :little_thinker, :lt_profile]
 
   @create_attrs %{
     animal: "some animal",
@@ -186,11 +185,20 @@ defmodule TheLittleThinkersSpaceWeb.ProfileControllerTest do
       assert html_response(conn, 302) =~ "You are being <a href=\"/home\">redirected</a>."
     end
 
-    test "logged in user can view the Little Thinker's Profile", %{
+    test "logged in user can view the profile of the little thinker associated with them", %{
       conn: conn,
       lt_profile: lt_profile,
-      user: user
+      user: user,
+      little_thinker: little_thinker
     } do
+      Accounts.connect_users(%{
+        little_thinker_id: little_thinker.id,
+        user_id: user.id,
+        type: "Friend"
+      })
+
+      user = Repo.preload(user, [:little_thinkers])
+
       conn =
         conn
         |> log_in_user(user)
@@ -198,6 +206,18 @@ defmodule TheLittleThinkersSpaceWeb.ProfileControllerTest do
 
       assert html_response(conn, 200) =~ "some first_name's Profile"
     end
+
+    test "logged in user cannot view profiles of little thinkers that are not associated with them",
+         %{conn: conn, lt_profile: lt_profile, user: user} do
+      conn =
+        conn
+        |> log_in_user(user)
+        |> get(Routes.profile_path(conn, :show, lt_profile))
+
+      assert html_response(conn, 302) =~ "You are being <a href=\"/home\">redirected</a>."
+    end
+
+    
   end
 
   describe "edit profile" do

@@ -57,16 +57,38 @@ defmodule TheLittleThinkersSpace.Accounts.Profile do
 
   def authorize(_, %User{role: "Admin"}, _profile), do: :ok
 
-  def authorize(action, %User{role: "The Little Thinker"}, _profile)
-      when action in [:index, :show],
-      do: :ok
+  # Authorizes the Little Thinker to see the profiles of their crew and of the little thinkers that they are following
+  def authorize(
+        action,
+        %User{role: "The Little Thinker", little_thinkers: little_thinkers, crews: crews},
+        %Profile{user_id: user_id}
+      )
+      when action in [:index, :show] do
+    (crews ++ little_thinkers)
+    |> Enum.map(& &1.id)
+    |> Enum.member?(user_id)
+    |> case do
+      true -> :ok
+      false -> :error
+    end
+  end
 
   # Note: I did not implement authorization for create, since a profile that is in the process of
-  # being created would not have user_id yet.
+  # being created would not have user_id yet. This authorizes users to do things with their own profiles.
   def authorize(action, %User{id: id}, %Profile{user_id: id})
       when action in [:show, :edit, :update, :delete],
       do: :ok
 
-  def authorize(:show, %User{}, %Profile{belongs_to_lt: true}), do: :ok
+  # Authorizes users to view profiles of little thinkers they are following
+  def authorize(:show, %User{little_thinkers: little_thinkers}, %Profile{user_id: user_id}) do
+    little_thinkers
+    |> Enum.map(& &1.id)
+    |> Enum.member?(user_id)
+    |> case do
+      true -> :ok
+      false -> :error
+    end
+  end
+
   def authorize(_action, _, _profile), do: :error
 end
