@@ -31,11 +31,9 @@ defmodule TheLittleThinkersSpaceWeb.ProfileController do
 
   def create(conn, %{"profile" => profile_params}) do
     id = conn.assigns.current_user.id
-    role = conn.assigns.current_user.role
-    is_little_thinker? = role == "The Little Thinker"
 
     profile_params
-    |> Map.merge(%{"belongs_to_lt" => is_little_thinker?, "user_id" => id})
+    |> Map.merge(%{"user_id" => id})
     |> Accounts.create_profile()
     |> case do
       {:ok, profile} ->
