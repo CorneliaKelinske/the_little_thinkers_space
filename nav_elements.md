@@ -22,3 +22,7 @@ the buttons:
     <button class="btn-page"><%= link("Uploads", to: Routes.little_thinker_upload_path(@conn, :index, @little_thinker)) %></button>
   </div>
   ```
+
+
+  From lt show page
+  <button class="btn-page"><%= display_crew_or_lt_button(@current_user) %></button>
