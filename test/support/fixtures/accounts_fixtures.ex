@@ -126,6 +126,12 @@ defmodule TheLittleThinkersSpace.AccountsFixtures do
     %{profile: profile}
   end
 
+  def user_profile(%{user: user}) do
+    user_profile_attrs = Map.merge(@valid_profile_attrs, %{user_id: user.id})
+    {:ok, user_profile} = Accounts.create_profile(user_profile_attrs)
+    %{user_profile: user_profile}
+  end
+
   def lt_profile(%{little_thinker: little_thinker}) do
     lt_profile_attrs = Map.merge(@valid_profile_attrs, %{user_id: little_thinker.id})
     {:ok, lt_profile} = Accounts.create_profile(lt_profile_attrs)
