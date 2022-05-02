@@ -55,6 +55,12 @@ defmodule TheLittleThinkersSpace.Accounts.Profile do
 
   def authorize(_, %User{role: "Admin"}, _profile), do: :ok
 
+  # Note: I did not implement authorization for create, since a profile that is in the process of
+  # being created would not have user_id yet. This authorizes users to do things with their own profiles.
+  def authorize(action, %User{id: id}, %Profile{user_id: id})
+      when action in [:show, :edit, :update, :delete],
+      do: :ok
+
   # Authorizes the Little Thinker to see the profiles of their crew and of the little thinkers that they are following
   def authorize(
         action,
@@ -70,12 +76,6 @@ defmodule TheLittleThinkersSpace.Accounts.Profile do
       false -> :error
     end
   end
-
-  # Note: I did not implement authorization for create, since a profile that is in the process of
-  # being created would not have user_id yet. This authorizes users to do things with their own profiles.
-  def authorize(action, %User{id: id}, %Profile{user_id: id})
-      when action in [:show, :edit, :update, :delete],
-      do: :ok
 
   # Authorizes users to view profiles of little thinkers they are following
   def authorize(:show, %User{little_thinkers: little_thinkers}, %Profile{user_id: user_id}) do
