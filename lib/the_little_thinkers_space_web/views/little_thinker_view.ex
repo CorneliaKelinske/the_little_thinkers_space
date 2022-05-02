@@ -12,4 +12,13 @@ defmodule TheLittleThinkersSpaceWeb.LittleThinkerView do
         content_tag(:a, "Future home of #{little_thinker.first_name}'s profile")
     end
   end
+
+  def display_crew_or_lt_button(%{role: "The Little Thinker"}) do
+    # link("SHOW", to: "/profiles/" <> profile_id)
+    link("The Crew", to: "/crew")
+  end
+
+  def display_crew_or_lt_button(_user) do
+    link("Choose another Little Thinker", to: "/little_thinkers")
+  end
 end
