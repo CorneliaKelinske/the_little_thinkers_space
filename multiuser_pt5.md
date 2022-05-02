@@ -48,3 +48,5 @@ Figure out all the back links
 7. Make a nice little video
 
 8. Find a way to play video on the little_thinkers index page
+
+- remove obsolete functions such as list uploads
