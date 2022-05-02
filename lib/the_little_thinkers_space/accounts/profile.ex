@@ -10,7 +10,6 @@ defmodule TheLittleThinkersSpace.Accounts.Profile do
 
   schema "profiles" do
     field :animal, :string
-    field :belongs_to_lt, :boolean, default: false
     field :birthday, :date
     field :book, :string
     field :color, :string
@@ -41,8 +40,7 @@ defmodule TheLittleThinkersSpace.Accounts.Profile do
     :movie,
     :book,
     :future,
-    :joke,
-    :belongs_to_lt
+    :joke
   ]
 
   @cast_attrs [:user_id | @required_attrs]

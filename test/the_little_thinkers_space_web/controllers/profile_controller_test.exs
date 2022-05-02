@@ -7,7 +7,6 @@ defmodule TheLittleThinkersSpaceWeb.ProfileControllerTest do
 
   @create_attrs %{
     animal: "some animal",
-    belongs_to_lt: false,
     birthday: ~D[2021-10-18],
     book: "some book",
     color: "some color",
@@ -23,7 +22,6 @@ defmodule TheLittleThinkersSpaceWeb.ProfileControllerTest do
   }
   @update_attrs %{
     animal: "some updated animal",
-    belongs_to_lt: false,
     birthday: ~D[2021-10-19],
     book: "some updated book",
     color: "some updated color",
@@ -39,7 +37,6 @@ defmodule TheLittleThinkersSpaceWeb.ProfileControllerTest do
   }
   @invalid_attrs %{
     animal: nil,
-    belongs_to_lt: nil,
     birthday: nil,
     book: nil,
     color: nil,

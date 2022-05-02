@@ -531,7 +531,6 @@ defmodule TheLittleThinkersSpace.AccountsTest do
 
     @invalid_attrs %{
       animal: nil,
-      belongs_to_lt: nil,
       birthday: nil,
       book: nil,
       color: nil,
@@ -557,7 +556,6 @@ defmodule TheLittleThinkersSpace.AccountsTest do
     test "create_profile/1 with valid data creates a profile" do
       valid_attrs = %{
         animal: "some animal",
-        belongs_to_lt: true,
         birthday: ~D[2021-10-18],
         book: "some book",
         color: "some color",
@@ -574,7 +572,6 @@ defmodule TheLittleThinkersSpace.AccountsTest do
 
       assert {:ok, %Profile{} = profile} = Accounts.create_profile(valid_attrs)
       assert profile.animal == "some animal"
-      assert profile.belongs_to_lt == true
       assert profile.birthday == ~D[2021-10-18]
       assert profile.book == "some book"
       assert profile.color == "some color"
@@ -596,7 +593,6 @@ defmodule TheLittleThinkersSpace.AccountsTest do
     test "update_profile/2 with valid data updates the profile", %{profile: profile} do
       update_attrs = %{
         animal: "some updated animal",
-        belongs_to_lt: false,
         birthday: ~D[2021-10-19],
         book: "some updated book",
         color: "some updated color",
@@ -613,7 +609,6 @@ defmodule TheLittleThinkersSpace.AccountsTest do
 
       assert {:ok, %Profile{} = profile} = Accounts.update_profile(profile, update_attrs)
       assert profile.animal == "some updated animal"
-      assert profile.belongs_to_lt == false
       assert profile.birthday == ~D[2021-10-19]
       assert profile.book == "some updated book"
       assert profile.color == "some updated color"
