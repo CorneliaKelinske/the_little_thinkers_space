@@ -18,8 +18,7 @@ defmodule TheLittleThinkersSpace.Accounts.ProfileTest do
     movie: "something",
     book: "something",
     future: "something",
-    joke: "something",
-    belongs_to_lt: false
+    joke: "something"
   }
 
   describe "changeset/2" do

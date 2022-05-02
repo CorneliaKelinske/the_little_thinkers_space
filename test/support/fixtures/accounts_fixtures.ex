@@ -8,7 +8,6 @@ defmodule TheLittleThinkersSpace.AccountsFixtures do
 
   @valid_profile_attrs %{
     animal: "some animal",
-    belongs_to_lt: false,
     birthday: ~D[2021-10-18],
     book: "some book",
     color: "some color",
