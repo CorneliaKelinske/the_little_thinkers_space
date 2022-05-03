@@ -409,7 +409,7 @@ defmodule TheLittleThinkersSpace.Accounts do
   end
 
   def get_little_thinker_crew(user) do
-    Repo.preload(user, [:crews]) 
+    Repo.preload(user, [:crews])
   end
 
   # def get_little_thinker_crew(little_thinker_id) do

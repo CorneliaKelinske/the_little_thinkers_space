@@ -84,18 +84,18 @@ defmodule TheLittleThinkersSpace.AccountsFixtures do
     %{admin: admin}
   end
 
-  def with_crew(%{user: user}) do
-    {:ok, friend} = Accounts.register_user(valid_user_attributes())
+  def with_crew(%{little_thinker: little_thinker}) do
+    {:ok, friend} = Accounts.register_user(little_thinker_attributes())
 
     Accounts.connect_users(%{
-      little_thinker_id: user.id,
+      little_thinker_id: little_thinker.id,
       user_id: friend.id,
       type: "Friend"
     })
 
-    user = Repo.preload(user, [:crews])
+    little_thinker = Repo.preload(little_thinker, [:crews])
 
-    %{user: user}
+    %{little_thinker: little_thinker}
   end
 
   def with_little_thinker(%{user: user}) do

@@ -17,8 +17,7 @@ defmodule TheLittleThinkersSpaceWeb.CrewController do
         render(conn, "index.html", little_thinker: little_thinker, crews: user.crews)
 
       _ ->
-
-        %{crews: crews} = Accounts.get_little_thinker_crew(little_thinker) 
+        %{crews: crews} = Accounts.get_little_thinker_crew(little_thinker)
         render(conn, "index.html", little_thinker: little_thinker, crews: crews)
     end
   end

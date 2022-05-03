@@ -84,9 +84,6 @@ defmodule TheLittleThinkersSpaceWeb.Router do
 
     resources "/little_thinkers", LittleThinkerController do
       resources "/uploads", UploadController
-    end
-
-    resources "/little_thinkers", LittleThinkerController do
       resources "/crew", CrewController, only: [:index]
     end
   end
