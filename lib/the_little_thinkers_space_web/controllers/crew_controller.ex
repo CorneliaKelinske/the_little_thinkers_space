@@ -3,7 +3,7 @@ defmodule TheLittleThinkersSpaceWeb.CrewController do
   This controller handles the users with the role Crew in relation to The Little Thinker
   """
   use TheLittleThinkersSpaceWeb, :controller
-  alias TheLittleThinkersSpace.Accounts
+  alias TheLittleThinkersSpace.{Accounts, Accounts.Relationship}
 
   action_fallback TheLittleThinkersSpaceWeb.FallbackController
 
@@ -12,13 +12,15 @@ defmodule TheLittleThinkersSpaceWeb.CrewController do
     little_thinker_id = String.to_integer(little_thinker_id)
     little_thinker = Accounts.get_user!(little_thinker_id)
 
-    case user.id === little_thinker_id do
-      true ->
-        render(conn, "index.html", little_thinker: little_thinker, crews: user.crews)
+    with :ok <- Bodyguard.permit(Relationship, :index, user, little_thinker) do
+      case user.id === little_thinker_id do
+        true ->
+          render(conn, "index.html", little_thinker: little_thinker, crews: user.crews)
 
-      _ ->
-        %{crews: crews} = Accounts.get_little_thinker_crew(little_thinker)
-        render(conn, "index.html", little_thinker: little_thinker, crews: crews)
+        _ ->
+          %{crews: crews} = Accounts.get_little_thinker_crew(little_thinker)
+          render(conn, "index.html", little_thinker: little_thinker, crews: crews)
+      end
     end
   end
 end
