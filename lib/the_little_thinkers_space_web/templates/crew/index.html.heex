@@ -12,7 +12,7 @@
       </thead>
 
       <tbody class="divide-y divide-gray-300">
-        <%= for crew <- @user.crews do %>
+        <%= for crew <- @crews do %>
           <tr>
             <td class="text-left text-gray-900 p-2 font-semibold"><%= crew.first_name %></td>
             <td class="text-left text-gray-900 p-2"><%= crew.last_name %></td>

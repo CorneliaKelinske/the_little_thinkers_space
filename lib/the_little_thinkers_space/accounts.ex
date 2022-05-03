@@ -408,8 +408,15 @@ defmodule TheLittleThinkersSpace.Accounts do
     Repo.preload(user, [:crews, :little_thinkers])
   end
 
-  # def list_crew_for_little_thinker(%User{role: "admin"}) do
-  #   Repo.all(User)
+  def get_little_thinker_crew(user) do
+    Repo.preload(user, [:crews])
+  end
+
+  # def get_little_thinker_crew(little_thinker_id) do
+  #   query = from r in Relationshop, where: r.little_thinker_id == ^little_thinker_id, select: r.id
+
+  #   query
+  #   |>
   # end
 
   # def list_crew_for_little_thinker(%User{role: "the_little_thinker", id: id}) do
