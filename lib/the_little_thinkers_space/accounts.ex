@@ -412,6 +412,19 @@ defmodule TheLittleThinkersSpace.Accounts do
     Repo.preload(user, [:crews])
   end
 
+  def is_parent?(little_thinker_id, user_id) do
+    query =
+      from(r in Relationship,
+        where: r.little_thinker_id == ^little_thinker_id and r.user_id == ^user_id,
+        select: r.type
+      )
+
+    case Repo.one(query) do
+      "Parent" -> true
+      _ -> false
+    end
+  end
+
   # def get_little_thinker_crew(little_thinker_id) do
   #   query = from r in Relationshop, where: r.little_thinker_id == ^little_thinker_id, select: r.id
 
