@@ -1,0 +1,77 @@
+<body class="bg-colors bg-cover">
+  <h1 class="w-screen text-sky-900 font-bold text-center text-4xl p-4">Contact the Admin</h1>
+  <div class="w-screen flex flex-col justify-center px-6 lg:px-8">
+    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-3xl">
+      <div class="bg-orange-200 py-8 px-6 shadow-xl rounded-lg sm:px-10">
+        <.form let={f} for={@changeset} action={Routes.contact_path(@conn, :create)}>
+          <div>
+            <%= label(f, :name, class: "block text-gray-700 font-bold text-xl") %>
+            <div class="mt-1 pb-4">
+              <%= text_input(f, :name,
+                placeholder: "Your name",
+                class: "rounded w-full border-1 border-gray-300 text-gray-700 focus:outline-none focus:border-sky-900"
+              ) %>
+            </div>
+            <%= error_tag(f, :name) %>
+          </div>
+
+          <div>
+            <%= label(f, :email, class: "block text-gray-700 font-bold text-xl") %>
+            <div class="mt-1 pb-4">
+              <%= email_input(f, :from_email,
+                placeholder: "Your email",
+                class: "rounded w-full border-1 border-gray-300 text-gray-700 focus:outline-none focus:border-sky-900"
+              ) %>
+            </div>
+
+            <%= error_tag(f, :from_email) %>
+          </div>
+
+          <div>
+            <%= label(f, :subject, class: "block text-gray-700 font-bold text-xl") %>
+            <div class="mt-1 pb-4">
+              <%= text_input(f, :subject,
+                placeholder: "What is the subject of your message?",
+                class: "rounded w-full border-1 border-gray-300 text-gray-700 focus:outline-none focus:border-sky-900"
+              ) %>
+            </div>
+            <%= error_tag(f, :subject) %>
+          </div>
+
+          <div>
+            <%= label(f, :message, class: "block text-gray-700 font-bold text-xl") %>
+            <div class="mt-1 pb-8">
+              <%= textarea(f, :message,
+                placeholder: "Your message",
+                class: "rounded w-full border-1 border-gray-300 text-gray-700 focus:outline-none focus:border-sky-900"
+              ) %>
+            </div>
+            <%= error_tag(f, :message) %>
+          </div>
+
+          <div>
+            <%= label(f, :not_a_robot, class: "block text-gray-700 font-bold text-xl") %>
+            <div class="mt-1 pb-4">
+              <%= text_input(f, :not_a_robot,
+                placeholder: "Please enter the letters shown below?",
+                class: "rounded w-full border-1 border-gray-300 text-gray-700 focus:outline-none focus:border-sky-900"
+              ) %>
+            </div>
+          </div>
+
+          <%= text_input(f, :form_id, type: "text", hidden: true, value: @id) %>
+
+          <div>
+            <%= submit("Submit", class: "btn-page-mini text-orange-50") %>
+          </div>
+        </.form>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex px-28 pt-28 justify-between w-screen flex-wrap">
+    <div class="text-sky-900 text-lg font-semibold tracking-wide">
+      <%= link("Back", to: Routes.page_path(@conn, :index)) %>
+    </div>
+  </div>
+</body>
