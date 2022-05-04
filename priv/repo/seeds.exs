@@ -44,7 +44,7 @@ if Mix.env() !== :test do
     Accounts.connect_users(%{
       little_thinker_id: little_thinker.id,
       user_id: user.id,
-      type: "Friend"
+      type: "Parent"
     })
   end
 end
