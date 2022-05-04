@@ -17,7 +17,7 @@ defmodule TheLittleThinkersSpaceWeb.ContactControllerTest do
 
   test "new renders form", %{conn: conn} do
     conn = get(conn, Routes.contact_path(conn, :new))
-    assert html_response(conn, 200) =~ "Contact The Little Thinker's Adult"
+    assert html_response(conn, 200) =~ "Contact the Admin"
   end
 
   describe "create" do
@@ -38,7 +38,7 @@ defmodule TheLittleThinkersSpaceWeb.ContactControllerTest do
       id = ExRoboCop.create_form_id(captcha_text)
       content = Map.merge(@invalid_params, %{not_a_robot: captcha_text, form_id: id})
       conn = post(conn, Routes.contact_path(conn, :create), content: content)
-      assert html_response(conn, 200) =~ "Contact The Little Thinker's Adult"
+      assert html_response(conn, 200) =~ "Contact the Admin"
     end
 
     test "renders contact page again, if captcha answer entered is incorrect ", %{
@@ -49,7 +49,7 @@ defmodule TheLittleThinkersSpaceWeb.ContactControllerTest do
       content = Map.merge(@valid_params, %{not_a_robot: "some random text", form_id: id})
       conn = post(conn, Routes.contact_path(conn, :create), content: content)
 
-      assert html_response(conn, 200) =~ "Contact The Little Thinker's Adult"
+      assert html_response(conn, 200) =~ "Contact the Admin"
     end
   end
 end
