@@ -16,6 +16,8 @@ defmodule TheLittleThinkersSpaceWeb.LittleThinkerController do
   def show(conn, %{"id" => id}) do
     user = conn.assigns.current_user
     %User{} = little_thinker = Accounts.get_user(id)
+    relationship_type = Accounts.get_relationship_type(little_thinker.id, user.id)
+    conn = conn |> assign(:relationship_type, relationship_type)
 
     with :ok <- Bodyguard.permit(Relationship, :show, user, little_thinker) do
       render(conn, "show.html", little_thinker: little_thinker)

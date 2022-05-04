@@ -7,7 +7,7 @@ defmodule TheLittleThinkersSpace.Accounts.Relationship do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias TheLittleThinkersSpace.{Accounts, Accounts.User}
+  alias TheLittleThinkersSpace.Accounts.User
 
   @behaviour Bodyguard.Policy
 
@@ -33,7 +33,7 @@ defmodule TheLittleThinkersSpace.Accounts.Relationship do
 
   def authorize(_, %User{role: "Admin"}, _), do: :ok
 
-  # Authorizes a little_thinker in relation to their own show page but also with regard to their crew index
+  # Authorizes a little_thinker in relation to their own show page
   def authorize(_, %User{id: id}, %{id: id}), do: :ok
 
   # Authorizes a user to view the little thinker page of a linked little thinker
@@ -47,20 +47,11 @@ defmodule TheLittleThinkersSpace.Accounts.Relationship do
     end
   end
 
-  # Authorizes a parent to view the crew of the little thinker they are linked to
-  def authorize(:index, %User{little_thinkers: little_thinkers, id: user_id}, %{
-        id: little_thinker_id
-      }) do
-    little_thinkers = Enum.map(little_thinkers, & &1.id)
+  # Authorizes a little thinker in relation to their crew index page
+  def authorize(:index, %User{id: id}, {%{id: id}, nil}), do: :ok
 
-    with true <- Enum.member?(little_thinkers, little_thinker_id),
-         true <- Accounts.is_parent?(little_thinker_id, user_id) do
-      :ok
-    else
-      _ ->
-        :error
-    end
-  end
+  # Authorizes a parent to view the crew of the little thinker they are linked to
+  def authorize(:index, _user, {_little_thinker, "Parent"}), do: :ok
 
   def authorize(_action, _user, _), do: :error
 end
