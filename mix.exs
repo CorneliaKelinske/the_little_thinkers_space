@@ -80,6 +80,7 @@ defmodule TheLittleThinkersSpace.MixProject do
       {:ffmpex, "~> 0.9.0"},
       {:thumbnex, "~> 0.4.0"},
       {:ex_robo_cop, "~> 0.1.0"},
+
       # Tooling
       {:rexbug, ">= 1.0.0"},
       {:excoveralls, "~> 0.10", only: :test},
