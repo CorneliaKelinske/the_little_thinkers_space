@@ -4,17 +4,6 @@ defmodule TheLittleThinkersSpace.Email.EmailBuilder do
   """
   import Swoosh.Email
 
-  @request_attrs [
-    :from_email,
-    :subject,
-    :little_thinker_first_name,
-    :little_thinker_last_name,
-    :new_crew_first_name,
-    :new_crew_last_name,
-    :new_crew_email,
-    :message
-  ]
-
   def create_email(%{from_email: from_email, name: name, subject: subject, message: message}) do
     new()
     |> to({"Cornelia", "corneliakelinske@gmail.com"})
@@ -37,13 +26,17 @@ defmodule TheLittleThinkersSpace.Email.EmailBuilder do
     |> to({"Cornelia", "corneliakelinske@gmail.com"})
     |> from(from_email)
     |> subject("Add New Crew Member")
-    |> html_body("<p>Little Thinker:#{little_thinker_first_name} #{little_thinker_last_name}</p>
-      <p> Please add: #{new_crew_first_name} #{new_crew_last_name}</p>
-      <p> Their email address is #{new_crew_email}</p>
-      <p> #{message}")
-    |> text_body("Little Thinker:#{little_thinker_first_name} #{little_thinker_last_name}\n
-      Please add: #{new_crew_first_name} #{new_crew_last_name}\n
-      Their email address is #{new_crew_email}\n
-      #{message}\n")
+    |> html_body("""
+        <p>Little Thinker:#{little_thinker_first_name} #{little_thinker_last_name}</p>
+        <p> Please add: #{new_crew_first_name} #{new_crew_last_name}</p>
+        <p> Their email address is #{new_crew_email}</p>
+        <p> #{message}
+    """)
+    |> text_body("""
+    Little Thinker: #{little_thinker_first_name} #{little_thinker_last_name}
+    Please add: #{new_crew_first_name} #{new_crew_last_name}
+    Their email address is #{new_crew_email}
+    #{message}\n
+    """)
   end
 end

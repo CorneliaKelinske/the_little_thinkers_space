@@ -7,7 +7,7 @@ defmodule TheLittleThinkersSpaceWeb.AddCrewRequestController do
     render(conn, "new.html", changeset: AddCrewRequest.changeset(%{}))
   end
 
-  def create(conn, message_params) do
+  def create(conn, %{"add_crew_request_content" => message_params}) do
     changeset = AddCrewRequest.changeset(message_params)
 
     with {:ok, content} <- Ecto.Changeset.apply_action(changeset, :insert),
@@ -20,7 +20,7 @@ defmodule TheLittleThinkersSpaceWeb.AddCrewRequestController do
       # Failed changeset validation
       {:error, %Ecto.Changeset{} = changeset} ->
         conn
-        |> put_flash(:info, "Request not sent. Please try again!")
+        |> put_flash(:error, "Request not sent. Please try again!")
         |> render("new.html", changeset: changeset)
 
       # Anything else

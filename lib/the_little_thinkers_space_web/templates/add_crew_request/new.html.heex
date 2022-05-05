@@ -1,11 +1,11 @@
 <body class="bg-colors bg-cover">
-  <h1 class="w-screen text-sky-900 font-bold text-center text-4xl p-4">Contact the Admin</h1>
-   <p class="w-screen p-4 text-sky-900 text-center text-lg">Please fill in the form below.<br /> The Admin will add the new crew member.</p>
+  <h1 class="w-screen text-sky-900 font-bold text-center text-4xl p-4">Add a new crew member</h1>
+  <p class="w-screen p-4 text-sky-900 text-center text-lg">Please fill in the form below.<br /> The Admin will add the new crew member.</p>
   <div class="w-screen flex flex-col justify-center px-6 lg:px-8">
     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-3xl">
       <div class="bg-orange-200 py-8 px-6 shadow-xl rounded-lg sm:px-10">
         <.form let={f} for={@changeset} action={Routes.add_crew_request_path(@conn, :create)}>
-         <div>
+          <div>
             <%= label(f, :email, class: "block text-gray-700 font-bold text-xl") %>
             <div class="mt-1 pb-4">
               <%= email_input(f, :from_email,
@@ -13,11 +13,11 @@
                 class: "rounded w-full border-1 border-gray-300 text-gray-700 focus:outline-none focus:border-sky-900"
               ) %>
             </div>
-            <%= error_tag(f, :from_email) %>            
+            <%= error_tag(f, :from_email) %>
           </div>
 
           <div>
-            <%= label(f, :little_thinker_first_name, class: "block text-gray-700 font-bold text-xl") %>
+            <%= label(f, :first_name, class: "block text-gray-700 font-bold text-xl") %>
             <div class="mt-1 pb-4">
               <%= text_input(f, :little_thinker_first_name,
                 placeholder: "First name of the Little Thinker",
@@ -27,8 +27,8 @@
             <%= error_tag(f, :little_thinker_first_name) %>
           </div>
 
-             <div>
-            <%= label(f, :little_thinker_last_name, class: "block text-gray-700 font-bold text-xl") %>
+          <div>
+            <%= label(f, :last_name, class: "block text-gray-700 font-bold text-xl") %>
             <div class="mt-1 pb-4">
               <%= text_input(f, :little_thinker_last_name,
                 placeholder: "Last name of the Little Thinker",
@@ -38,8 +38,8 @@
             <%= error_tag(f, :little_thinker_last_name) %>
           </div>
 
-           <div>
-            <%= label(f, :new_crew_first_name, class: "block text-gray-700 font-bold text-xl") %>
+          <div>
+            <%= label(f, :first_name, class: "block text-gray-700 font-bold text-xl") %>
             <div class="mt-1 pb-4">
               <%= text_input(f, :new_crew_first_name,
                 placeholder: "First name of the new crew member",
@@ -49,8 +49,8 @@
             <%= error_tag(f, :new_crew_first_name) %>
           </div>
 
-           <div>
-            <%= label(f, :new_crew_last_name, class: "block text-gray-700 font-bold text-xl") %>
+          <div>
+            <%= label(f, :last_name, class: "block text-gray-700 font-bold text-xl") %>
             <div class="mt-1 pb-4">
               <%= text_input(f, :new_crew_last_name,
                 placeholder: "Last name of the new crew member",
@@ -61,15 +61,15 @@
           </div>
 
           <div>
-            <%= label(f, :new_crew_email, class: "block text-gray-700 font-bold text-xl") %>
+            <%= label(f, :email, class: "block text-gray-700 font-bold text-xl") %>
             <div class="mt-1 pb-4">
               <%= email_input(f, :new_crew_email,
                 placeholder: "Email address of the new crew member",
                 class: "rounded w-full border-1 border-gray-300 text-gray-700 focus:outline-none focus:border-sky-900"
               ) %>
             </div>
-            <%= error_tag(f, :new_crew_email) %>            
-          </div>        
+            <%= error_tag(f, :new_crew_email) %>
+          </div>
 
           <div>
             <%= label(f, :message, class: "block text-gray-700 font-bold text-xl") %>
@@ -81,7 +81,9 @@
             </div>
             <%= error_tag(f, :message) %>
           </div>
-         
+          <div>
+            <%= submit("Submit", class: "btn-page-mini text-orange-50") %>
+          </div>
         </.form>
       </div>
     </div>

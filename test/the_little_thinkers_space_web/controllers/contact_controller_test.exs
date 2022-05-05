@@ -21,7 +21,7 @@ defmodule TheLittleThinkersSpaceWeb.ContactControllerTest do
   end
 
   describe "create" do
-    test "delivers email and redirects to index when when valid params are provided", %{
+    test "delivers email and redirects to index when valid params are provided", %{
       conn: conn
     } do
       {captcha_text, _captcha_image} = ExRoboCop.create_captcha()
