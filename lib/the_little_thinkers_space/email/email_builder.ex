@@ -39,4 +39,28 @@ defmodule TheLittleThinkersSpace.Email.EmailBuilder do
     #{message}\n
     """)
   end
+
+  def create_remove_crew_request(%{
+        from_email: from_email,
+        little_thinker_first_name: little_thinker_first_name,
+        little_thinker_last_name: little_thinker_last_name,
+        remove_crew_first_name: remove_crew_first_name,
+        remove_crew_last_name: remove_crew_last_name,
+        message: message
+      }) do
+    new()
+    |> to({"Cornelia", "corneliakelinske@gmail.com"})
+    |> from(from_email)
+    |> subject("Remove Crew Member")
+    |> html_body("""
+        <p>Little Thinker:#{little_thinker_first_name} #{little_thinker_last_name}</p>
+        <p> Please remove: #{remove_crew_first_name} #{remove_crew_last_name}</p>
+        <p> #{message}
+    """)
+    |> text_body("""
+    Little Thinker: #{little_thinker_first_name} #{little_thinker_last_name}
+    Please remove: #{remove_crew_first_name} #{remove_crew_last_name}
+    #{message}\n
+    """)
+  end
 end
