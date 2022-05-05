@@ -81,6 +81,8 @@ defmodule TheLittleThinkersSpaceWeb.Router do
     get "/home", PageController, :home
     resources "/users/admin", UserController
     resources "/profiles", ProfileController
+    get "/add_crew_request", AddCrewRequestController, :new
+    post "/add_crew_request", AddCrewRequestController, :create
 
     resources "/little_thinkers", LittleThinkerController do
       resources "/uploads", UploadController
