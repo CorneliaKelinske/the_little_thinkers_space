@@ -83,6 +83,8 @@ defmodule TheLittleThinkersSpaceWeb.Router do
     resources "/profiles", ProfileController
     get "/add_crew_request", AddCrewRequestController, :new
     post "/add_crew_request", AddCrewRequestController, :create
+    get "/remove_crew_request", RemoveCrewRequestController, :new
+    post "/remove_crew_request", RemoveCrewRequestController, :create
 
     resources "/little_thinkers", LittleThinkerController do
       resources "/uploads", UploadController
