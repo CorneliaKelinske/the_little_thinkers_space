@@ -58,7 +58,7 @@ defmodule TheLittleThinkersSpaceWeb.ProfileControllerTest do
         |> log_in_user(admin)
         |> get(Routes.profile_path(conn, :index))
 
-      assert html_response(conn, 200) =~ "The Crew"
+      assert html_response(conn, 200) =~ "Crew Profiles"
     end
 
     test "redirects to login when user is not logged in", %{conn: conn} do
