@@ -5,5 +5,5 @@
 <%= render("form.html", Map.put(assigns, :action, Routes.profile_path(@conn, :create))) %>
 
 <div class="flex px-28 justify-between w-screen flex-wrap">
-  <div class="text-sky-900 text-lg font-semibold tracking-wide"><%= link("Back", to: Routes.page_path(@conn, :home)) %></div>
+  <div class="text-sky-900 text-lg font-semibold tracking-wide"><%= link("Home", to: Routes.page_path(@conn, :home)) %></div>
 </div>
