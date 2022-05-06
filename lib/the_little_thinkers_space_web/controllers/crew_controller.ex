@@ -35,7 +35,8 @@ defmodule TheLittleThinkersSpaceWeb.CrewController do
           render(conn, "index.html",
             little_thinker: little_thinker,
             crews: crews,
-            relationship_type: relationship_type
+            relationship_type: relationship_type,
+            current_user: user
           )
       end
     end

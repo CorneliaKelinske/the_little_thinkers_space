@@ -16,7 +16,11 @@
           <tr>
             <td class="text-left text-gray-900 p-2 font-semibold"><%= crew.first_name %></td>
             <td class="text-left text-gray-900 p-2"><%= crew.last_name %></td>
-            <td class="text-gray-600 text-xs uppercase font-semibold tracking-wide p-2"><%= display_profile_link(crew.id) %></td>
+            <%= if @current_user.role in ["The Little Thinker", "Admin"] do %>
+              <td class="text-gray-600 text-xs uppercase font-semibold tracking-wide p-2"><%= display_profile_link(crew.id) %></td>
+            <% else %>
+              <td></td>
+            <% end %>
           </tr>
         <% end %>
       </tbody>
