@@ -1,5 +1,5 @@
 <body class="bg-colors bg-cover">
-  <h1 class="w-screen text-sky-900 font-bold text-center text-4xl p-4 mt-8">Ulrik's uploads</h1>
+  <h1 class="w-screen text-sky-900 font-bold text-center text-4xl p-4 mt-8"><%= @little_thinker.first_name %>'s uploads</h1>
 
   <div class="flex flex-wrap sm:justify-around xs:justify-center w-screen">
     <%= for upload <- @uploads do %>
