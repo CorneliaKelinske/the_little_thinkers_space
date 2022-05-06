@@ -3,7 +3,7 @@
     <%= gettext("Hello %{name}!", name: @current_user.first_name) %>
   </h1>
 
-  <p class="w-screen p-4 text-sky-900 text-center text-lg">Welcome to the Little Thinker's Space.<br /> What do you want to do?!</p>
+  <p class="w-screen p-4 text-sky-900 text-center text-lg mt-8">Welcome to the Little Thinker's Space.<br /> What do you want to do?!</p>
   <div class="mt-4 mb-48 flex justify-center w-screen">
     <%= if @current_user.role == "The Little Thinker" do %>
       <button class="btn-page"><%= link("Enter your own space", to: Routes.little_thinker_path(@conn, :show, @current_user)) %></button>

@@ -1,5 +1,5 @@
 <body class="bg-colors bg-cover">
-  <h1 class="w-screen text-sky-900 font-bold text-center text-4xl p-4">Edit Upload</h1>
+  <h1 class="w-screen text-sky-900 font-bold text-center text-4xl p-4 mt-8">Edit Upload</h1>
 
   <%= form_for @changeset, Routes.little_thinker_upload_path(@conn, :update, @little_thinker, @upload), [multipart: true], fn f -> %>
     <div class="w-screen flex justify-center p-8">
