@@ -103,7 +103,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
         |> log_in_user(user)
         |> get(Routes.little_thinker_upload_path(conn, :index, little_thinker))
 
-      assert html_response(conn, 200) =~ "Ulrik's uploads"
+      assert html_response(conn, 200) =~ "#{little_thinker.first_name}'s uploads"
     end
 
     test "lists all uploads to the little thinker who owns the respective uploads", %{
@@ -115,7 +115,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadControllerTest do
         |> log_in_user(little_thinker)
         |> get(Routes.little_thinker_upload_path(conn, :index, little_thinker))
 
-      assert html_response(conn, 200) =~ "Ulrik's uploads"
+      assert html_response(conn, 200) =~ "#{little_thinker.first_name}'s uploads"
     end
   end
 
