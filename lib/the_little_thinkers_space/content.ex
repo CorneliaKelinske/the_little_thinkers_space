@@ -7,14 +7,55 @@ defmodule TheLittleThinkersSpace.Content do
 
   require Logger
 
-  alias TheLittleThinkersSpace.{
-    Accounts,
-    Content.Upload,
+  alias TheLittleThinkersSpace.{Accounts, Repo}
+
+  alias TheLittleThinkersSpace.Content.{
     DataPath,
+    FileCompressor,
+    FileSizeChecker,
     ImageCacher,
-    Repo,
+    Thumbnailer,
+    Upload,
     UploadPathsHelper
   }
+
+  def process_upload(content_type, filename, path, upload_params, user) do
+    with :ok <- FileSizeChecker.small_enough?(path),
+         {:ok, compressed_path} <- FileCompressor.compress_file(path, content_type, filename),
+         {:ok, storage_path} <- store_file(filename, compressed_path, user.id),
+         {:ok, thumbnail_path} <- Thumbnailer.create_thumbnail(content_type, storage_path),
+         {:ok, show_path} <- UploadPathsHelper.show_path(storage_path),
+         {:ok, thumbnail_show_path} <- UploadPathsHelper.thumbnail_show_path(thumbnail_path),
+         {:ok, attrs} <- parse_upload_params(upload_params, show_path, thumbnail_show_path) do
+      create_upload(user, attrs)
+    end
+  end
+
+  defp parse_upload_params(
+         %{
+           "title" => title,
+           "description" => description,
+           "orientation" => orientation,
+           "upload" => %Plug.Upload{content_type: content_type}
+         },
+         show_path,
+         thumbnail_show_path
+       ) do
+    attrs = %{
+      "path" => show_path,
+      "thumbnail" => thumbnail_show_path,
+      "title" => title,
+      "description" => description,
+      "orientation" => orientation,
+      "file_type" => content_type
+    }
+
+    {:ok, attrs}
+  end
+
+  defp parse_upload_params(_, _, _) do
+    {:error, :file_not_uploaded}
+  end
 
   @doc """
   Returns the list of uploads.
@@ -64,7 +105,7 @@ defmodule TheLittleThinkersSpace.Content do
 
   def get_upload(id), do: Repo.get(Upload, id)
 
-  def store_file(%Plug.Upload{filename: filename, path: path}, user_id) do
+  def store_file(filename, path, user_id) do
     maybe_create_user_directory(user_id)
     storage_path = "#{DataPath.set_data_path()}/#{user_id}/#{filename}"
 

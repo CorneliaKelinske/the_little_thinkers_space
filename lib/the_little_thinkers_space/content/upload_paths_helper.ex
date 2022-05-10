@@ -1,4 +1,4 @@
-defmodule TheLittleThinkersSpace.UploadPathsHelper do
+defmodule TheLittleThinkersSpace.Content.UploadPathsHelper do
   @moduledoc """
   Based on the data path set in the config files, this module creates the path
   required by Plug.Static to render the upload in the template as well as the

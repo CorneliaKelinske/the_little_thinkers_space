@@ -1,4 +1,4 @@
-defmodule TheLittleThinkersSpace.FileCompressor do
+defmodule TheLittleThinkersSpace.Content.FileCompressor do
   @moduledoc """
   Compresses files uploaded by the user prior to their insertion into the database
   """
@@ -9,41 +9,39 @@ defmodule TheLittleThinkersSpace.FileCompressor do
 
   alias FFmpex
   alias Mogrify
-  alias TheLittleThinkersSpace.{Content.Upload, FileSizeChecker}
+  alias TheLittleThinkersSpace.Content.{Upload, FileSizeChecker}
 
   @valid_image_types Upload.valid_image_types()
   @valid_video_types Upload.valid_video_types()
 
-  def compress_file(%Plug.Upload{path: path, content_type: content_type} = plug)
+  def compress_file(path, content_type, _filename)
       when content_type in @valid_image_types do
-    %{path: path} = compress_image(path)
-    {:ok, %Plug.Upload{plug | path: path}}
+    %{path: compressed_path} = compress_image(path)
+    {:ok, compressed_path}
   end
 
-  def compress_file(
-        %Plug.Upload{path: path, content_type: content_type, filename: filename} = plug
-      )
+  def compress_file(path, content_type, filename)
       when content_type in @valid_video_types do
     renamed_path = "#{path}#{filename}"
-    output_path = "#{path}_output#{filename}"
+    compressed_path = "#{path}_output#{filename}"
 
     with :ok <- File.rename(path, renamed_path),
-         {:ok, _output} <- compress_video(renamed_path, output_path),
-         {:ok, output_file_size} <- FileSizeChecker.file_size(output_path),
+         {:ok, _output} <- compress_video(renamed_path, compressed_path),
+         {:ok, output_file_size} <- FileSizeChecker.file_size(compressed_path),
          {:ok, renamed_file_size} <- FileSizeChecker.file_size(renamed_path),
          true <- output_file_size < renamed_file_size do
-      {:ok, %Plug.Upload{plug | path: output_path}}
+      {:ok, compressed_path}
     else
       {:error, error} ->
         Logger.error("#{inspect(__MODULE__)}: Could not convert video; #{inspect(error)}")
         {:error, :file_not_compressed}
 
       false ->
-        {:ok, %Plug.Upload{plug | path: renamed_path}}
+        {:ok, renamed_path}
     end
   end
 
-  def compress_file(_) do
+  def compress_file(_, _, _) do
     {:error, :invalid_file_type}
   end
 

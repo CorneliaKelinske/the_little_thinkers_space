@@ -1,15 +1,14 @@
-defmodule TheLittleThinkersSpace.Thumbnailer do
+defmodule TheLittleThinkersSpace.Content.Thumbnailer do
   @moduledoc """
   This module creates a thumbnail image from the uploaded videos
   """
 
-  alias TheLittleThinkersSpace.{Content.Upload, UploadPathsHelper}
+  alias TheLittleThinkersSpace.Content.{Upload, UploadPathsHelper}
 
   @valid_image_types Upload.valid_image_types()
   @valid_video_types Upload.valid_video_types()
 
-  def create_thumbnail(%Plug.Upload{content_type: content_type}, path)
-      when content_type in @valid_video_types do
+  def create_thumbnail(content_type, path) when content_type in @valid_video_types do
     case UploadPathsHelper.thumbnail_path(path) do
       {:ok, thumbnail_path} ->
         Thumbnex.create_thumbnail(
@@ -26,8 +25,7 @@ defmodule TheLittleThinkersSpace.Thumbnailer do
     end
   end
 
-  def create_thumbnail(%Plug.Upload{content_type: content_type}, _path)
-      when content_type in @valid_image_types do
+  def create_thumbnail(content_type, _path) when content_type in @valid_image_types do
     {:ok, nil}
   end
 end
