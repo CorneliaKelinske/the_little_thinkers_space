@@ -9,7 +9,7 @@ defmodule TheLittleThinkersSpace.Content.FileCompressor do
 
   alias FFmpex
   alias Mogrify
-  alias TheLittleThinkersSpace.Content.{Upload, FileSizeChecker}
+  alias TheLittleThinkersSpace.Content.{FileSizeChecker, Upload}
 
   @valid_image_types Upload.valid_image_types()
   @valid_video_types Upload.valid_video_types()

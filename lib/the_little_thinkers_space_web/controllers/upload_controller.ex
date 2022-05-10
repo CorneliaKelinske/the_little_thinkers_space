@@ -29,7 +29,9 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
   end
 
   def create(conn, %{
-        "upload" => %{"upload" => %Plug.Upload{content_type: content_type, filename: filename, path: path}} = upload_params,
+        "upload" =>
+          %{"upload" => %Plug.Upload{content_type: content_type, filename: filename, path: path}} =
+            upload_params,
         "little_thinker_id" => little_thinker_id
       }) do
     user = conn.assigns.current_user
@@ -37,7 +39,8 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     little_thinker = Accounts.get_user!(little_thinker_id)
 
     with :ok <- Bodyguard.permit(Upload, :create, user, {upload_params, little_thinker_id}),
-         {:ok, upload} <- Content.process_upload(content_type, filename, path, upload_params, user) do
+         {:ok, upload} <-
+           Content.process_upload(content_type, filename, path, upload_params, user) do
       conn
       |> put_flash(:info, "File uploaded successfully.")
       |> redirect(to: Routes.little_thinker_upload_path(conn, :show, little_thinker, upload))
