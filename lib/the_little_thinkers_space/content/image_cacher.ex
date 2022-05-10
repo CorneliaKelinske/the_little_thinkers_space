@@ -1,4 +1,4 @@
-defmodule TheLittleThinkersSpace.ImageCacher do
+defmodule TheLittleThinkersSpace.Content.ImageCacher do
   @moduledoc """
   Checks if upload can be retrieved from the cache and, if not,
   inserts upload into the cache if it is an image file. Videos are not

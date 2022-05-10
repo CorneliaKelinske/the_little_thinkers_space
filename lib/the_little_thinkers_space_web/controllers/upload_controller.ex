@@ -1,15 +1,7 @@
 defmodule TheLittleThinkersSpaceWeb.UploadController do
   use TheLittleThinkersSpaceWeb, :controller
 
-  alias TheLittleThinkersSpace.{
-    Accounts,
-    Content,
-    Content.Upload,
-    FileCompressor,
-    FileSizeChecker,
-    Thumbnailer,
-    UploadPathsHelper
-  }
+  alias TheLittleThinkersSpace.{Accounts, Content, Content.Upload}
 
   action_fallback TheLittleThinkersSpaceWeb.FallbackController
 
@@ -37,7 +29,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
   end
 
   def create(conn, %{
-        "upload" => %{"upload" => upload_plug} = upload_params,
+        "upload" => %{"upload" => %Plug.Upload{content_type: content_type, filename: filename, path: path}} = upload_params,
         "little_thinker_id" => little_thinker_id
       }) do
     user = conn.assigns.current_user
@@ -45,14 +37,7 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     little_thinker = Accounts.get_user!(little_thinker_id)
 
     with :ok <- Bodyguard.permit(Upload, :create, user, {upload_params, little_thinker_id}),
-         {:ok, upload_plug} <- FileSizeChecker.small_enough?(upload_plug),
-         {:ok, upload_plug} <- FileCompressor.compress_file(upload_plug),
-         {:ok, storage_path} <- Content.store_file(upload_plug, user.id),
-         {:ok, thumbnail_path} <- Thumbnailer.create_thumbnail(upload_plug, storage_path),
-         {:ok, show_path} <- UploadPathsHelper.show_path(storage_path),
-         {:ok, thumbnail_show_path} <- UploadPathsHelper.thumbnail_show_path(thumbnail_path),
-         {:ok, attrs} <- parse_upload_params(upload_params, show_path, thumbnail_show_path),
-         {:ok, upload} <- Content.create_upload(user, attrs) do
+         {:ok, upload} <- Content.process_upload(content_type, filename, path, upload_params, user) do
       conn
       |> put_flash(:info, "File uploaded successfully.")
       |> redirect(to: Routes.little_thinker_upload_path(conn, :show, little_thinker, upload))
@@ -208,31 +193,5 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
         |> put_flash(:error, "Unable to delete file!")
         |> redirect(to: Routes.little_thinker_upload_path(conn, :index, little_thinker))
     end
-  end
-
-  defp parse_upload_params(
-         %{
-           "title" => title,
-           "description" => description,
-           "orientation" => orientation,
-           "upload" => %Plug.Upload{content_type: content_type}
-         },
-         show_path,
-         thumbnail_show_path
-       ) do
-    attrs = %{
-      "path" => show_path,
-      "thumbnail" => thumbnail_show_path,
-      "title" => title,
-      "description" => description,
-      "orientation" => orientation,
-      "file_type" => content_type
-    }
-
-    {:ok, attrs}
-  end
-
-  defp parse_upload_params(_, _, _) do
-    {:error, :file_not_uploaded}
   end
 end

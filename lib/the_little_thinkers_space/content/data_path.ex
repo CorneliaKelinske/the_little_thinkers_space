@@ -1,4 +1,4 @@
-defmodule TheLittleThinkersSpace.DataPath do
+defmodule TheLittleThinkersSpace.Content.DataPath do
   @moduledoc """
   This module gets the data path from the corresponding config file.
   """
