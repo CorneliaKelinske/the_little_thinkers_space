@@ -28,21 +28,14 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
     end
   end
 
-  def create(conn, %{
-        "upload" =>
-          %{"upload" => %Plug.Upload{content_type: content_type, filename: filename, path: path}} =
-            upload_params,
-        "little_thinker_id" => little_thinker_id
-      }) do
+  def create(conn, %{"upload" => upload_params, "little_thinker_id" => little_thinker_id}) do
     user = conn.assigns.current_user
     little_thinker_id = String.to_integer(little_thinker_id)
     little_thinker = Accounts.get_user!(little_thinker_id)
 
     with :ok <- Bodyguard.permit(Upload, :create, user, {upload_params, little_thinker_id}),
-         {:ok, {show_path, thumbnail_show_path}} <-
-           Content.process_upload(content_type, filename, path, user),
-         {:ok, attrs} <- parse_upload_params(upload_params, show_path, thumbnail_show_path),
-         {:ok, upload} <- Content.create_upload(user, attrs) do
+         {:ok, attrs} <- parse_upload_params(upload_params, user),
+         {:ok, upload} <- Content.process_upload(attrs) do
       conn
       |> put_flash(:info, "File uploaded successfully.")
       |> redirect(to: Routes.little_thinker_upload_path(conn, :show, little_thinker, upload))
@@ -205,24 +198,23 @@ defmodule TheLittleThinkersSpaceWeb.UploadController do
            "title" => title,
            "description" => description,
            "orientation" => orientation,
-           "upload" => %Plug.Upload{content_type: content_type}
+           "upload" => %Plug.Upload{content_type: content_type, filename: filename, path: path}
          },
-         show_path,
-         thumbnail_show_path
+         user
        ) do
-    attrs = %{
-      "path" => show_path,
-      "thumbnail" => thumbnail_show_path,
-      "title" => title,
-      "description" => description,
-      "orientation" => orientation,
-      "file_type" => content_type
-    }
-
-    {:ok, attrs}
+    {:ok,
+     %{
+       content_type: content_type,
+       title: title,
+       description: description,
+       orientation: orientation,
+       user: user,
+       filename: filename,
+       path: path
+     }}
   end
 
-  defp parse_upload_params(_, _, _) do
+  defp parse_upload_params(_, _) do
     {:error, :file_not_uploaded}
   end
 end
