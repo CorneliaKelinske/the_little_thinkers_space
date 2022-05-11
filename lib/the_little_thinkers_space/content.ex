@@ -19,14 +19,18 @@ defmodule TheLittleThinkersSpace.Content do
     UploadPathsHelper
   }
 
-  def process_upload(content_type, filename, path, user) do
+  def process_upload(
+        %{content_type: content_type, user: user, filename: filename, path: path} = attrs
+      ) do
     with :ok <- FileSizeChecker.small_enough?(path),
          {:ok, compressed_path} <- FileCompressor.compress_file(path, content_type, filename),
          {:ok, storage_path} <- store_file(filename, compressed_path, user.id),
          {:ok, thumbnail_path} <- Thumbnailer.create_thumbnail(content_type, storage_path),
          {:ok, show_path} <- UploadPathsHelper.show_path(storage_path),
          {:ok, thumbnail_show_path} <- UploadPathsHelper.thumbnail_show_path(thumbnail_path) do
-      {:ok, {show_path, thumbnail_show_path}}
+      attrs
+      |> Map.merge(%{thumbnail: thumbnail_show_path, path: show_path, file_type: content_type})
+      |> then(&create_upload(user, &1))
     end
   end
 
