@@ -27,9 +27,7 @@
         <%= password_input(f, :current_password, required: true, name: "current_password", id: "current_password_for_email", class: "w-full rounded pl-2 mt-2 mb-8 bg-orange-50 focus:outline-none focus:ring") %>
         <%= error_tag(f, :current_password) %>
 
-        <div class="btn-page-mini mb-8">
-          <%= submit("Change email") %>
-        </div>
+        <%= submit("Change email", class: "btn-page-mini") %>
       </.form>
 
       <h3 class="col-start-1 col-span-2 md:col-start-3 md:row-start-3 text-lg font-semibold text-gray-800 tracking-wide">
@@ -61,9 +59,7 @@
         <%= password_input(f, :current_password, required: true, name: "current_password", id: "current_password_for_password", class: "w-full rounded pl-2 mt-2 mb-8 bg-orange-50 focus:outline-none focus:ring") %>
         <%= error_tag(f, :current_password) %>
 
-        <div class="btn-page-mini">
-          <%= submit("Change password") %>
-        </div>
+        <%= submit("Change password", class: "btn-page-mini") %>
       </.form>
     </section>
   </container>
