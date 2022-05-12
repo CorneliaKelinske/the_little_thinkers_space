@@ -1,10 +1,10 @@
 <body class="bg-colors bg-cover">
   <h1 class="w-screen text-sky-900 font-bold text-center text-4xl p-4 mt-8">Welcome to <%= @little_thinker.first_name %>'s Space!</h1>
   <div class="mt-4 mb-48 flex justify-center w-screen">
-    <button class="btn-page"><%= link("Uploads", to: Routes.little_thinker_upload_path(@conn, :index, @little_thinker)) %></button>
-    <button class="btn-page"><%= display_profile_link(@little_thinker) %></button>
+    <%= link("Uploads", to: Routes.little_thinker_upload_path(@conn, :index, @little_thinker), class: "btn-index") %>
+    <%= display_profile_link(@little_thinker) %>
     <%= if @current_user.role in ["The Little Thinker", "Admin"] or @relationship_type == "Parent" do %>
-      <button class="btn-page"><%= link("The Crew", to: Routes.little_thinker_crew_path(@conn, :index, @little_thinker)) %></button>
+      <%= link("The Crew", to: Routes.little_thinker_crew_path(@conn, :index, @little_thinker), class: "btn-index") %>
     <% else %>
     <% end %>
   </div>

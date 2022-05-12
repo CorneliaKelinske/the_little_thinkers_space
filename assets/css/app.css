@@ -5,8 +5,12 @@
 /* This file is for your main application CSS */
 @layer components {
   .btn-page {  
-   @apply inline-block w-32 text-center text-orange-50 bg-sky-900 bg-opacity-80 hover:bg-sky-700 px-5 py-3 mx-4 rounded-lg shadow-xl;
+   @apply inline-flex items-center text-center w-32 text-orange-50 bg-sky-900 bg-opacity-80 hover:bg-sky-700 px-5 py-3 mx-4 rounded-lg shadow-xl;
   }
+
+  .btn-index {  
+    @apply inline-block text-center w-32 text-orange-50 bg-sky-900 bg-opacity-80 hover:bg-sky-700 px-5 py-3 mx-4 rounded-lg shadow-xl;
+   }
 
   .btn-nav {
    @apply inline-block w-32 text-center bg-sky-200 hover:bg-sky-300 px-5 py-3 xs:m-2 sm:m-4 rounded-lg shadow-xl;

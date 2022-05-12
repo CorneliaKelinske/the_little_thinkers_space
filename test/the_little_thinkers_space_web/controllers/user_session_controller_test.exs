@@ -10,7 +10,7 @@ defmodule TheLittleThinkersSpaceWeb.UserSessionControllerTest do
       conn = get(conn, Routes.user_session_path(conn, :new))
       response = html_response(conn, 200)
       assert response =~ "Log in"
-      assert response =~ "Forgot your password?</a>"
+      assert response =~ "Forgot your password?"
     end
 
     test "redirects if already logged in", %{conn: conn, user: user} do
