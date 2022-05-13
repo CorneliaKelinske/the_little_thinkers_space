@@ -7,5 +7,4 @@
 
 A fun little app built for my son. Here is what it looks like:
 
-[![Watch the video](https://img.youtube.com/JHS-o0Ycy5A)](https://youtube.com/watch?/JHS-o0Ycy5A)
-
+[![Watch the video](https://img.youtube.com/vi/JHS-o0Ycy5A/0.jpg)](http://youtube.com/watch?v=JHS-o0Ycy5A)
