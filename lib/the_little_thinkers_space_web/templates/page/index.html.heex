@@ -3,10 +3,14 @@
     <%= gettext("Welcome to %{name}!", name: "The Little Thinker's Space") %>
   </h1>
 
-  <p class="w-screen p-4 text-sky-900 text-center text-lg">A safe space for your child to upload their content.<br /> Please click on the Contact button below if you have any questions or would like to create an account.</p>
+  <p class="w-screen p-4 text-sky-900 text-center text-lg">A safe space for your child to upload their content.<br /> Please click on the Contact button below if you have any questions.</p>
 
   <div class="mt-4 flex justify-center w-screen">
     <%= link("Log in", to: Routes.user_session_path(@conn, :new), class: "btn-index") %>
     <%= link("Contact", to: Routes.contact_path(@conn, :new), class: "btn-index") %>
+  </div>
+
+  <div class="mt-4 flex justify-center w-screen mt-28 px-2">
+    <iframe class="rounded-lg align-center" width="420" height="315" src="https://youtube.com/embed/JHS-o0Ycy5A"></iframe>
   </div>
 </body>
