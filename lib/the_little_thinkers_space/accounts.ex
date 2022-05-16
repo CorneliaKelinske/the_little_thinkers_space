@@ -23,42 +23,14 @@ defmodule TheLittleThinkersSpace.Accounts do
     Repo.get_by(User, email: email)
   end
 
-  @doc """
-  Gets a user by email and password.
-
-  ## Examples
-
-      iex> get_user_by_email_and_password("foo@example.com", "correct_password")
-      %User{}
-
-      iex> get_user_by_email_and_password("foo@example.com", "invalid_password")
-      nil
-
-  """
   def get_user_by_email_and_password(email, password)
       when is_binary(email) and is_binary(password) do
     user = Repo.get_by(User, email: email)
     if User.valid_password?(user, password), do: user
   end
 
-  @doc """
-  Gets a single user.
-
-  Raises `Ecto.NoResultsError` if the User does not exist.
-
-  ## Examples
-
-      iex> get_user!(123)
-      %User{}
-
-      iex> get_user!(456)
-      ** (Ecto.NoResultsError)
-
-  """
   def get_user!(id), do: Repo.get!(User, id)
   def get_user(id), do: Repo.get(User, id)
-
-  def get_lt, do: Repo.get_by(User, role: "The Little Thinker")
 
   ## User registration
 
@@ -421,19 +393,4 @@ defmodule TheLittleThinkersSpace.Accounts do
 
     Repo.one(query)
   end
-
-  # def get_little_thinker_crew(little_thinker_id) do
-  #   query = from r in Relationshop, where: r.little_thinker_id == ^little_thinker_id, select: r.id
-
-  #   query
-  #   |>
-  # end
-
-  # def list_crew_for_little_thinker(%User{role: "the_little_thinker", id: id}) do
-  #   Repo.all(from(...))
-  # end
-
-  # def link_crew(%User{id: little_thinker_id}, %User{id: crew_id}) do
-  #   Repo.insert(LittleThinkerCrew, %{little_thinker_id: little_thinker_id, crew_id: crew_id})
-  # end
 end
