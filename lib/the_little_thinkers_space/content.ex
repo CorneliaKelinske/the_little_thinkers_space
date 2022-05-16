@@ -34,23 +34,6 @@ defmodule TheLittleThinkersSpace.Content do
     end
   end
 
-  @doc """
-  Returns the list of uploads.
-
-  ## Examples
-
-      iex> list_uploads()
-      [%Upload{}, ...]
-
-  """
-  def list_uploads do
-    from(u in Upload, select: u.id)
-    |> Repo.all()
-    |> Enum.reduce({[], []}, &ImageCacher.reduce_upload_ids/2)
-    |> process_uncached_ids()
-    |> Enum.sort(&(&1.id > &2.id))
-  end
-
   def list_little_thinker_uploads(little_thinker_id) do
     query = from u in Upload, where: u.user_id == ^little_thinker_id, select: u.id
 

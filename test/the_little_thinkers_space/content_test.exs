@@ -32,8 +32,14 @@ defmodule TheLittleThinkersSpace.ContentTest do
 
     setup [:user, :little_thinker, :upload]
 
-    test "list_uploads/0 returns all uploads", %{upload: upload} do
-      assert Enum.map(Content.list_uploads(), &Map.put(&1, :user, nil)) == [
+    test "list_little_thinker_uploads/1 returns all uploads of a given little thinker", %{
+      upload: upload,
+      little_thinker: little_thinker
+    } do
+      assert Enum.map(
+               Content.list_little_thinker_uploads(little_thinker.id),
+               &Map.put(&1, :user, nil)
+             ) == [
                Map.put(upload, :user, nil)
              ]
     end
