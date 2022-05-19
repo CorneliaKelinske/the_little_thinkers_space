@@ -7,7 +7,7 @@ defmodule TheLittleThinkersSpaceWeb.PageControllerTest do
   describe "GET /" do
     test "redirects to home if user is logged in", %{conn: conn, user: user} do
       conn = conn |> log_in_user(user) |> get("/")
-      assert html_response(conn, 200) =~ "Hello #{user.first_name}!"
+      assert html_response(conn, 302) =~ "<html><body>You are being <a href=\"/home\">redirected</a>.</body></html>"
     end
 
     test "shows index page when user is not logged in", %{conn: conn} do
