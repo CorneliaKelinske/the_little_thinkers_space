@@ -5,7 +5,6 @@ defmodule TheLittleThinkersSpaceWeb.PageController do
     render(conn, "index.html")
   end
 
-  # end
 
   def home(conn, _params) do
     render(conn, "home.html")
