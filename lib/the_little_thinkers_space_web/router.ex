@@ -20,7 +20,7 @@ defmodule TheLittleThinkersSpaceWeb.Router do
   scope "/", TheLittleThinkersSpaceWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+  
   end
 
   # Other scopes may use custom stacks.
@@ -62,6 +62,7 @@ defmodule TheLittleThinkersSpaceWeb.Router do
   scope "/", TheLittleThinkersSpaceWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
+    get "/", PageController, :index
     get "/users/log_in", UserSessionController, :new
     post "/users/log_in", UserSessionController, :create
     get "/users/reset_password", UserResetPasswordController, :new
